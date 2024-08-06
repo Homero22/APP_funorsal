@@ -1,0 +1,16 @@
+<div class="containerPrincipal-i">
+  <div class="opciones">
+    <h2>BALANCE DE COMPROBACIÓN</h2>
+    <mat-form-field>
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date" [(ngModel)]="fechaInicio">
+        <input matEndDate placeholder="End date" [(ngModel)]="fechaFin">
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="generarPDF()" [disabled]="!fechaInicio || !fechaFin">Generar Reporte</button>
+  </div>
+</div>

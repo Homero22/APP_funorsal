@@ -1,0 +1,57 @@
+.journal-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .journal-table th, .journal-table td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .journal-table th {
+    background-color: #f1f1f1;
+  }
+  
+  .details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  
+  .details-table th, .details-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    word-wrap: break-word;
+  }
+  
+  .details-table th {
+    background-color: #f1f1f1;
+  }
+  
+  .details-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .details-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .details-cell {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+  }
+  
+  .details-table {
+    table-layout: fixed;
+  }
+  
+  .details-table td, .details-table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  

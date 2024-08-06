@@ -1,0 +1,14 @@
+containerPrincipalReporte{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.opciones{
+  display: flex;
+  justify-content: left;
+  gap: 1rem;
+}

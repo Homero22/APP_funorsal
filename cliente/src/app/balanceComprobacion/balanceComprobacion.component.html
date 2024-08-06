@@ -1,0 +1,42 @@
+<!-- dashboard.component.html -->
+<div class="container">
+  <h2>Dashboard de Libros Diarios</h2>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Seleccionar Cliente</mat-label>
+    <mat-select (selectionChange)="onClienteChange($event)">
+      <mat-option *ngFor="let cliente of clientes" [value]="cliente.int_cliente_id">
+        {{ cliente.str_cliente_nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <table mat-table [dataSource]="librosDiarios" class="mat-elevation-z8">
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef> Fecha </th>
+      <td mat-cell *matCellDef="let element"> {{ element.dt_libro_diario_fecha | date }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let element"> {{ element.str_libro_diario_descripcion }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tipoTransaccion">
+      <th mat-header-cell *matHeaderCellDef> Tipo de Transacción </th>
+      <td mat-cell *matCellDef="let element"> {{ element.int_tipo_transaccion_id }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button color="primary" (click)="verDetalles(element.int_libro_diario_id)">Ver Detalles</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+

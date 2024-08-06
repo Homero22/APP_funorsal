@@ -1,0 +1,119 @@
+
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #drawer
+      class="sidenav custom-sidenav"
+      fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false"
+    >
+      <!-- Aqui va un logo -->
+      <div class="custom-logo">
+        <img src="../../assets/img/logo.png" alt="logo" class="custom-logo-img" />
+      </div>
+      <hr />
+      <div class="custom-nav-list">
+        <a
+          class="custom-list-item"
+          [class.selected]="currentComponent === 'Inicio'"
+          (click)="showComponent('Inicio')"
+          >Inicio</a
+        >
+        <a
+        class="custom-list-item"
+        [class.selected]="currentComponent === 'Diario'"
+        (click)="showComponent('Diario')"
+        >Libro Diario</a
+        >
+        <a
+          class="custom-list-item"
+          [class.selected]="currentComponent === 'Ingresos'"
+          (click)="showComponent('Ingresos')"
+          >Ingresos</a
+        >
+        <a
+          class="custom-list-item"
+          [class.selected]="currentComponent === 'Gastos'"
+          (click)="showComponent('Gastos')"
+          >Gastos</a
+        >
+        <a
+          class="custom-list-item"
+          [class.selected]="currentComponent === 'Reportes'"
+          (click)="showComponent('Reportes')"
+          >Reportes</a
+        >
+        <a
+          class="custom-list-item"
+          [class.selected]="currentComponent === 'Cliente'"
+          (click)="showComponent('Cliente')"
+          >Clientes</a
+        >
+        <!-- <a
+        class="custom-list-item"
+        [class.selected]="currentComponent === 'Perfil'"
+        (click)="showComponent('Perfil')"
+        >Perfil</a
+        > -->
+        <a
+        class="custom-list-item"
+        [class.selected]="currentComponent === 'Configuración'"
+        (click)="showComponent('Configuración')"
+        >Configuración</a
+        >
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <mat-toolbar>
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async"
+        >
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <p>Página / {{ paginaActual }}</p>
+        <button>
+          <mat-icon>person</mat-icon>
+          <p>Mi cuenta</p>
+        </button>
+      </mat-toolbar>
+      <!-- componentes  -->
+      <ng-container *ngIf="currentComponent === 'Gastos'">
+        <app-gastos></app-gastos>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'Ingresos'">
+        <app-ingresos></app-ingresos>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'balance-comprobacion'">
+        <app-balanceComprobacion></app-balanceComprobacion>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'Reportes'">
+        <app-reportes></app-reportes>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'Cliente'">
+        <app-cliente></app-cliente>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'crear-cliente'">
+        <app-crear-cliente></app-crear-cliente>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'Inicio'">
+        <app-inicio></app-inicio>
+      </ng-container>
+      <!-- <ng-container *ngIf="currentComponent === 'Perfil'">
+        <app-perfil></app-perfil>
+      </ng-container> -->
+      <ng-container *ngIf="currentComponent === 'Configuración'">
+        <app-configuracion></app-configuracion>
+      </ng-container>
+      <ng-container *ngIf="currentComponent === 'Diario'">
+        <app-libroDiario></app-libroDiario>
+      </ng-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

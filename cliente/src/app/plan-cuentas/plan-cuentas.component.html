@@ -1,0 +1,114 @@
+
+  <div class="container-c">
+    <p>Plan de <strong>Cuentas</strong></p>
+    <div class="table-ma">
+      <!-- Plan -->
+      <mat-form-field >
+        <mat-label>Filtrar</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. Ingresos"
+          #input
+        />
+      </mat-form-field>
+      <div class="agg">
+        <button mat-raised-button color="primary" (click)="verCuentas()">
+          <mat-icon>visibility</mat-icon>
+          {{tituloBotonVer}}
+        </button>
+      </div>
+      </div>
+      <div class="mat-elevation-z8">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          class="mat-elevation-z8 demo-table"
+        >
+          <!-- Name Column -->
+          <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
+            <td mat-cell *matCellDef="let row">{{ row.str_cuenta_codigo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{tituloTabla}}
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.str_cuenta_nombre }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let row">
+              <button
+                mat-icon-button
+                color="tertiary"
+                (click)="verCuentasHijas(row)"
+                title="Ver Subcuentas"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="tertiary"
+                (click)="editarCuenta(row)"
+                title="Editar Cuenta"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+              mat-icon-button
+              color="tertiary"
+              (click)="agregarCuenta(row)"
+              title="Agregar Subcuenta"
+            >
+              <mat-icon>subdirectory_arrow_right</mat-icon>
+            </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="eliminarCuenta(row)"
+                title="Eliminar Cuenta"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No se encontraron datos de las cuentas
+            </td>
+          </tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page of users"
+          [length]="dataSource.data.length"
+        ></mat-paginator>
+      </div>
+    </div>
+    <div class="close" *ngIf="verCuentasHijasBandera">
+      <button mat-raised-button color="warn" (click)="cerrarCuentasHijas()">
+        <mat-icon>close</mat-icon>
+        Cerrar Subcuentas
+      </button>
+    </div>
+
+  <!-- ****************************************************************************************** -->
+  <div #cuentasHijasSection *ngIf="verCuentasHijasBandera">
+    <app-subcuentas
+      [cuentaPadre]="cuentaPadre"
+      [cuentasHijas]="cuentasHijasByPadreId"
+    ></app-subcuentas>
+  </div>
+

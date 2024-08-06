@@ -1,0 +1,47 @@
+<div class="containerPrincipal">
+  <div class="container-inicio">
+    <p>Ajustes de la <strong>Cuenta</strong></p>
+    <div class="container-form">
+      <form [formGroup]="perfilForm" (ngSubmit)="onSave()">
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="str_cliente_nombre">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>RUC</mat-label>
+          <input matInput formControlName="str_cliente_ruc">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="str_cliente_correo">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="str_cliente_usuario">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="str_cliente_password">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="str_cliente_telefono">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="str_cliente_direccion">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+      </form>
+    </div>
+
+  </div>
+
+
+</div>

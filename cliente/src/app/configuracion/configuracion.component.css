@@ -1,0 +1,11 @@
+.opciones{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.info-configuracion{
+  display: flex;
+  justify-content: space-between;
+}
+

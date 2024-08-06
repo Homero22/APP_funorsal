@@ -1,0 +1,20 @@
+<div [ngClass]="sizeClass">
+  <div class="titulo-modal">
+    <h1>{{data.tituloModal}}</h1>
+    <button mat-raised-button color="warn" (click)="close()">Cerrar</button>
+  </div>
+
+
+  <div [ngSwitch]="data.contentType">
+    <div *ngSwitchCase="'editarCuenta'">
+      <app-editar-cuenta></app-editar-cuenta>
+    </div>
+    <div *ngSwitchCase="'agregarCuenta'">
+      <app-agregar-cuenta></app-agregar-cuenta>
+    </div>
+    <div *ngSwitchDefault>Default Content</div>
+  </div>
+
+</div>
+
+

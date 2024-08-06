@@ -1,0 +1,59 @@
+<div class="containerPrincipal">
+  <div class="container-inicio">
+    <table mat-table [dataSource]="journalEntries" class="mat-elevation-z8 journal-table">
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="int_libro_diario_id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.int_libro_diario_id}} </td>
+      </ng-container>
+    
+      <!-- Fecha Column -->
+      <ng-container matColumnDef="dt_libro_diario_fecha">
+        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+        <td mat-cell *matCellDef="let element"> {{element.dt_libro_diario_fecha | date:'shortDate'}} </td>
+      </ng-container>
+    
+      <!-- Cliente ID Column -->
+      <ng-container matColumnDef="int_cliente_id">
+        <th mat-header-cell *matHeaderCellDef> Cliente ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.int_cliente_id}} </td>
+      </ng-container>
+    
+      <!-- Descripcion Column -->
+      <!-- <ng-container matColumnDef="str_libro_diario_descripcion">
+        <th mat-header-cell *matHeaderCellDef> Descripción </th>
+        <td mat-cell *matCellDef="let element"> {{element.str_libro_diario_descripcion}} </td>
+      </ng-container> -->
+    
+      <!-- Detalles Column -->
+      <ng-container matColumnDef="detalle_libro_diarios">
+        <th mat-header-cell *matHeaderCellDef> Detalles </th>
+        <td mat-cell *matCellDef="let element">
+          <table class="details-table">
+            <thead>
+              <tr>
+                <th>Cuenta</th>
+                <th>Código</th>
+                <th>Debe</th>
+                <th>Haber</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detalle of element.detalle_libro_diarios">
+                <td class="details-cell">{{detalle.str_detalle_libro_diario_nombre_cuenta}}</td>
+                <td class="details-cell">{{detalle.str_detalle_libro_diario_codigo_cuenta}}</td>
+                <td class="details-cell">{{detalle.str_detalle_libro_diario_tipo === 'DEBE' ? detalle.dc_detalle_libro_diario_monto : ''}}</td>
+                <td class="details-cell">{{detalle.str_detalle_libro_diario_tipo === 'HABER' ? detalle.dc_detalle_libro_diario_monto : ''}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+  </div>
+</div>

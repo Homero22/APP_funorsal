@@ -1,0 +1,36 @@
+mat-card {
+    margin: 20px;
+  }
+  
+  table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    margin-top: 20px;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  .containerPrincipal-i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  
+  }
+  
+  .opciones{
+    display: flex;;
+    flex-direction: column;
+    width: 300px;
+    gap: 1rem;
+    background-color: #f0f3f5;
+    border-radius: 8px;
+    padding: 1rem;
+    /* sombras */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }

@@ -1,0 +1,25 @@
+.chart-container{
+  padding: 1.5rem;
+  margin: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+  gap: 1.5rem;
+}
+.info-user{
+  padding: 1.5rem;
+  margin: 1.5rem;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.info-user-img img {
+  width: 100%; /* Ajusta el tamaño de la imagen según sea necesario */
+  max-width: 200px; /* Establece un ancho máximo para la imagen */
+  height: auto;
+}
+

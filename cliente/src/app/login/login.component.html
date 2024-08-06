@@ -1,0 +1,43 @@
+<div class="contenedor">
+  <div class="main">
+    <img src="../../assets/img/logo.png" alt="" width="200" height="100">
+    <form [formGroup]="loginForm" (ngSubmit)="iniciarSesion()">
+      <div>
+        <label for="usuario"> Usuario </label>
+        <input
+          type="text"
+          id="usuario"
+          formControlName="usuario"
+          placeholder="Ingrese su Usuario"
+          required
+        />
+        <div *ngIf="loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched">
+          <small *ngIf="loginForm.get('usuario')?.errors?.['required']">El nombre de usuario es requerido.</small>
+        </div>
+
+        <label for="contrasena"> Contraseña </label>
+        <input
+          type="password"
+          id="contrasena"
+          formControlName="contrasena"
+          placeholder="Ingrese su Contraseña"
+          required
+        />
+        <div *ngIf="loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched">
+          <small *ngIf="loginForm.get('contrasena')?.errors?.['required']">La contraseña es requerida.</small>
+          <small *ngIf="loginForm.get('contrasena')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</small>
+        </div>
+
+        <div class="wrap">
+          <button type="submit" [disabled]="loginForm.invalid">Iniciar sesión</button>
+        </div>
+      </div>
+    </form>
+    <p>
+      ¿No tienes una cuenta?
+      <a href="#" style="text-decoration: none"> Crear una cuenta </a>
+    </p>
+  </div>
+</div>
+
+

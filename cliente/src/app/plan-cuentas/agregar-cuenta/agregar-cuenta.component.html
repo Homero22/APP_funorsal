@@ -1,0 +1,63 @@
+
+<div class="agregar-cuenta">
+  <!-- Muestro las cuentas hijas  -->
+   <div>
+    <strong>Nota: Se ingresará con el mismo nivel de las cuentas que se muestra en la tabla</strong>
+    <div class="data-cuenta">
+      <table>
+        <tr>
+          <th>Nombre</th>
+          <th>Código</th>
+        </tr>
+        <tr *ngFor="let cuenta of cuentas">
+          <td>{{cuenta.str_cuenta_nombre}}</td>
+          <td>{{cuenta.str_cuenta_codigo}}</td>
+        </tr>
+      </table>
+    </div>
+   </div>
+   <mat-label>Datos de la <strong>Cuenta Padre</strong></mat-label>
+   <div class="data-derecha">
+      <table>
+        <tr>
+          <th>Nombre</th>
+          <th>Código</th>
+          <th>ID</th>
+          <th>ID Padre</th>
+        </tr>
+        <tr>
+          <td>{{infoCuentaSeleccionada.str_cuenta_nombre}}</td>
+          <td>{{infoCuentaSeleccionada.str_cuenta_codigo}}</td>
+          <td>{{infoCuentaSeleccionada.int_cuenta_id}}</td>
+          <td>{{infoCuentaSeleccionada.int_cuenta_padre_id || "null"}}</td>
+        </tr>
+      </table>
+   </div>
+   <mat-label>Datos de la <strong>Cuenta a Ingresar</strong></mat-label>
+   <div class="data-izquierda">
+     <mat-form-field>
+       <mat-label>Nombre</mat-label>
+       <input
+         matInput
+         [(ngModel)]="newCuenta.nombre"
+         placeholder="Nombre de la cuenta"
+       />
+     </mat-form-field>
+     <mat-form-field>
+       <mat-label>Código</mat-label>
+       <input
+         matInput
+         [(ngModel)]="newCuenta.codigo"
+         placeholder="Código de la cuenta"
+       />
+     </mat-form-field>
+   </div>
+      <!-- Agregar Cuenta -->
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="agregarCuenta()"
+      >
+        Agregar
+      </button>
+</div>
