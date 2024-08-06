@@ -10,16 +10,17 @@ const app = express();
 
 app.use(express.json());
 
-const whiteList = ["http://localhost:4200",
-  "https://app-funorsal.vercel.app/",
-  "https://app-funorsal.vercel.app/login",
-  "https://app-funorsal-5jcrjy3bj-homero22s-projects.vercel.app/"
+const whiteList = [
+  "http://localhost:4200",
+  "https://app-funorsal.vercel.app",
+  "https://app-funorsal.vercel.app/login"
 ];
 
 app.use(cors({
     origin: whiteList,
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(cookieParser());
