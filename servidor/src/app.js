@@ -15,7 +15,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 const whiteList = ["http://localhost:4200",
-  "https://app-funorsal.vercel.app/"
+  "https://app-funorsal.vercel.app/",
+  "https://app-funorsal-5jcrjy3bj-homero22s-projects.vercel.app/"
 ];
 
 app.use(cors({
