@@ -17,7 +17,9 @@ const whiteList = ["http://localhost:4200",
 
 app.use(cors({
     origin: whiteList,
-    credentials: true
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(cookieParser());
