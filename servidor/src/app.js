@@ -8,7 +8,9 @@ import indexRoutes from "./routes/index.routes.js";
 const app = express();
 
 app.use(express.json());
-const whiteList = ["http://localhost:4200",];
+const whiteList = ["http://localhost:4200",
+  "https://app-funorsal.vercel.app/"
+];
 
 app.use(cors({
     origin: whiteList,
