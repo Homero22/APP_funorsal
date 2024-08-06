@@ -9,6 +9,7 @@ const app = express();
 
 
 app.use(express.json());
+
 const whiteList = ["http://localhost:4200",
   "https://app-funorsal.vercel.app/",
   "https://app-funorsal.vercel.app/login",
@@ -18,8 +19,7 @@ const whiteList = ["http://localhost:4200",
 app.use(cors({
     origin: whiteList,
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
 }));
 
 app.use(cookieParser());
