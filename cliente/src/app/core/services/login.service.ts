@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import config from "config/config";
 import { Observable } from "rxjs";
 import { ClienteService } from "./cliente.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { ClienteService } from "./cliente.service";
 
 export class LoginService {
 
-  constructor(private http: HttpClient, private srvCliente:ClienteService) { }
+  constructor(private http: HttpClient, private srvCliente:ClienteService,private router: Router) { }
 
   //Rutas de la API
   private urlApi_login : string = config.URL_API_BASE + 'login';
@@ -44,6 +45,14 @@ export class LoginService {
   logout() {
     this.idClienteLogueado = 0;
     localStorage.removeItem('idCliente');
+    this.router.navigate(['/login']).then(() => {
+      // Evitar que el usuario regrese a la aplicación
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function () {
+        window.history.pushState(null, '', window.location.href);
+      };
+    });
+
   }
 
   //funcion para guardar el id del cliente logueado en localStorage

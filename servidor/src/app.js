@@ -12,8 +12,7 @@ app.use(express.json());
 
 const whiteList = [
   "http://localhost:4200",
-  "https://app-funorsal.vercel.app",
-  "https://app-funorsal.vercel.app/login"
+  "https://app-funorsal.vercel.app"
 ];
 
 app.use(cors({

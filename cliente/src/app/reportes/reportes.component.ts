@@ -17,7 +17,7 @@ export class ReportesComponent implements OnInit {
     });
    }
   informacionQuesera!: any;
-  currentComponent: string = 'registroIngreso';
+  currentComponent: string = 'IngresosGastos';
 
 
   ngOnInit() {

@@ -29,7 +29,7 @@ const crearBalanceComprobacion = async (req, res) => {
                 message: "Cliente no encontrado"
             });
         }
-
+ 
         const libroDiario = await LibroDiario.findAll({
             where: {
                 int_cliente_id: idCliente,

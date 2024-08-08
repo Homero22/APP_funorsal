@@ -10,7 +10,7 @@ export class ConfiguracionComponent implements OnInit {
 
   constructor() { }
   informacionQuesera!: any;
-  currentComponent: string = 'cliente';
+  currentComponent: string = 'Plan de Cuentas';
   cuentas!:any;
 
 

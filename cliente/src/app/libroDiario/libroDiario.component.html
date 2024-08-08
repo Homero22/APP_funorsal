@@ -6,7 +6,7 @@
         <button mat-raised-button color="secundary" (click)="showComponent('VerDiarios')">Registros Libro Diario</button>
         <button mat-raised-button color="secundary" (click)="showComponent('Nuevo Registro')">Nuevo Registro</button>
       </div>
-  
+
       <div *ngIf="currentComponent==='Nuevo Registro'">
         <h2>Empresa <strong>{{informacionQuesera.str_cliente_nombre}}</strong></h2>
         <div>
@@ -35,7 +35,7 @@
             </thead>
             <tbody formArrayName="entries">
               <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
-                
+
                <td>
                 <input type="text" [formControl]="getAccountControl(i)"
                 [matAutocomplete]="auto" (input)="filterAccounts(i)">
@@ -45,9 +45,9 @@
                     {{ option.str_cuenta_codigo }} - {{ option.str_cuenta_nombre }}
                   </mat-option>
                 </mat-autocomplete>
-    
+
                 <td><input formControlName="code" type="text" (input)="filterAccounts(i)"></td>
-    
+
                 <td><input formControlName="debit" type="number" (input)="updateSums()" ></td>
                 <td><input formControlName="credit" type="number" (input)="updateSums()"></td>
                 <td>

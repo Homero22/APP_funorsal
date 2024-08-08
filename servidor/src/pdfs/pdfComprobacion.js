@@ -1,5 +1,6 @@
 import pdfmake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import { formatoNumero } from '../utils/formatoNumero.js';
 
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -19,31 +20,31 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
             cuentas.forEach(cuenta => {
                 body.push([
                     { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                    { text: cuenta.debe.toFixed(2), style: 'tableData' },
-                    { text: cuenta.haber.toFixed(2), style: 'tableData' }
+                    { text: formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
+                    { text: formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' }
                 ]);
             });
         };
 
-        addCategoryTitle('Activos');
+        addCategoryTitle('ACTIVOS');
         addAccounts(infoBalanceComprobacion.cuentasActivos);
 
-        addCategoryTitle('Pasivos');
+        addCategoryTitle('PASIVOS');
         addAccounts(infoBalanceComprobacion.cuentasPasivos);
 
-        addCategoryTitle('Patrimonio');
+        addCategoryTitle('PATRIMONIO');
         addAccounts(infoBalanceComprobacion.cuentasPatrimonio);
 
-        addCategoryTitle('Ingresos');
+        addCategoryTitle('INGRESOS');
         addAccounts(infoBalanceComprobacion.cuentasIngresos);
 
-        addCategoryTitle('Gastos');
+        addCategoryTitle('GASTOS');
         addAccounts(infoBalanceComprobacion.cuentasGastos);
 
         body.push([
             { text: 'Total', style: 'totalLabel' },
-            { text: infoBalanceComprobacion.totalDebitos.toFixed(2), style: 'totalData' },
-            { text: infoBalanceComprobacion.totalCreditos.toFixed(2), style: 'totalData' }
+            { text: formatoNumero(infoBalanceComprobacion.totalDebitos.toFixed(2)), style: 'totalData' },
+            { text: formatoNumero(infoBalanceComprobacion.totalCreditos.toFixed(2)), style: 'totalData' }
         ]);
 
         return body;
@@ -124,4 +125,5 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
 }
 
 export default generarPdfBalanceComprobacionBase64;
+
 

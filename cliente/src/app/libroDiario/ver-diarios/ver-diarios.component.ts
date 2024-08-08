@@ -30,7 +30,7 @@ interface LibroDiario {
 export class VerDiariosComponent implements OnInit {
   informacionQuesera!: any;
   journalEntries: LibroDiario[] = [];
-  displayedColumns: string[] = ['int_libro_diario_id', 'dt_libro_diario_fecha', 'int_cliente_id', 'detalle_libro_diarios'];
+  displayedColumns: string[] = ['int_libro_diario_id', 'dt_libro_diario_fecha', 'detalle_libro_diarios'];
 
   constructor(
     private srvCliente: ClienteService,
@@ -67,7 +67,7 @@ export class VerDiariosComponent implements OnInit {
           text:librosDiarios.message,
         })
       }
-      
+
     });
   }
 }

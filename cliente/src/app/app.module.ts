@@ -60,11 +60,12 @@ import { VerDiariosComponent } from './libroDiario/ver-diarios/ver-diarios.compo
 import { VerPdfComponent } from './ver-pdf/ver-pdf.component';
 import { ReportesComprobacionComponent } from './reportes/reportes-comprobacion/reportes-comprobacion.component';
 import { ReportesGeneralComponent } from './reportes/reportes-general/reportes-general.component';
+import { InformacionCuentaComponent } from './plan-cuentas/informacionCuenta/informacionCuenta.component';
 
 
 
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     NavegacionComponent,
     DashboardComponent,
@@ -96,7 +97,8 @@ import { ReportesGeneralComponent } from './reportes/reportes-general/reportes-g
       VerPdfComponent,
       ReportesIngresosComponent,
       ReportesComprobacionComponent,
-      ReportesGeneralComponent
+      ReportesGeneralComponent,
+      InformacionCuentaComponent
    ],
   imports: [
     BrowserModule,

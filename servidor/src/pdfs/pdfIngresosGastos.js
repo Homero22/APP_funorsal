@@ -1,8 +1,8 @@
-
 import fs from 'fs';
 import pdfmake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
-
+import { formatoNumero } from '../utils/formatoNumero.js';
+import { table } from 'console';
 
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -20,11 +20,11 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
                     body: [
                         ...infoBalanceIngresosGastos.cuentasIngresos.map(cuenta => [
                             { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                            { text: cuenta.dc_detalle_libro_diario_monto.toFixed(2), style: 'tableData' }
+                            { text: formatoNumero(cuenta.dc_detalle_libro_diario_monto.toFixed(2)), style: 'tableData' }
                         ]),
                         [
                             { text: 'Total Ingresos', style: 'totalLabel' },
-                            { text: infoBalanceIngresosGastos.ingresos.toFixed(2), style: 'totalData' }
+                            { text: formatoNumero(infoBalanceIngresosGastos.ingresos.toFixed(2)), style: 'totalData' }
                         ]
                     ]
                 }
@@ -37,18 +37,27 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
                     body: [
                         ...infoBalanceIngresosGastos.cuentasGastos.map(cuenta => [
                             { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                            { text: cuenta.dc_detalle_libro_diario_monto.toFixed(2), style: 'tableData' }
+                            { text: formatoNumero(cuenta.dc_detalle_libro_diario_monto.toFixed(2)), style: 'tableData' }
                         ]),
                         [
                             { text: 'Total Gastos', style: 'totalLabel' },
-                            { text: infoBalanceIngresosGastos.gastos.toFixed(2), style: 'totalData' }
+                            { text: formatoNumero(infoBalanceIngresosGastos.gastos.toFixed(2)), style: 'totalData' }
                         ]
                     ]
                 }
             },
             { text: ' ' },  // Espacio en blanco
-            { text: 'RESULTADO DEL EJERCICIO', style: 'sectionHeader' },
-            { text: infoBalanceIngresosGastos.resultado.toFixed(2), style: 'result' }
+            { 
+                table: {
+                    widths: ['*', 'auto'],
+                    body: [
+                        [
+                            { text: 'Resultado del Ejercicio', style: 'totalR' },
+                            { text: formatoNumero(infoBalanceIngresosGastos.resultado.toFixed(2)), style: 'totalR' }
+                        ]
+                    ]
+                }
+             },
         ],
         styles: {
             title: {
@@ -86,17 +95,29 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
                 margin: [0, 5, 0, 5],
                 fillColor: '#337ab7'  // Color azul oscuro para etiquetas de total
             },
+            totalR: {
+                bold: true,
+                margin: [0, 5, 0, 5],
+                // fillColor: '#337ab7'  // Color azul oscuro para etiquetas de total
+                alignment: 'left',
+            },
             totalData: {
                 bold: true,
                 margin: [0, 5, 0, 5],
                 alignment: 'right',
                 fillColor: '#5cb85c'  // Color verde para datos de total
             },
+            totalR: {
+                bold: true,
+                margin: [0, 5, 0, 5],
+                alignment: 'right',
+                // fillColor: '#5cb85c'  // Color verde para datos de total
+            },
             result: {
                 fontSize: 16,
                 bold: true,
                 alignment: 'right',
-                margin: [0, 10, 0, 10],
+                margin: [0, 10, 0, 5],
                 color: '#d9534f'  // Color rojo para resultado
             }
         }
@@ -113,4 +134,5 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
 }
 
 export default generarPdfBalanceBase64;
+
 

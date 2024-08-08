@@ -180,6 +180,14 @@ export class PlanCuentasComponent implements AfterViewInit {
     // this.cuentas = this.cuentas.filter(c => c.int_cuenta_id !== cuenta.int_cuenta_id);
     // this.actualizarDataSource();
   }
+
+  informacionCuenta(cuenta: any) {
+    console.log('Información de la cuenta:', cuenta);
+    this.srvCuentas.setCuentaSeleccionada(cuenta);
+    this.openModal('large','Información Cuenta','informacionCuenta');
+  }
+
+
   verCuentasHijas(cuenta: any) {
     this.obtenerCuentasHijasByPadreId(cuenta.int_cuenta_id);
     this.cuentaPadre = cuenta.str_cuenta_nombre;

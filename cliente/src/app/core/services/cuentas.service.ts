@@ -4,7 +4,7 @@ import { Cuenta } from '../models/cuentas';
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import config from 'config/config';
 
 @Injectable({
@@ -81,16 +81,27 @@ export class CuentasService {
   obtenerCuentasDelCliente(id:any){
     this.getCuentasByIdCliente(id).pipe().
     subscribe((cuentas: any) => {
-      console.log('Cuentas 2:', cuentas.body);
+
       this.cuentasSubject$.next(cuentas.body);
     });
   }
 
-
-
-  private getNextId(): number {
-    return this.cuentas.length + 1;
+  //funcion para obtener la informacion de una cuenta y movimientos
+  obtenerInformacionCuenta(id: number, fechaInicio: any, fechaFin: any) {
+    let params = new HttpParams()
+    .set('fechaInicio', fechaInicio)
+    .set('fechaFin', fechaFin);
+    return this.http.get(this.url + '/info/' + id , {params});
   }
+  /**
+   *     ejemplo(idCliente: any, fechaInicio: any, fechaFin: any) {
+        let params = new HttpParams()
+        .set('fechaInicio', fechaInicio)
+        .set('fechaFin', fechaFin);
+        return this.http.get(this.urlApi_pdf_balance_comprobacion + '/' + idCliente ,
+            {params});
+    }
+   */
 
 
 

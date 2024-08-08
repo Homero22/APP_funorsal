@@ -27,18 +27,18 @@
         (click)="showComponent('Diario')"
         >Libro Diario</a
         >
-        <a
+        <!-- <a
           class="custom-list-item"
           [class.selected]="currentComponent === 'Ingresos'"
           (click)="showComponent('Ingresos')"
           >Ingresos</a
-        >
-        <a
+        > -->
+        <!-- <a
           class="custom-list-item"
           [class.selected]="currentComponent === 'Gastos'"
           (click)="showComponent('Gastos')"
           >Gastos</a
-        >
+        > -->
         <a
           class="custom-list-item"
           [class.selected]="currentComponent === 'Reportes'"
@@ -61,7 +61,7 @@
         class="custom-list-item"
         [class.selected]="currentComponent === 'Configuración'"
         (click)="showComponent('Configuración')"
-        >Configuración</a
+        >Plan de Cuentas</a
         >
       </div>
     </mat-sidenav>
@@ -78,9 +78,9 @@
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
         <p>Página / {{ paginaActual }}</p>
-        <button>
-          <mat-icon>person</mat-icon>
-          <p>Mi cuenta</p>
+        <button (click)="salir()">
+          <mat-icon>logout</mat-icon>
+          <p>Salir</p>
         </button>
       </mat-toolbar>
       <!-- componentes  -->

@@ -1,0 +1,91 @@
+<div class="loader-container" *ngIf="isLoading">
+  <div class="loader"></div>
+</div>
+<div class="container" *ngIf="!isLoading">
+  <mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Start date" [(ngModel)]="fechaInicio">
+      <input matEndDate placeholder="End date" [(ngModel)]="fechaFin">
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <div *ngIf="data">
+    <h2>Resumen</h2>
+    <table class="summary-table">
+      <tr>
+        <th>Total Debe:</th>
+        <td>{{ data.body.resumen.totalDebe | currency }}</td>
+      </tr>
+      <tr>
+        <th>Total Haber:</th>
+        <td>{{ data.body.resumen.totalHaber | currency }}</td>
+      </tr>
+      <tr>
+        <th>Balance:</th>
+        <td>{{ (data.body.resumen.totalDebe - data.body.resumen.totalHaber) | currency }}</td>
+      </tr>
+    </table>
+
+    <h2>Detalle de Movimientos</h2>
+    <table class="details-table" *ngIf="data.body.detalles.length">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Debe</th>
+          <th>Haber</th>
+          <th>Monto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let movimiento of data.body.detalles">
+          <td>{{ movimiento.fecha | date:'shortDate' }}</td>
+          <td>{{ movimiento.descripcion }}</td>
+          <td>{{ movimiento.debe ? (movimiento.debe | currency) : '' }}</td>
+          <td>{{ movimiento.haber ? (movimiento.haber | currency) : '' }}</td>
+          <td>{{ movimiento.monto | currency }}</td>
+          <td>
+            <button (click)="openModal(movimiento)">Ver Detalles</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="data.body.detalles.length==0">No se encontraron detalles para esta Cuenta</div>
+  </div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal" [ngClass]="{'show': isModalOpen}">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>Detalle</h2>
+      <table class="inner-table">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Monto</th>
+            <th>Fecha Creación</th>
+            <th>Fecha Actualización</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detalle of selectedMovimiento?.otrosMovimientos">
+            <td>{{ detalle.str_detalle_libro_diario_nombre_cuenta }}</td>
+            <td>{{ detalle.str_detalle_libro_diario_codigo_cuenta }}</td>
+            <td>{{ detalle.str_detalle_libro_diario_tipo }}</td>
+            <td>{{ detalle.dc_detalle_libro_diario_monto | currency }}</td>
+            <td>{{ detalle.dt_fecha_creacion | date:'short' }}</td>
+            <td>{{ detalle.dt_fecha_actualizacion | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

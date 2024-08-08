@@ -45,6 +45,15 @@
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
             <td mat-cell *matCellDef="let row">
               <button
+              mat-icon-button
+              color="tertiary"
+              (click)="informacionCuenta(row)"
+              title="Información de Cuenta"
+              >
+              <mat-icon>analytics</mat-icon>
+              </button>
+
+              <button
                 mat-icon-button
                 color="tertiary"
                 (click)="verCuentasHijas(row)"
@@ -68,15 +77,14 @@
             >
               <mat-icon>subdirectory_arrow_right</mat-icon>
             </button>
-              <button
+            <button
                 mat-icon-button
                 color="warn"
                 (click)="eliminarCuenta(row)"
                 title="Eliminar Cuenta"
               >
                 <mat-icon>delete</mat-icon>
-              </button>
-
+            </button>
 
             </td>
           </ng-container>

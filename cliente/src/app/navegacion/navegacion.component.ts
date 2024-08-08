@@ -32,5 +32,8 @@ export class NavegacionComponent {
     this.currentComponent = component;
     this.paginaActual = component;
   }
+  salir(){
+    this.srvLogin.logout();
+  }
 
 }

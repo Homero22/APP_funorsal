@@ -1,4 +1,7 @@
 import { Cuenta} from "../../models/estadosFinancieros/cuentas.models.js";
+import {LibroDiario} from "../../models/estadosFinancieros/libroDiario.models.js";
+import {DetalleDiario} from "../../models/estadosFinancieros/detalleDiario.models.js";
+import { Op } from "sequelize";
 
 export const obtenerCuentasByIdCliente = async (req, res) => {
     try {
@@ -48,8 +51,129 @@ export const crearCuenta = async (req, res) => {
     }
 };
 
+export const obtenerInformacionCuentaById = async (req, res) => {
+    try {
+        console.log("Obtener informacion cuenta")
+        
+        const { id } = req.params;
+        let { fechaInicio, fechaFin } = req.query;
+
+        fechaInicio = new Date(fechaInicio);
+        fechaFin = new Date(fechaFin);
+
+        const cuenta = await Cuenta.findOne({
+            where: {
+                int_cuenta_id: id
+            },
+            raw: true
+        });
+        if(!cuenta){
+            return res.json({
+                status: false,
+                message: "Cuenta no encontrada",
+                body:[]
+            });
+        }
+
+        let nombre = cuenta.str_cuenta_nombre;
+        let idCliente = cuenta.int_cliente_id;
+
+
+        const libroDiario = await LibroDiario.findAll({
+            where: {
+                int_cliente_id: idCliente,
+                dt_libro_diario_fecha: {
+                    [Op.between]: [fechaInicio, fechaFin]
+                }
+            },
+            raw: true,
+            include: {
+                model: DetalleDiario,
+                required: true,
+                where: {
+                    str_detalle_libro_diario_nombre_cuenta: nombre
+                }
+            },
+            
+        });
+
+    
+
+        if(!libroDiario){
+            return res.json({
+                status: false,
+                message: "No se encontraron registros",
+                body:[]
+            });
+        }
+
+        const movimientos = await organizarMovimientos(libroDiario);
+
+
+
+         async function organizarMovimientos(movimientos) {
+            let totalDebe = 0;
+            let totalHaber = 0;
+            const detalles = [];
+          
+            for (const movimiento of movimientos) {
+                let otrosMovimientos = await DetalleDiario.findAll({
+                    where: {
+                        int_libro_diario_id: movimiento.int_libro_diario_id
+                    }
+                });
+            
+                
+              const monto = parseFloat(movimiento['detalle_libro_diarios.dc_detalle_libro_diario_monto']);
+              const tipo = movimiento['detalle_libro_diarios.str_detalle_libro_diario_tipo'];
+          
+              if (tipo === 'DEBE') {
+                totalDebe += monto;
+              } else if (tipo === 'HABER') {
+                totalHaber += monto;
+              }
+          
+              detalles.push({
+                fecha: movimiento.dt_libro_diario_fecha,
+                descripcion: movimiento['detalle_libro_diarios.str_detalle_libro_diario_nombre_cuenta'],
+                debe: tipo === 'DEBE' ? monto : null,
+                haber: tipo === 'HABER' ? monto : null,
+                int_libro_diario_id: movimiento.int_libro_diario_id,
+                otrosMovimientos
+               });
+            }
+
+        
+
+          
+            return {
+              resumen: {
+                totalDebe: totalDebe.toFixed(2),
+                totalHaber: totalHaber.toFixed(2),
+              },
+                detalles
+            };
+        }
+
+
+
+     
+        res.json({
+            status: true,
+            message: "Cuenta encontrada",
+            body: movimientos,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Error al obtener la cuenta",
+        });
+    }
+}
+
 
 export default {
     obtenerCuentasByIdCliente,
-    crearCuenta
+    crearCuenta,
+    obtenerInformacionCuentaById
 };
