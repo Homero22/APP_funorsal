@@ -38,7 +38,6 @@
           <th>Descripción</th>
           <th>Debe</th>
           <th>Haber</th>
-          <th>Monto</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -48,7 +47,6 @@
           <td>{{ movimiento.descripcion }}</td>
           <td>{{ movimiento.debe ? (movimiento.debe | currency) : '' }}</td>
           <td>{{ movimiento.haber ? (movimiento.haber | currency) : '' }}</td>
-          <td>{{ movimiento.monto | currency }}</td>
           <td>
             <button (click)="openModal(movimiento)">Ver Detalles</button>
           </td>
