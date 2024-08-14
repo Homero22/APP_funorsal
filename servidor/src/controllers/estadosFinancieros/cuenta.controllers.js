@@ -171,9 +171,54 @@ export const obtenerInformacionCuentaById = async (req, res) => {
     }
 }
 
+export const actualizarCuenta = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = req.body;
+        const cuenta = await Cuenta.update(data, {
+            where: {
+                int_cuenta_id: id
+            }
+        });
+        res.json({
+            status: true,
+            message: "Cuenta actualizada",
+            body: cuenta,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Error al actualizar la cuenta",
+        });
+    }
+}
+
+export const eliminarCuenta = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const cuenta = await Cuenta.destroy({
+            where: {
+                int_cuenta_id: id
+            }
+        });
+        res.json({
+            status: true,
+            message: "Cuenta eliminada",
+            body: cuenta,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Error al eliminar la cuenta",
+        });
+    }
+}
+
 
 export default {
     obtenerCuentasByIdCliente,
     crearCuenta,
-    obtenerInformacionCuentaById
+    obtenerInformacionCuentaById,
+    actualizarCuenta,
+    eliminarCuenta
 };

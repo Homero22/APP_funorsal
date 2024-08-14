@@ -1,0 +1,9 @@
+/* editar-cuenta.component.css */
+
+/* Estilos generales para centrar el contenido */
+mat-card {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+}
+

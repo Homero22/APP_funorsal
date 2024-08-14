@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
         this.loginService.login(this.loginForm.get('usuario')?.value, this.loginForm.get('contrasena')?.value).subscribe(
           (data: any) => {
             if(data.status){
-              console.log("Data usuario Logueado",data);
               Swal.close();
               Swal.fire({
                 title: 'Inicio de sesión correcto',
@@ -55,11 +54,25 @@ export class LoginComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 1500
               });
+              if(data.body.str_usuario_nombre){
+                //es administrador
+                this.loginService.isAdmin(true);
+
+                              //guardar el id del usuario
+              this.srvCliente.setidClienteLogueado(data.body.int_usuario_id);
+              //this.srvCliente.setClienteLogueado(data.body)
+
+              //guardar el id del usuario en localStorage
+              localStorage.setItem('idUsuario', data.body.int_usuario_id.toString());
+
+              }else{
               //guardar el id del usuario
               this.srvCliente.setidClienteLogueado(data.body.int_cliente_id);
               this.srvCliente.setClienteLogueado(data.body)
+
               //guardar el id del usuario en localStorage
               this.loginService.guardarIdClienteLogueado(data.body.int_cliente_id);
+              }
               this.router.navigate(['/inicio']);
               this.loginService.logueado = true;
             }else{

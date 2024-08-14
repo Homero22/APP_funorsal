@@ -45,6 +45,8 @@ export class LoginService {
   logout() {
     this.idClienteLogueado = 0;
     localStorage.removeItem('idCliente');
+    localStorage.removeItem('admin');
+    localStorage.removeItem('idUsuario');
     this.router.navigate(['/login']).then(() => {
       // Evitar que el usuario regrese a la aplicación
       window.history.pushState(null, '', window.location.href);
@@ -58,7 +60,9 @@ export class LoginService {
   //funcion para guardar el id del cliente logueado en localStorage
   guardarIdClienteLogueado(idCliente: any) {
     localStorage.setItem('idCliente', idCliente.toString());
-    console.log('PASO 1', idCliente);
+  }
+  isAdmin(admin: boolean) {
+    localStorage.setItem('admin', admin.toString());
   }
 
 

@@ -13,6 +13,9 @@ import { LoginService } from '../core/services/login.service';
 export class NavegacionComponent {
 
   paginaActual: string = 'Inicio';
+  isAdmin: boolean = localStorage.getItem('isAdmin') === 'true';
+
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

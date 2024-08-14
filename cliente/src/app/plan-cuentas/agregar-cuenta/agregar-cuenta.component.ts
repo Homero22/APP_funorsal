@@ -95,7 +95,7 @@ export class AgregarCuentaComponent implements OnInit {
             title: 'Cuenta agregada',
             text: res.message,
           });
-          this.srvCuentas.obtenerCuentasDelCliente(this.srvCuentas.idClienteLogueado);
+          this.srvCuentas.obtenerCuentasDelCliente(this.informacionQuesera.int_cliente_id);
         }else{
           Swal.fire({
             icon: 'error',

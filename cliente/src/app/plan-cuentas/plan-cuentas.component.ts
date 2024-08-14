@@ -1,5 +1,11 @@
-
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Renderer2,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CuentasService } from '../core/services/cuentas.service';
 import { Body } from '../core/models/cliente';
 import { Subject, take, takeUntil } from 'rxjs';
+import Swal from 'sweetalert2';
 
 export interface Cuenta {
   int_cuenta_id: number;
@@ -38,11 +45,12 @@ export class PlanCuentasComponent implements AfterViewInit {
 
   idCliente = 1;
   private destroy$ = new Subject<any>();
-  @ViewChild('cuentasHijasSection', { static: false }) cuentasHijasSection!: ElementRef;
+  @ViewChild('cuentasHijasSection', { static: false })
+  cuentasHijasSection!: ElementRef;
   verCuentasHijasBandera: boolean;
 
   dataSourceHijas: MatTableDataSource<Cuenta>;
-  cuentaPadre!:string;
+  cuentaPadre!: string;
 
   tituloTabla = 'Cuentas Principales';
 
@@ -51,26 +59,23 @@ export class PlanCuentasComponent implements AfterViewInit {
   cuentasHijas: Cuenta[] = [];
 
   agregar!: boolean;
-  openModal(size: string,titulo:string,tipo:string): void {
+  openModal(size: string, titulo: string, tipo: string): void {
     this.dialog.open(ModalComponent, {
-      data: { size: size,
-              contentType: tipo,
-              tituloModal: titulo
-
-       }
+      data: { size: size, contentType: tipo, tituloModal: titulo },
     });
   }
 
-  cuentasConPadreIdIngresada(cuenta: Cuenta){
-    return this.cuentas.filter(c=> c.int_cuenta_padre_id === cuenta.int_cuenta_id);
+  cuentasConPadreIdIngresada(cuenta: Cuenta) {
+    return this.cuentas.filter(
+      (c) => c.int_cuenta_padre_id === cuenta.int_cuenta_id
+    );
   }
 
-  agregarCuenta(cuenta:any){
-
+  agregarCuenta(cuenta: any) {
     let cuentasHijasDirectas = this.cuentasConPadreIdIngresada(cuenta);
     this.srvCuentas.setCuentasHijasByPadreId(cuentasHijasDirectas);
     this.srvCuentas.setCuentaSeleccionada(cuenta);
-    this.openModal('large','Agregar Cuenta', 'agregarCuenta');
+    this.openModal('large', 'Agregar Cuenta', 'agregarCuenta');
   }
 
   constructor(
@@ -82,11 +87,11 @@ export class PlanCuentasComponent implements AfterViewInit {
 
     this.obtenerCuentasDelCliente();
     this.srvCuentas.getCuentas$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((cuentas: any) => {
-      this.cuentas = cuentas;
-      this.actualizarDataSource();
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((cuentas: any) => {
+        this.cuentas = cuentas;
+        this.actualizarDataSource();
+      });
 
     this.agregar = false;
     this.verCuentasHijasBandera = false;
@@ -95,31 +100,22 @@ export class PlanCuentasComponent implements AfterViewInit {
     this.dataSource = new MatTableDataSource(cuentasPrincipales);
     this.obtenerCuentasHijasByPadreId(0);
     this.dataSourceHijas = new MatTableDataSource(this.cuentasHijasByPadreId);
-
-
   }
 
-  obtenerCuentasDelCliente(){
+  obtenerCuentasDelCliente() {
     this.srvCuentas.obtenerCuentasDelCliente(this.idCliente);
   }
 
-  ordenarCuentas(){
-    this.cuentas.sort((a, b) => (a.str_cuenta_codigo > b.str_cuenta_codigo) ? 1 : -1);
+  ordenarCuentas() {
+    this.cuentas.sort((a, b) =>
+      a.str_cuenta_codigo > b.str_cuenta_codigo ? 1 : -1
+    );
   }
 
-
   obtenerCuentasHijasByPadreId(padreId: number) {
-
-  //  this.cuentasHijasByPadreId = this.cuentas.filter(cuenta => cuenta.int_cuenta_padre_id === padreId);
-
-  //se debe encontrar TODAS las cuentas que son a partir de un padre es decir si el padre es 2 , se debe obtener recurvisamente
-  //todas las cuentas 2.1, 2.1.1, 2.2, 2.2.1, 2.2.1.2 etc........
-  //para ello se debe hacer un recorrido de las cuentas y verificar si el padre es igual al padreId
-  //si es asi se debe agregar a la lista de cuentas hijas
-
     this.cuentasHijasByPadreId = [];
     this.funcionRecursiva(padreId);
-   this.dataSourceHijas = new MatTableDataSource(this.cuentasHijasByPadreId);
+    this.dataSourceHijas = new MatTableDataSource(this.cuentasHijasByPadreId);
   }
 
   obtenerCuentasHijasByPadreId2(padreId: number) {
@@ -127,40 +123,37 @@ export class PlanCuentasComponent implements AfterViewInit {
     this.funcionRecursiva2(padreId);
   }
 
-  obtenerCuentasMismaJerarquia(cuenta: Cuenta){
+  obtenerCuentasMismaJerarquia(cuenta: Cuenta) {
     this.cuentasAux = [];
-    this.cuentasAux = this.cuentas.filter(c=>
-      c.int_cuenta_padre_id === cuenta.int_cuenta_padre_id
-    )
-
+    this.cuentasAux = this.cuentas.filter(
+      (c) => c.int_cuenta_padre_id === cuenta.int_cuenta_padre_id
+    );
   }
 
-  funcionRecursiva2(padreId: number){
-    this.cuentas.forEach(cuenta => {
+  funcionRecursiva2(padreId: number) {
+    this.cuentas.forEach((cuenta) => {
       if (cuenta.int_cuenta_padre_id === padreId) {
         this.cuentasAux.push(cuenta);
         this.funcionRecursiva2(cuenta.int_cuenta_id);
       }
-    }
-    );
+    });
   }
 
-  funcionRecursiva(padreId: number){
-    this.cuentas.forEach(cuenta => {
+  funcionRecursiva(padreId: number) {
+    this.cuentas.forEach((cuenta) => {
       if (cuenta.int_cuenta_padre_id === padreId) {
         this.cuentasHijasByPadreId.push(cuenta);
         this.funcionRecursiva(cuenta.int_cuenta_id);
       }
-    }
-    );
+    });
   }
 
-  verCuentas(){
-    if(this.tituloBotonVer === 'Ver Cuentas Principales'){
+  verCuentas() {
+    if (this.tituloBotonVer === 'Ver Cuentas Principales') {
       this.tituloBotonVer = 'Ver Todas las Cuentas';
       this.tituloTabla = 'Cuentas Principales';
       this.actualizarDataSource();
-    }else{
+    } else {
       this.tituloBotonVer = 'Ver Cuentas Principales';
       this.tituloTabla = 'Todas las Cuentas';
       this.ordenarCuentas();
@@ -170,23 +163,58 @@ export class PlanCuentasComponent implements AfterViewInit {
   }
 
   editarCuenta(cuenta: any) {
-    console.log('Editando cuenta:', cuenta);
     this.srvCuentas.setCuentaSeleccionada(cuenta);
-    this.openModal('large','Editar Cuenta','editarCuenta');
+    this.openModal('large', 'Editar Cuenta', 'editarCuenta');
   }
 
   eliminarCuenta(cuenta: any) {
-    console.log('Eliminando cuenta:', cuenta);
-    // this.cuentas = this.cuentas.filter(c => c.int_cuenta_id !== cuenta.int_cuenta_id);
-    // this.actualizarDataSource();
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esto',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.srvCuentas
+          .eliminarCuenta(cuenta.int_cuenta_id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (data: any) => {
+              if (data.status) {
+                Swal.fire({
+                  title: 'Cuenta eliminada',
+                  text: 'Se ha eliminado correctamente',
+                  icon: 'success',
+                  confirmButtonText: 'Aceptar',
+                });
+                this.dataSource.data = this.dataSource.data.filter(
+                  (c: any) => c.int_cuenta_id !== cuenta.int_cuenta_id
+                );
+                this.obtenerCuentasDelCliente();
+              } else {
+                Swal.fire({
+                  title: 'Error al eliminar',
+                  text: 'No se ha podido eliminar',
+                  icon: 'error',
+                  confirmButtonText: 'Aceptar',
+                });
+              }
+            },
+            error: (error: any) => {
+              console.error('Error al eliminar cuenta', error);
+            },
+          });
+      }
+    });
   }
 
   informacionCuenta(cuenta: any) {
     console.log('Información de la cuenta:', cuenta);
     this.srvCuentas.setCuentaSeleccionada(cuenta);
-    this.openModal('large','Información Cuenta','informacionCuenta');
+    this.openModal('large', 'Información Cuenta', 'informacionCuenta');
   }
-
 
   verCuentasHijas(cuenta: any) {
     this.obtenerCuentasHijasByPadreId(cuenta.int_cuenta_id);
@@ -199,7 +227,9 @@ export class PlanCuentasComponent implements AfterViewInit {
   scrollToCuentasHijas() {
     console.log('Scrolling to cuentas hijas');
     if (this.cuentasHijasSection) {
-      this.cuentasHijasSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      this.cuentasHijasSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+      });
     }
   }
   cerrarCuentasHijas() {
@@ -211,7 +241,7 @@ export class PlanCuentasComponent implements AfterViewInit {
   }
 
   obtenerCuentasPrincipales() {
-    return this.cuentas.filter(cuenta => cuenta.int_cuenta_padre_id === null);
+    return this.cuentas.filter((cuenta) => cuenta.int_cuenta_padre_id === null);
   }
 
   onMouseOver(cuenta: any) {
@@ -238,11 +268,8 @@ export class PlanCuentasComponent implements AfterViewInit {
     }
   }
 
-
-
-  agregarC(){
+  agregarC() {
     this.agregar = true;
-
   }
 
   actualizarDataSource() {
@@ -259,10 +286,4 @@ export class PlanCuentasComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
-
 }
-
-
-
-

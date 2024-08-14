@@ -1,7 +1,13 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subject, takeUntil } from 'rxjs';
+import { ClienteService } from 'src/app/core/services/cliente.service';
+import { CuentasService } from 'src/app/core/services/cuentas.service';
+import { ModalComponent } from 'src/app/modal/modal.component';
+import Swal from 'sweetalert2';
 export interface Cuenta {
   int_cuenta_id: number;
   nombre: string;
@@ -18,6 +24,8 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
   @Input() cuentaPadre: string = '';
   @Input() cuentasHijas: any = [];
 
+  private destroy$ = new Subject<any>();
+
   displayedColumns: string[] = ['codigo', 'nombre', 'acciones'];
   displayedColumns2: string[] = ['codigo', 'nombre', 'acciones'];
   clickedRows = new Set<any>();
@@ -29,7 +37,7 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
 
   @ViewChild(MatPaginator) paginator2!: MatPaginator;
 
-
+  informacionQuesera!: any;
   @ViewChild(MatSort) sort2: MatSort;
 
   @ViewChild('cuentasHijasSection', { static: false }) cuentasHijasSection!: ElementRef;
@@ -41,8 +49,14 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
   agregar!: boolean;
 
   constructor(
-
+    private srvCuentas: CuentasService,
+    public dialog: MatDialog,
+    public srvCliente: ClienteService
   ) {
+    this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
+      this.informacionQuesera = cliente;
+      console.log("Informacion Quesera",this.informacionQuesera);
+    });
 
 
     this.sort2 = new MatSort();
@@ -57,10 +71,20 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
 
 
   }
+  openModal(size: string, titulo: string, tipo: string): void {
+    this.dialog.open(ModalComponent, {
+      data: { size: size, contentType: tipo, tituloModal: titulo },
+    });
+  }
 
   ngOnInit(): void {
     this.actualizarCuentasHijas();
 
+  }
+  obtenerCuentasDelCliente() {
+    this.srvCuentas.obtenerCuentasDelCliente(this.informacionQuesera.int_cliente_id);
+    this.actualizarCuentasHijas();
+    this.ngOnInit()
   }
 
   actualizarCuentasHijas(){
@@ -92,15 +116,9 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
     );
   }
 
-  editarCuenta(cuenta: any) {
-    console.log('Editando cuenta:', cuenta);
-  }
 
-  eliminarCuenta(cuenta: any) {
-    console.log('Eliminando cuenta:', cuenta);
-    // this.cuentas = this.cuentas.filter(c => c.int_cuenta_id !== cuenta.int_cuenta_id);
-    // this.actualizarDataSource();
-  }
+
+
   verCuentasHijas(cuenta: any) {
     this.obtenerCuentasHijasByPadreId(cuenta.int_cuenta_id);
     this.cuentaPadreNombre = cuenta.str_cuenta_nombre;
@@ -109,6 +127,50 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
 
   cerrarCuentasHijas() {
     this.verCuentasHijasBandera = false;
+  }
+  eliminarCuenta(cuenta: any) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esto',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.srvCuentas
+          .eliminarCuenta(cuenta.int_cuenta_id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (data: any) => {
+              if (data.status) {
+                Swal.fire({
+                  title: 'Cuenta eliminada',
+                  text: 'Se ha eliminado correctamente',
+                  icon: 'success',
+                  confirmButtonText: 'Aceptar',
+                });
+                this.dataSource._renderChangesSubscription;
+              } else {
+                Swal.fire({
+                  title: 'Error al eliminar',
+                  text: 'No se ha podido eliminar',
+                  icon: 'error',
+                  confirmButtonText: 'Aceptar',
+                });
+              }
+            },
+            error: (error: any) => {
+              console.error('Error al eliminar cuenta', error);
+            },
+          });
+      }
+    });
+  }
+
+  editarCuenta(cuenta: any) {
+    this.srvCuentas.setCuentaSeleccionada(cuenta);
+    this.openModal('large', 'Editar Cuenta', 'editarCuenta');
   }
 
   imprimirDatosCuenta(cuenta: any) {

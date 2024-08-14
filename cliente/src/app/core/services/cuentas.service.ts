@@ -72,6 +72,17 @@ export class CuentasService {
     });
   }
 
+  //actualizar cuenta
+  actualizarCuenta(cuenta: any) {
+    console.log('Actualizando cuenta :O:', cuenta);
+    return this.http.put(this.url + '/' + cuenta.int_cuenta_id, cuenta);
+  }
+  //eliminar cuenta
+  eliminarCuenta(id: number) {
+    console.log('Eliminando cuenta:', id);
+    return this.http.delete(this.url + '/' + id);
+  }
+
   //obtener cuentas por id de cliente
   getCuentasByIdCliente(id: number) {
     return this.http.get(this.url + '/cliente/' + id);
@@ -93,15 +104,7 @@ export class CuentasService {
     .set('fechaFin', fechaFin);
     return this.http.get(this.url + '/info/' + id , {params});
   }
-  /**
-   *     ejemplo(idCliente: any, fechaInicio: any, fechaFin: any) {
-        let params = new HttpParams()
-        .set('fechaInicio', fechaInicio)
-        .set('fechaFin', fechaFin);
-        return this.http.get(this.urlApi_pdf_balance_comprobacion + '/' + idCliente ,
-            {params});
-    }
-   */
+
 
 
 

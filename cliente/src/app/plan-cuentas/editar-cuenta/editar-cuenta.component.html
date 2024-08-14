@@ -1,3 +1,34 @@
-<p>
-  editar-cuenta works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Editar Cuenta</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form>
+      <mat-form-field appearance="fill">
+        <mat-label>ID de Cuenta</mat-label>
+        <input matInput [value]="infoCuentaSeleccionada.int_cuenta_id" disabled>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre de Cuenta</mat-label>
+        <input matInput [(ngModel)]="infoCuentaSeleccionada.str_cuenta_nombre" name="nombreCuenta" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Código de Cuenta</mat-label>
+        <input matInput [(ngModel)]="infoCuentaSeleccionada.str_cuenta_codigo" name="codigoCuenta" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>ID de Cuenta Padre</mat-label>
+        <input matInput [(ngModel)]="infoCuentaSeleccionada.int_cuenta_padre_id" name="cuentaPadreId" type="number">
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="guardarCambios()">Guardar</button>
+    <button mat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+  </mat-card-actions>
+</mat-card>
+
+

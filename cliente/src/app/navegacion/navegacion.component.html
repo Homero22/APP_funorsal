@@ -47,9 +47,10 @@
         >
         <a
           class="custom-list-item"
+          *ngIf="isAdmin"
           [class.selected]="currentComponent === 'Cliente'"
           (click)="showComponent('Cliente')"
-          >Clientes</a
+          >Queseras Comunales</a
         >
         <!-- <a
         class="custom-list-item"
