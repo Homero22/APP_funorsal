@@ -1,8 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, AfterViewInit } from '@angular/core';
 import { ClienteService } from '../core/services/cliente.service';
 import {  ClienteData, Cliente } from '../core/models/cliente';
 import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ModalComponent } from '../modal/modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -14,7 +16,7 @@ import Swal from 'sweetalert2';
 export class ClienteComponent implements OnInit {
 
 
-  constructor(private clienteService: ClienteService) { }
+  constructor(private clienteService: ClienteService,public dialog: MatDialog) { }
   private destroy$ = new Subject<any>();
 
 
@@ -67,7 +69,7 @@ export class ClienteComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((clientes: Cliente) => {
         this.clientes = clientes.body.rows;
-        console.log(this.clientes);
+
         this.paginatedClientes = clientes.body.rows;
         this.totalClientes = clientes.body.count;
         this.totalPages = (Math.ceil(this.totalClientes / this.itemsPerPage));
@@ -81,7 +83,7 @@ export class ClienteComponent implements OnInit {
 
 
   nextPage() {
-    console.log('Next page');
+
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.paginate();
@@ -100,7 +102,8 @@ export class ClienteComponent implements OnInit {
   }
 
   openModal() {
-    this.isModalOpen = true;
+    //this.isModalOpen = true;
+    this.openModalG('large','crearCliente');
   }
 
   closeModal() {
@@ -110,15 +113,18 @@ export class ClienteComponent implements OnInit {
     this.isModalOpen2 = false;
   }
   openModal2(cliente:any) {
-    this.isModalOpen2 = true;
-    this.clienteSelected = cliente;
+
+    this.clienteService.setClienteSeleccionado(cliente);
+    this.openModalG('large','verCliente');
   }
   closeEditModal(){
     this.isEditModalOpen = false;
   }
   editCliente(cliente: any) {
-    this.clienteSelected = cliente;
-    this.isEditModalOpen = true;
+    this.clienteService.setClienteSeleccionado(cliente);
+    this.openModalG('large','editarCliente');
+
+
   }
   deleteCliente(cliente: any) {
   }
@@ -179,6 +185,17 @@ export class ClienteComponent implements OnInit {
     });
   }
 
+  openModalG(size: string, contentType:string): void {
+    this.dialog.open(ModalComponent, {
+      data: { size: size,
+              contentType: contentType
+       }
+    }).afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
+      this.updatePaginatedClientes();
+    }
+    );
+  }
+
   addCliente() {
 
     if (this.newCliente.str_cliente_nombre && this.newCliente.str_cliente_direccion && this.newCliente.str_cliente_telefono) {
@@ -198,40 +215,7 @@ export class ClienteComponent implements OnInit {
     }
   }
 
-  editarCliente() {
-    console.log('Editando cliente', this.clienteSelected);
-    this.clienteService.updateCliente(this.clienteSelected.int_cliente_id, this.clienteSelected)
-    .subscribe({
-      next: (data: any) => {
-        console.log('Cliente editado', data);
-        if(data.status){
-          Swal.fire({
-            title: 'Cliente editado',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }else{
-          Swal.fire({
-            title: 'Error',
-            text: data.message,
-            icon: 'error'
-          });
-        }
-        this.obtenerClientesPaginados();
-        this.seleccionarDatos();
-        this.closeEditModal();
-      },
-      error: (error: any) => {
-        console.log('Error al editar cliente', error);
-        Swal.fire({
-          title: 'Error',
-          text: error.message,
-          icon: 'error'
-        });
-      }
-    });
-  }
+
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.closeModal();

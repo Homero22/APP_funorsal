@@ -37,7 +37,7 @@ export class InformacionCuentaComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((cuentas: any) => {
         this.data = cuentas;
-        console.log('Data:', this.data);
+
         setTimeout(() => {
           this.isLoading = false;
         }, 1000);

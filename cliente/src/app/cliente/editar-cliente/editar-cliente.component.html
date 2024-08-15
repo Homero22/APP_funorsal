@@ -1,24 +1,22 @@
-<!-- Modal para agregar cliente usando Angular Material dividido en dos partes -->
+<!-- Modal para editar la información del cliente seleccionado usando Angular Material -->
 <div class="modal-backdrop">
   <div class="modal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title"> <strong>Agregar Quesera</strong></h1>
-          <!-- Botón de cerrar -->
+          <h1 class="modal-title"> <strong>Editar Información de la Quesera</strong></h1>
         </div>
         <div class="modal-body">
-          <form (ngSubmit)="addCliente()">
-            <div class="form-container">
-              <!-- Primera columna -->
-              <mat-card class="form-column">
+          <form (ngSubmit)="onSave()">
+            <mat-card>
+              <mat-card-content>
                 <mat-form-field appearance="fill" class="mb-3">
                   <mat-label>Nombre</mat-label>
                   <input
                     matInput
                     type="text"
-                    [(ngModel)]="newCliente.str_cliente_nombre"
-                    name="Nombre"
+                    [(ngModel)]="clienteSelected.str_cliente_nombre"
+                    name="nombre"
                     required
                   />
                 </mat-form-field>
@@ -28,8 +26,8 @@
                   <input
                     matInput
                     type="text"
-                    [(ngModel)]="newCliente.str_cliente_direccion"
-                    name="Direccion"
+                    [(ngModel)]="clienteSelected.str_cliente_direccion"
+                    name="direccion"
                     required
                   />
                 </mat-form-field>
@@ -39,22 +37,19 @@
                   <input
                     matInput
                     type="text"
-                    [(ngModel)]="newCliente.str_cliente_telefono"
-                    name="Telefono"
+                    [(ngModel)]="clienteSelected.str_cliente_telefono"
+                    name="telefono"
                     required
                   />
                 </mat-form-field>
-              </mat-card>
 
-              <!-- Segunda columna -->
-              <mat-card class="form-column">
                 <mat-form-field appearance="fill" class="mb-3">
                   <mat-label>RUC</mat-label>
                   <input
                     matInput
                     type="text"
-                    [(ngModel)]="newCliente.str_cliente_ruc"
-                    name="RUC"
+                    [(ngModel)]="clienteSelected.str_cliente_ruc"
+                    name="ruc"
                     required
                   />
                 </mat-form-field>
@@ -64,8 +59,8 @@
                   <input
                     matInput
                     type="email"
-                    [(ngModel)]="newCliente.str_cliente_correo"
-                    name="Correo"
+                    [(ngModel)]="clienteSelected.str_cliente_correo"
+                    name="correo"
                     required
                   />
                 </mat-form-field>
@@ -75,8 +70,8 @@
                   <input
                     matInput
                     type="text"
-                    [(ngModel)]="newCliente.str_cliente_usuario"
-                    name="Usuario"
+                    [(ngModel)]="clienteSelected.str_cliente_usuario"
+                    name="usuario"
                     required
                   />
                 </mat-form-field>
@@ -86,23 +81,21 @@
                   <input
                     matInput
                     type="password"
-                    [(ngModel)]="newCliente.str_cliente_password"
-                    name="Contraseña"
+                    [(ngModel)]="clienteSelected.str_cliente_password"
+                    name="password"
                     required
                   />
                 </mat-form-field>
-              </mat-card>
-            </div>
-            <div class="form-actions">
-              <button mat-raised-button color="primary" type="submit">
-                Agregar
-              </button>
-            </div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button color="primary" type="submit">
+                  Guardar
+                </button>
+              </mat-card-actions>
+            </mat-card>
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-

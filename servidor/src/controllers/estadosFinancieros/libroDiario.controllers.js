@@ -7,7 +7,7 @@ const crearDetalleDiario = async (req, res) => {
     try {
         
         const infoLibroDiario = req.body;
-        console.log(infoLibroDiario);
+        
         //Primero llena la tabla libro diario (padre)
         const libroDiarioId = await LibroDiario.create({
             dt_libro_diario_fecha : infoLibroDiario.fecha,
@@ -30,12 +30,7 @@ const crearDetalleDiario = async (req, res) => {
         let monto;
 
         infoLibroDiario.entradas.forEach(async (element) => {
-            // const cuenta = await Cuenta.findOne({
-            //     where: {
-            //         str_cuenta_codigo: element.code
-            //     }
-            // });
-            // console.log(cuenta);
+
             if(element.debit > 0){
                 tipo = "DEBE";
                 monto = element.debit;
@@ -75,7 +70,7 @@ const crearDetalleDiario = async (req, res) => {
 
 const obtenerLibroDiarioByIdCliente = async (req, res) => {
     try {
-        console.log("LIbro diario cliente")
+        
         const {idCliente} = req.params;
         const libroDiario = await LibroDiario.findAll({
             where: {
@@ -96,7 +91,7 @@ const obtenerLibroDiarioByIdCliente = async (req, res) => {
                 body: {}
             });
         }
-        console.log("Libros",libroDiario)
+       
         return res.json({
             status:true,
             message: "Libro diario encontrado",

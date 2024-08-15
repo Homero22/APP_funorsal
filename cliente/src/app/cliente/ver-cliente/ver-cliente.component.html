@@ -1,0 +1,37 @@
+<div class="containerPrincipal">
+  <div class="container-inicio">
+    <p>Información del <strong>Cliente</strong></p>
+    <div class="container-form">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Detalles del Cliente</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <mat-list>
+              <mat-list-item>
+                <strong>Nombre:</strong> {{ clienteSelected.str_cliente_nombre }}
+              </mat-list-item>
+              <mat-list-item>
+                <strong>RUC:</strong> {{ clienteSelected.str_cliente_ruc }}
+              </mat-list-item>
+              <mat-list-item>
+                <strong>Email:</strong> {{ clienteSelected.str_cliente_correo }}
+              </mat-list-item>
+              <mat-list-item>
+                <strong>Usuario:</strong> {{ clienteSelected.str_cliente_usuario }}
+              </mat-list-item>
+              <mat-list-item>
+                <strong>Teléfono:</strong> {{ clienteSelected.str_cliente_telefono }}
+              </mat-list-item>
+              <mat-list-item>
+                <strong>Dirección:</strong> {{ clienteSelected.str_cliente_direccion }}
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+

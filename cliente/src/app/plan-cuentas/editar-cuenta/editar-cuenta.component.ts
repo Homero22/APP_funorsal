@@ -33,7 +33,7 @@ export class EditarCuentaComponent implements OnInit {
   }
 
   guardarCambios() {
-    console.log("Guardando cambios en cuenta", this.infoCuentaSeleccionada);
+
     Swal.fire({
       title: '¿Estás seguro?',
       text: '¿Deseas guardar los cambios realizados en la cuenta?',

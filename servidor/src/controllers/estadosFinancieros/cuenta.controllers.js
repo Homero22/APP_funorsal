@@ -26,7 +26,7 @@ export const obtenerCuentasByIdCliente = async (req, res) => {
 
 export const crearCuenta = async (req, res) => {
     try {
-        console.log("Crear cuenta")
+        
         const data = req.body;
         console.log(data);
         const cuenta = await Cuenta.create(data);
@@ -53,7 +53,7 @@ export const crearCuenta = async (req, res) => {
 
 export const obtenerInformacionCuentaById = async (req, res) => {
     try {
-        console.log("Obtener informacion cuenta")
+        
         
         const { id } = req.params;
         let { fechaInicio, fechaFin } = req.query;

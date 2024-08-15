@@ -36,7 +36,7 @@ export class AgregarCuentaComponent implements OnInit {
   ) {
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
-      console.log("Informacion Quesera",this.informacionQuesera);
+
     });
    }
 
@@ -56,7 +56,7 @@ export class AgregarCuentaComponent implements OnInit {
 
   buscarCuenta() {
     this.cuentas = this.cuentas.filter((cuenta: { str_cuenta_nombre: string; }) => cuenta.str_cuenta_nombre.toLowerCase().includes(this.searchCuenta.toLowerCase()));
-    console.log(this.cuentas);
+
 
   }
 

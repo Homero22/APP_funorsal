@@ -211,7 +211,7 @@ export class PlanCuentasComponent implements AfterViewInit {
   }
 
   informacionCuenta(cuenta: any) {
-    console.log('Información de la cuenta:', cuenta);
+
     this.srvCuentas.setCuentaSeleccionada(cuenta);
     this.openModal('large', 'Información Cuenta', 'informacionCuenta');
   }
@@ -225,7 +225,7 @@ export class PlanCuentasComponent implements AfterViewInit {
     }, 100); // Dar tiempo para que el componente hijo se renderice
   }
   scrollToCuentasHijas() {
-    console.log('Scrolling to cuentas hijas');
+
     if (this.cuentasHijasSection) {
       this.cuentasHijasSection.nativeElement.scrollIntoView({
         behavior: 'smooth',
@@ -237,7 +237,7 @@ export class PlanCuentasComponent implements AfterViewInit {
   }
 
   imprimirDatosCuenta(cuenta: any) {
-    console.log('Datos de la cuenta:', cuenta);
+
   }
 
   obtenerCuentasPrincipales() {

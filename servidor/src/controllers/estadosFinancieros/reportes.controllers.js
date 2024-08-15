@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 //aqui se deben tener las cuentas activos, pasivos, patrimonio, ingresos y gastos
 const crearBalanceComprobacion = async (req, res) => {
     try {
-        console.log("crearBalanceComprobacion");
+        
         let { idCliente } = req.params;
         let { fechaInicio, fechaFin } = req.query;
         fechaInicio = new Date(fechaInicio);
@@ -50,7 +50,7 @@ const crearBalanceComprobacion = async (req, res) => {
             });
         }
 
-        console.log("Cantidad de registros", libroDiario.length);
+       
 
         let activos = { debe: 0, haber: 0 };
         let pasivos = { debe: 0, haber: 0 };
@@ -269,7 +269,7 @@ const crearBalanceIngresosGastosPorIdCliente = async (req, res) => {
             });
         }
 
-        console.log("Cantidad de registros", libroDiario.length);
+       
 
         let ingresos = 0;
         let gastos = 0;
@@ -363,7 +363,7 @@ const crearBalanceIngresosGastosPorIdCliente = async (req, res) => {
 //crear balance general
 const crearBalanceGeneral = async (req, res) => {
     try {
-        console.log("crearBalanceGeneral");
+        
         let { idCliente } = req.params;
         let { fechaInicio, fechaFin } = req.query;
         fechaInicio = new Date(fechaInicio);

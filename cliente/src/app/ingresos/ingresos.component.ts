@@ -26,7 +26,7 @@ export class IngresosComponent implements OnInit, AfterViewInit {
   ) {
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
-      console.log("Informacion Quesera",this.informacionQuesera);
+
     });
     this.dataSource = new MatTableDataSource(this.ingresos);
    }
@@ -50,7 +50,7 @@ export class IngresosComponent implements OnInit, AfterViewInit {
   }
 
   verDetalle(transaccion: any){
-    console.log(transaccion);
+
   }
 
 

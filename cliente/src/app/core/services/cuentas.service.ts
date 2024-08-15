@@ -60,13 +60,13 @@ export class CuentasService {
   }
   //return this.http.post(this.urlApi_clientes, cliente);
   agregarCuenta(cuenta: any) {
-    console.log('Agregando cuenta:', cuenta);
+
     //return this.http.post(this.url,cuenta);
   }
 
 
   agregarCuentaByIdCliente(cuenta: any) {
-    console.log('Agregando cuenta:', cuenta);
+
     return this.http.post(this.url + '/cliente' ,cuenta,{
 
     });
@@ -74,12 +74,12 @@ export class CuentasService {
 
   //actualizar cuenta
   actualizarCuenta(cuenta: any) {
-    console.log('Actualizando cuenta :O:', cuenta);
+
     return this.http.put(this.url + '/' + cuenta.int_cuenta_id, cuenta);
   }
   //eliminar cuenta
   eliminarCuenta(id: number) {
-    console.log('Eliminando cuenta:', id);
+
     return this.http.delete(this.url + '/' + id);
   }
 

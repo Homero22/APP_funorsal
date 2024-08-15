@@ -1,0 +1,59 @@
+<div class="containerPrincipal">
+  <div class="container-inicio">
+    <p>Ajustes de la <strong>Cuenta</strong></p>
+    <div class="container-form">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Editar Cuenta</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>Nombre</mat-label>
+              <input matInput [(ngModel)]="clienteSeleccionado.str_cliente_nombre" name="nombreCliente" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>RUC</mat-label>
+              <input matInput [(ngModel)]="clienteSeleccionado.str_cliente_ruc" name="rucCliente" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Email</mat-label>
+              <input matInput [(ngModel)]="clienteSeleccionado.str_cliente_correo" name="correoCliente" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Usuario</mat-label>
+              <input matInput [(ngModel)]="clienteSeleccionado.str_cliente_usuario" name="usuarioCliente" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Contraseña</mat-label>
+              <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="clienteSeleccionado.str_cliente_password" name="passwordCliente" required>
+              <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="!hidePassword">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Teléfono</mat-label>
+              <input matInput [(ngModel)]="clienteSeleccionado.str_cliente_telefono" name="telefonoCliente" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Dirección</mat-label>
+              <input matInput [(ngModel)]="clienteSeleccionado.str_cliente_direccion" name="direccionCliente" required>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="editarCuenta()">Guardar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+

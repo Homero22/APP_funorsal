@@ -47,23 +47,24 @@
         >
         <a
           class="custom-list-item"
-          *ngIf="isAdmin"
+
           [class.selected]="currentComponent === 'Cliente'"
           (click)="showComponent('Cliente')"
           >Queseras Comunales</a
         >
-        <!-- <a
-        class="custom-list-item"
-        [class.selected]="currentComponent === 'Perfil'"
-        (click)="showComponent('Perfil')"
-        >Perfil</a
-        > -->
         <a
         class="custom-list-item"
         [class.selected]="currentComponent === 'Configuración'"
         (click)="showComponent('Configuración')"
         >Plan de Cuentas</a
         >
+        <a
+        class="custom-list-item"
+        [class.selected]="currentComponent === 'Perfil'"
+        (click)="showComponent('Perfil')"
+        >Perfil</a
+        >
+
       </div>
     </mat-sidenav>
 
@@ -106,9 +107,9 @@
       <ng-container *ngIf="currentComponent === 'Inicio'">
         <app-inicio></app-inicio>
       </ng-container>
-      <!-- <ng-container *ngIf="currentComponent === 'Perfil'">
+      <ng-container *ngIf="currentComponent === 'Perfil'">
         <app-perfil></app-perfil>
-      </ng-container> -->
+      </ng-container>
       <ng-container *ngIf="currentComponent === 'Configuración'">
         <app-configuracion></app-configuracion>
       </ng-container>

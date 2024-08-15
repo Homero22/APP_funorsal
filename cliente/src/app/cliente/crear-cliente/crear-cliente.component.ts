@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Route, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { ClienteData } from 'src/app/core/models/cliente';
 import { ClienteService } from 'src/app/core/services/cliente.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-cliente',
@@ -11,6 +13,18 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
 })
 export class CrearClienteComponent implements OnInit {
  clienteForm!: FormGroup;
+ private destroy$ = new Subject<any>();
+
+ newCliente: ClienteData = {
+  int_cliente_id: 0,
+  str_cliente_nombre: '',
+  str_cliente_ruc: '',
+  str_cliente_correo: '',
+  str_cliente_telefono: '',
+  str_cliente_direccion: '',
+  str_cliente_password: '',
+  str_cliente_usuario: ''
+};
 
   constructor(
     private fb: FormBuilder,
@@ -39,5 +53,50 @@ export class CrearClienteComponent implements OnInit {
     }
 
   }
+  addCliente() {
+    this.srvCliente.createCliente(this.newCliente)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (data: any) => {
+        if(!data.status){
+          Swal.fire({
+            title: 'Error',
+            text: data.message,
+            icon: 'error'
+          });
+          return;
+        }
+        Swal.fire({
+          title: 'Cliente agregado',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        this.newCliente = {
+          int_cliente_id: 0,
+          str_cliente_nombre: '',
+          str_cliente_ruc: '',
+          str_cliente_correo: '',
+          str_cliente_telefono: '',
+          str_cliente_direccion: '',
+          str_cliente_password: '',
+          str_cliente_usuario: ''
+        };
+
+      },
+      error: (error: any) => {
+        console.log('Error al agregar cliente', error);
+        Swal.fire({
+          title: 'Error',
+          text: error.message,
+          icon: 'error'
+
+        })
+      }
+    });
+  }
+
+
+
 
 }

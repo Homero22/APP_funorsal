@@ -19,6 +19,16 @@ import { HttpParams } from "@angular/common/http";
 
   private clienteLogueado$ = new BehaviorSubject<ClienteData>({} as ClienteData);
   private idClienteLogueado$ = new BehaviorSubject<number>(0);
+  private clienteSeleccionado$ = new BehaviorSubject<ClienteData>({} as ClienteData);
+
+
+  setClienteSeleccionado(cliente: ClienteData) {
+    this.clienteSeleccionado$.next(cliente);
+  }
+
+  get selectClienteSeleccionado$() {
+    return this.clienteSeleccionado$.asObservable();
+  }
 
 
   setClienteLogueado(cliente: ClienteData) {
@@ -38,7 +48,7 @@ import { HttpParams } from "@angular/common/http";
   }
 
   isLogueado() {
-    console.log('PASO 2: Verificando si el cliente está logueado');
+
     return !!localStorage.getItem('idCliente');
   }
 
@@ -57,7 +67,6 @@ import { HttpParams } from "@angular/common/http";
   }
 
   guardarIdClienteLogueado(idCliente: any) {
-    console.log('Guardando id del cliente logueado', idCliente);
     localStorage.setItem('idCliente', idCliente.toString());
     this.obtenerCliente(idCliente);
   }
@@ -104,7 +113,6 @@ import { HttpParams } from "@angular/common/http";
   //funcion general para obtener los clientes
 
   obtenerClientesPaginados(page: number, limit: number) {
-    console.log('Obteniendo clientes paginados', page, limit);
     this.getClientesPaginados(page, limit)
     .pipe(takeUntil(this.destroy$))
     .subscribe({
@@ -119,19 +127,18 @@ import { HttpParams } from "@angular/common/http";
 
   //funcion general para actualizar un cliente
   actualizarCliente(id: number, cliente: any) {
-    console.log('Actualizando cliente', id, cliente);
     this.updateCliente(id, cliente)
     .pipe(takeUntil(this.destroy$))
     .subscribe({
       next: (data: any) => {
         if(data.status){
-          console.log('Cliente actualizado!!1', data);
           Swal.fire({
             title: 'Datos actualizados',
             text: 'Se ha actualizado correctamente',
             icon: 'success',
             confirmButtonText: 'Aceptar'
           });
+          this.obtenerCliente(id);
         }else{
           Swal.fire({
             title: 'Error al actualizar',

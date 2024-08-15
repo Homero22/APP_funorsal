@@ -1,49 +1,18 @@
-.crear-cliente-container {
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
-}
-
-form {
+.form-container {
   display: flex;
-  flex-direction: column;
+  gap: 20px; /* Espacio entre las columnas */
 }
 
-div {
-  margin-bottom: 10px;
+.form-column {
+  flex: 1; /* Cada columna ocupa el mismo espacio */
 }
 
-label {
-  font-weight: bold;
+.form-actions {
+  text-align: right;
+  margin-top: 20px;
 }
 
-input {
-  padding: 8px;
-  font-size: 16px;
-  margin-top: 5px;
-  width: 100%;
+h1{
+  text-align: center;
 }
 
-button {
-  padding: 10px;
-  font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button[disabled] {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-button:hover:not([disabled]) {
-  background-color: #45a049;
-}
-
-div > div {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}

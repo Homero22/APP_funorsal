@@ -15,10 +15,10 @@ export class AppComponent {
     public loginService: LoginService,
     private srvCliente: ClienteService
   ) {
-    console.log("App Component");
+
      if(this.srvCliente.isLogueado()){
-      console.log("lo que retorna el isLogueado",this.srvCliente.isLogueado());
-        console.log("Usuario Logueado SIIIIIIIIII");
+
+
         this.srvCliente.guardarIdClienteLogueado(localStorage.getItem('idCliente'));
      }
   }

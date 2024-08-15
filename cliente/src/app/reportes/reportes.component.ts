@@ -13,7 +13,7 @@ export class ReportesComponent implements OnInit {
   ) {
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
-      console.log("Informacion Quesera",this.informacionQuesera);
+
     });
    }
   informacionQuesera!: any;

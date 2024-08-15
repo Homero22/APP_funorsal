@@ -15,6 +15,18 @@
     <div *ngSwitchCase="'informacionCuenta'">
       <app-informacionCuenta></app-informacionCuenta>
     </div>
+    <div *ngSwitchCase="'editarPerfil'">
+      <app-editar-perfil></app-editar-perfil>
+    </div>
+    <div *ngSwitchCase="'crearCliente'" >
+      <app-crear-cliente></app-crear-cliente>
+    </div>
+    <div *ngSwitchCase="'editarCliente'" >
+      <app-editar-cliente></app-editar-cliente>
+    </div>
+    <div *ngSwitchCase="'verCliente'" >
+      <app-ver-cliente></app-ver-cliente>
+    </div>
     <div *ngSwitchDefault>Default Content</div>
   </div>
 

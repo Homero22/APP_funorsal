@@ -25,7 +25,7 @@ export class GastosComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource(this.ingresos);
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
-      console.log("Informacion Quesera",this.informacionQuesera);
+
     });
   }
   informacionQuesera!: any;
@@ -74,7 +74,7 @@ export class GastosComponent implements OnInit, AfterViewInit {
   }
 
   verDetalle(transaccion: any){
-    console.log(transaccion);
+
   }
 
 

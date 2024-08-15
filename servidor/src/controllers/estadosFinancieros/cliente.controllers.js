@@ -4,7 +4,7 @@ import {createCuentas} from "../../utils/clientes.js";
 export const obtenerClientes = async (req, res) => {
     //paginacion
     try {
-        console.log(req.query);
+        
         const { page, size } = req.query;
         const skip = (page - 1) * 5;
         const limit = size;
@@ -38,7 +38,7 @@ export const obtenerClientes = async (req, res) => {
 
 export const obtenerCliente = async (req, res) => {
     try {
-        console.log("Obteniendo cliente")
+        
         const { id } = req.params;
         const cliente = await Cliente.findByPk(id);
         res.json({
@@ -73,7 +73,7 @@ export const crearCliente = async (req, res) => {
             });
         }
 
-        console.log(data);
+       
         
         const cliente = await Cliente.create({
             str_cliente_nombre: data.str_cliente_nombre,
@@ -109,11 +109,11 @@ export const crearCliente = async (req, res) => {
 
 export const actualizarCliente = async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.params);
-        console.log("actualizando cliente")
+
         let { id } = req.params;
         const data = req.body;
+
+       
 
 
         const cliente = await Cliente.update({
@@ -131,6 +131,8 @@ export const actualizarCliente = async (req, res) => {
                 int_cliente_id: id,
             },
         });
+
+        
         if(!cliente){
             return res.json({
                 status:false,
@@ -180,7 +182,7 @@ export const obtenerTodosClientes = async (req, res) => {
             message: "Clientes encontrados",
             body: clientes,
         });
-        console.log("clientes encontrados")
+       
     } catch (error) {
         console.log(error);
         res.status(500).json({

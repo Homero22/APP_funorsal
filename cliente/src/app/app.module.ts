@@ -61,6 +61,9 @@ import { VerPdfComponent } from './ver-pdf/ver-pdf.component';
 import { ReportesComprobacionComponent } from './reportes/reportes-comprobacion/reportes-comprobacion.component';
 import { ReportesGeneralComponent } from './reportes/reportes-general/reportes-general.component';
 import { InformacionCuentaComponent } from './plan-cuentas/informacionCuenta/informacionCuenta.component';
+import { EditarPerfilComponent } from './perfil/editar-perfil/editar-perfil.component';
+import { VerClienteComponent } from './cliente/ver-cliente/ver-cliente.component';
+import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.component';
 
 
 
@@ -98,7 +101,11 @@ import { InformacionCuentaComponent } from './plan-cuentas/informacionCuenta/inf
       ReportesIngresosComponent,
       ReportesComprobacionComponent,
       ReportesGeneralComponent,
-      InformacionCuentaComponent
+      InformacionCuentaComponent,
+      EditarPerfilComponent,
+      VerClienteComponent,
+      EditarClienteComponent,
+      DashboardComponent,
    ],
   imports: [
     BrowserModule,
@@ -129,7 +136,8 @@ import { InformacionCuentaComponent } from './plan-cuentas/informacionCuenta/inf
     NativeDateModule,
     MatExpansionModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+
 
 
 

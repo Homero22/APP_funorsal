@@ -4,9 +4,7 @@
 />
 <div class="container">
   <!-- Botón para agregar cliente -->
-  <button class="btn btn-primary add" (click)="openModal()">
-    Agregar Cliente
-  </button>
+  <button mat-raised-button color="secundary" (click)="openModal()">Agregar Quesera</button>
 
   <!-- Tabla de Clientes -->
   <div class="container_table">
@@ -33,9 +31,9 @@
             <button class="btn-accion" (click)="editCliente(cliente)">
               <span class="material-symbols-outlined">edit</span>
             </button>
-            <button class="btn-accion" (click)="deleteCliente(cliente)">
+            <!-- <button class="btn-accion" (click)="deleteCliente(cliente)">
               <span class="material-symbols-outlined">delete</span>
-            </button>
+            </button> -->
           </td>
         </tr>
       </tbody>
@@ -61,111 +59,7 @@
     </ul>
   </nav>
 
-  <!-- Modal para agregar cliente -->
-  <div class="modal-backdrop" [class.show]="isModalOpen">
-    <div class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Agregar Cliente</h5>
-            <button type="button" class="btn-close" (click)="closeModal()">
-              &times;
-            </button>
-            <!-- Botón de cerrar -->
-          </div>
-          <div class="modal-body">
-            <form (ngSubmit)="addCliente()">
-              <div class="inputs">
-                <div class="mb-3">
-                  <label for="nombre" class="form-label">Nombre</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nombre"
-                    [(ngModel)]="newCliente.str_cliente_nombre"
-                    name="Nombre"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="direccion" class="form-label">Dirección</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="direccion"
-                    [(ngModel)]="newCliente.str_cliente_direccion"
-                    name="Direccion"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="telefono" class="form-label">Teléfono</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="telefono"
-                    [(ngModel)]="newCliente.str_cliente_telefono"
-                    name="Telefono"
-                    required
-                  />
-                </div>
-                <!-- Ruc -->
-                <div class="mb-3">
-                  <label for="ruc" class="form-label">RUC</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="ruc"
-                    [(ngModel)]="newCliente.str_cliente_ruc"
-                    name="RUC"
-                    required
-                  />
-                </div>
-                <!-- correo -->
-                <div class="mb-3">
-                  <label for="correo" class="form-label">Correo</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="correo"
-                    [(ngModel)]="newCliente.str_cliente_correo"
-                    name="Correo"
-                    required
-                  />
-                </div>
-                <!-- Usuario -->
-                <div class="mb-3">
-                  <label for="usuario" class="form-label">Usuario</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="usuario"
-                    [(ngModel)]="newCliente.str_cliente_usuario"
-                    name="Usuario"
-                    required
-                  />
-                </div>
-                <!-- Password -->
-                 <div class="mb-3">
-                  <label for="password" class="form-label">Contraseña</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    [(ngModel)]="newCliente.str_cliente_password"
-                    name="Contraseña"
-                    required
-                  />
-                </div>
 
-                <button type="submit" class="btn btn-primary">Agregar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <!-- Modal para mostrar la información completa en una tabla del cliente seleccionado -->
 <div class="modal-backdrop" [class.show]="isModalOpen2">
@@ -210,56 +104,7 @@
   </div>
 </div>
 
-<!-- Modal para editar -->
-<!-- Modal para editar la información del cliente seleccionado -->
-<div class="modal-backdrop" [class.show]="isEditModalOpen">
-  <div class="modal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Editar Información del Cliente</h5>
-          <button type="button" class="btn-close" (click)="closeEditModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="onSave()">
-            <div class="form-group">
-              <label for="nombre">Nombre:</label>
-              <input type="text"  class="form-control" [(ngModel)]="clienteSelected.str_cliente_nombre" name="nombre" required>
-            </div>
-            <div class="form-group">
-              <label for="direccion">Direccion:</label>
-              <input type="text" class="form-control" [(ngModel)]="clienteSelected.str_cliente_direccion" name="direccion" required>
-            </div>
-            <div class="form-group">
-              <label for="telefono">Telefono:</label>
-              <input type="text"  class="form-control" [(ngModel)]="clienteSelected.str_cliente_telefono" name="telefono" required>
-            </div>
-            <div class="form-group">
-              <label for="ruc">RUC:</label>
-              <input type="text"  class="form-control" [(ngModel)]="clienteSelected.str_cliente_ruc" name="ruc" required>
-            </div>
-            <div class="form-group">
-              <label for="correo">Correo:</label>
-              <input type="email"  class="form-control" [(ngModel)]="clienteSelected.str_cliente_correo" name="correo" required>
-            </div>
-            <div class="form-group">
-              <label for="usuario">Usuario:</label>
-              <input type="text"  class="form-control" [(ngModel)]="clienteSelected.str_cliente_usuario" name="usuario" required>
-            </div>
-            <div class="form-group">
-              <label for="password">Contraseña:</label>
-              <input type="password"  class="form-control" [(ngModel)]="clienteSelected.str_cliente_password" name="password" required>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary" (click)="editarCliente()">Guardar</button>
-              <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 
 </div>

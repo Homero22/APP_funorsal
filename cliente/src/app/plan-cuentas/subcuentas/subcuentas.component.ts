@@ -55,7 +55,7 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
   ) {
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
-      console.log("Informacion Quesera",this.informacionQuesera);
+
     });
 
 
@@ -174,7 +174,7 @@ export class SubcuentasComponent implements AfterViewInit, OnInit, OnChanges{
   }
 
   imprimirDatosCuenta(cuenta: any) {
-    console.log('Datos de la cuenta:', cuenta);
+
   }
 
   obtenerCuentasPrincipales() {

@@ -51,7 +51,7 @@ export class LibroDiarioComponent implements OnInit {
     });
   }
   verDiarios(){
-    console.log('ver diarios');
+
     this.currentComponent = 'VerDiarios';
   }
   showComponent(component: string) {
@@ -95,7 +95,7 @@ export class LibroDiarioComponent implements OnInit {
   onSubmit() {
     if (this.journalForm.valid && this.isBalanced) {
       // Aquí puedes manejar la lógica de guardado
-      console.log(this.journalForm.value);
+
       let infoLibroDiario = {
         fecha: this.fechaSeleccionada,
         entradas: this.journalForm.value.entries,

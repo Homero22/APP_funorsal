@@ -20,43 +20,47 @@ export class PerfilComponent implements OnInit {
   private destroy$ = new Subject<any>();
 
   ngOnInit() {
-    this.perfilForm = this.fb.group({
-      str_cliente_nombre: [this.informacionQuesera.str_cliente_nombre],
-      str_cliente_correo: [this.informacionQuesera.str_cliente_correo],
-      str_cliente_password: [this.informacionQuesera.str_cliente_password],
-      str_cliente_telefono: [this.informacionQuesera.str_cliente_telefono],
-      str_cliente_direccion: [this.informacionQuesera.str_cliente_direccion],
-      str_cliente_ruc: [this.informacionQuesera.str_cliente_ruc],
-      str_cliente_usuario: [this.informacionQuesera.str_cliente_usuario],
-
-
-    });
+    this.llenarFormulario();
   }
 
+  llenarFormulario() {
+    this.perfilForm = this.fb.group({
+      str_cliente_nombre: [{ value: this.informacionQuesera.str_cliente_nombre, disabled: true }],
+      str_cliente_correo: [{ value: this.informacionQuesera.str_cliente_correo, disabled: true }],
+      str_cliente_password: [{ value: this.informacionQuesera.str_cliente_password, disabled: true }],
+      str_cliente_telefono: [{ value: this.informacionQuesera.str_cliente_telefono, disabled: true }],
+      str_cliente_direccion: [{ value: this.informacionQuesera.str_cliente_direccion, disabled: true }],
+      str_cliente_ruc: [{ value: this.informacionQuesera.str_cliente_ruc, disabled: true }],
+      str_cliente_usuario: [{ value: this.informacionQuesera.str_cliente_usuario, disabled: true }],
+    });
+
+  }
+
+
   constructor(public dialog: MatDialog,private fb: FormBuilder, public srvCliente: ClienteService) {
+
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
-      console.log("Informacion Quesera",this.informacionQuesera);
+      this.llenarFormulario();
     });
     this.srvCliente.selectIdClienteLogueado$.subscribe((id: any) => {
       this.idUsuario = id;
-      console.log("ID",this.idUsuario);
+
     });
   }
 
   openModal(size: string): void {
     this.dialog.open(ModalComponent, {
       data: { size: size,
-              contentType: 'editarCuenta'
+              contentType: 'editarPerfil'
        }
     });
   }
 
-  onSave() {
-    console.log("Click",this.perfilForm.value);
-    this.srvCliente.actualizarCliente(this.idUsuario,this.perfilForm.value)
-    console.log("ID",this.idUsuario);
-    this.srvCliente.obtenerCliente(this.idUsuario)
+  onEdit() {
+
+   this.srvCliente.setClienteSeleccionado(this.informacionQuesera);
+    this.openModal('large');
 
   }
 

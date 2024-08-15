@@ -25,7 +25,7 @@ export class BalanceComprobacionComponent implements OnInit {
 
   verDetalles(libroDiarioId: number) {
     // Aquí puedes manejar la lógica para ver los detalles del libro diario
-    console.log('Ver detalles del libro diario:', libroDiarioId);
+
   }
 
 }

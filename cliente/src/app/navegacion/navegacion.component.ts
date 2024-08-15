@@ -34,6 +34,10 @@ export class NavegacionComponent {
   showComponent(component: string) {
     this.currentComponent = component;
     this.paginaActual = component;
+    if(component==='Cliente'){
+      this.paginaActual = 'Queseras';
+    }
+
   }
   salir(){
     this.srvLogin.logout();

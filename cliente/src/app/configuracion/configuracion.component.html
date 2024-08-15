@@ -3,14 +3,10 @@
     <div class="info-configuracion">
       <div class="opciones">
         <button mat-raised-button color="secundary" (click)="showComponent('Plan de Cuentas')">Plan de Cuentas</button>
-        <button mat-raised-button color="secundary" (click)="showComponent('Perfil')">Ajustes</button>
+
       </div>
     </div>
   </div>
-
-  <ng-container *ngIf="currentComponent === 'Perfil'">
-    <app-perfil></app-perfil>
-  </ng-container>
 
   <ng-container *ngIf="currentComponent === 'Plan de Cuentas'">
     <app-plan-cuentas></app-plan-cuentas>

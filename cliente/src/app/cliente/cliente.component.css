@@ -8,6 +8,9 @@
   color: #212529;
   border-collapse: collapse;
 }
+button:hover {
+  background-color: #28a745;
+}
 
 .table th,
 .table td {
@@ -178,13 +181,7 @@
   cursor: pointer;
 
 }
-.container_table{
-  /* centrar con margin */
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
+
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -256,16 +253,7 @@
   background-color: #007bff;
   border-color: #007
 }
-/* .btn-warning {
-  color: #fff;
-  background-color: #ffc107;
-  border-color: #ffc107;
-} */
-/* .btn-danger {
-  color: #fff;
-  background-color: #dc3545;
-  border-color: #dc3545;
-} */
+
 
 .btn-accion{
   color: #000000;

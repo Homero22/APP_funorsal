@@ -1,16 +1,10 @@
-form {
-  display: flex;
-  flex-direction: column;
-
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales */
+  gap: 10px; /* Espacio entre las columnas */
 }
 
-/* mat-form-field {
-  margin-bottom: 10px;
-} */
-
-.container-form{
-  background-color: rgb(255, 255, 255);
-  border-radius: 8px;
-  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
-  width: 50%;
+button {
+  grid-column: span 2; /* El botón ocupa ambas columnas */
 }
+
