@@ -243,10 +243,11 @@ const crearBalanceIngresosGastosPorIdCliente = async (req, res) => {
         });
 
         if (!cliente) {
-            return res.status(404).json({
+            return res.json({
                 status: false,
-                message: "Cliente no encontrado"
-            });
+                message: "Cliente no encontrado",
+                body: null
+            })
         }
 
         const libroDiario = await LibroDiario.findAll({
@@ -261,12 +262,16 @@ const crearBalanceIngresosGastosPorIdCliente = async (req, res) => {
                 required: true
             }
         });
+        
+        console.log("Cantidad: ",libroDiario.length);
 
         if (libroDiario.length === 0) {
-            return res.status(404).json({
+            console.log("No se encontraron registros en el libro diario");
+            return res.json({
                 status: false,
-                message: "No se encontraron registros en el libro diario"
-            });
+                message: "No se encontraron registros en el libro diario",
+                body: null
+            })
         }
 
        

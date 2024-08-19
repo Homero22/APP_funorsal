@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { VerPdfComponent } from 'src/app/ver-pdf/ver-pdf.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-reportes-ingresos',
   templateUrl: './reportes-ingresos.component.html',
@@ -24,6 +25,8 @@ export class ReportesIngresosComponent implements OnInit {
 
   informacionQuesera!: any;
 
+  private destroy$ = new Subject<any>();
+
   constructor(
     private srvCliente: ClienteService,
     private srvReportes: PdfService,
@@ -41,8 +44,46 @@ export class ReportesIngresosComponent implements OnInit {
 
   }
   selectMonth(month: string): void {
+
+    console.log("Click en un botón.")
     this.selectedMonth = month;
     // Aquí puedes manejar la lógica para generar el reporte según el año y mes seleccionados
+    let fechaInicio = new Date(this.selectedYear, this.months.indexOf(this.selectedMonth), 1);
+    let fechaFin = new Date(this.selectedYear, this.months.indexOf(this.selectedMonth) + 1, 0);
+    this.fechaInicio = fechaInicio;
+    this.fechaFin = fechaFin;
+    console.log(fechaInicio);
+    console.log(fechaFin);
+    // Swal.fire({
+    //   title: 'Reporte de Ingresos y Gastos',
+    //   text: 'Generando reporte, por favor espere...',
+    //   icon: 'info',
+    //   allowOutsideClick: false
+    // });
+    this.srvReportes.getReporteIngresosGastos(this.informacionQuesera.int_cliente_id, this.fechaInicio, this.fechaFin)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next:(data: any) => {
+      console.log("La data:",data);
+      if(data.status){
+        const pdfSrc: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`data:application/pdf;base64,${data.body}`);
+        this.dialog.open(VerPdfComponent, {
+          width: '80%',
+          data: { pdfSrc }
+        });
+      }else{
+        console.log("No se encontraron registros");
+        Swal.fire({
+          title: 'Reporte de Ingresos y Gastos',
+          text: 'No se encontraron registros',
+          icon: 'warning',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    }
+
+    })
+
   }
   populateYears(): void {
     for (let i = this.currentYear; i >= this.currentYear - 10; i--) {
@@ -58,8 +99,11 @@ export class ReportesIngresosComponent implements OnInit {
     if(this.fechaInicio == null || this.fechaFin == null){
       return;
     }
+    console.log(this.fechaInicio);
+    console.log(this.fechaFin);
     this.srvReportes.getReporteIngresosGastos(this.informacionQuesera.int_cliente_id, this.fechaInicio, this.fechaFin)
     .subscribe((data: any) => {
+      if(data.status){
       Swal.fire({
         title: 'Reporte de Ingresos y Gastos',
         text: 'Reporte generado con éxito',
@@ -71,6 +115,15 @@ export class ReportesIngresosComponent implements OnInit {
         width: '80%',
         data: { pdfSrc }
       });
+    }else{
+      console.log("No se encontraron registros");
+      Swal.fire({
+        title: 'Reporte de Ingresos y Gastos',
+        text: 'No se encontraron registros',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+    }
 
     })
 
