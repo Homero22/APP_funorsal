@@ -44,22 +44,11 @@ export class ReportesIngresosComponent implements OnInit {
 
   }
   selectMonth(month: string): void {
-
-    console.log("Click en un botón.")
     this.selectedMonth = month;
-    // Aquí puedes manejar la lógica para generar el reporte según el año y mes seleccionados
     let fechaInicio = new Date(this.selectedYear, this.months.indexOf(this.selectedMonth), 1);
     let fechaFin = new Date(this.selectedYear, this.months.indexOf(this.selectedMonth) + 1, 0);
     this.fechaInicio = fechaInicio;
     this.fechaFin = fechaFin;
-    console.log(fechaInicio);
-    console.log(fechaFin);
-    // Swal.fire({
-    //   title: 'Reporte de Ingresos y Gastos',
-    //   text: 'Generando reporte, por favor espere...',
-    //   icon: 'info',
-    //   allowOutsideClick: false
-    // });
     this.srvReportes.getReporteIngresosGastos(this.informacionQuesera.int_cliente_id, this.fechaInicio, this.fechaFin)
     .pipe(takeUntil(this.destroy$))
     .subscribe({
@@ -72,7 +61,7 @@ export class ReportesIngresosComponent implements OnInit {
           data: { pdfSrc }
         });
       }else{
-        console.log("No se encontraron registros");
+        
         Swal.fire({
           title: 'Reporte de Ingresos y Gastos',
           text: 'No se encontraron registros',

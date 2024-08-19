@@ -1,4 +1,22 @@
 <div class="containerPrincipal-i">
+  <div class="izquierda">
+    <div class="year-selector">
+      <mat-form-field appearance="outline">
+        <mat-label>Año</mat-label>
+        <mat-select [(value)]="selectedYear">
+          <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="month-selector">
+      <mat-grid-list cols="4">
+        <mat-grid-tile *ngFor="let month of months" (click)="selectMonth(month)" [ngClass]="{'selected-month': month === selectedMonth}">
+          <button mat-raised-button>{{ month }}</button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
   <div class="opciones">
     <h2>BALANCE DE COMPROBACIÓN</h2>
     <mat-form-field>

@@ -15,6 +15,11 @@ export class ReportesGeneralComponent implements OnInit {
 
   fechaInicio!: Date;
   fechaFin!: Date;
+  currentYear: number = new Date().getFullYear();
+  years: number[] = [];
+  months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  selectedYear!: number;
+  selectedMonth!: string;
 
   informacionQuesera!: any;
 
@@ -30,8 +35,42 @@ export class ReportesGeneralComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.populateYears();
+    this.selectedYear = this.currentYear;
   }
+  populateYears(): void {
+    for (let i = this.currentYear; i >= this.currentYear - 10; i--) {
+      this.years.push(i);
+    }
+  }
+  selectMonth(month: string): void {
+    this.selectedMonth = month;
+    let fechaInicio = new Date(this.selectedYear, this.months.indexOf(this.selectedMonth), 1);
+    let fechaFin = new Date(this.selectedYear, this.months.indexOf(this.selectedMonth) + 1, 0);
+    this.fechaInicio = fechaInicio;
+    this.fechaFin = fechaFin;
+
+    this.srvReportes.getReporteBalanceGeneral(this.informacionQuesera.int_cliente_id, this.fechaInicio, this.fechaFin)
+    .subscribe((data: any) => {
+      if(data.status){
+        const pdfSrc: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`data:application/pdf;base64,${data.body}`);
+        this.dialog.open(VerPdfComponent, {
+          width: '80%',
+          data: { pdfSrc }
+        });
+      }else{
+        Swal.fire({
+          title: 'Reporte de Balance General',
+          text: 'No se encontraron registros',
+          icon: 'warning',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+
+    })
+
+  }
+
 
   generarPDF() {
     //valido que las fechas no sean nulas
@@ -40,17 +79,20 @@ export class ReportesGeneralComponent implements OnInit {
     }
     this.srvReportes.getReporteBalanceGeneral(this.informacionQuesera.int_cliente_id, this.fechaInicio, this.fechaFin)
     .subscribe((data: any) => {
-      Swal.fire({
-        title: 'Balance General',
-        text: 'Reporte generado con éxito',
-        icon: 'success',
-        confirmButtonText: 'Aceptar'
-      });
+      if(data.status){
       const pdfSrc: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`data:application/pdf;base64,${data.body}`);
       this.dialog.open(VerPdfComponent, {
         width: '80%',
         data: { pdfSrc }
       });
+    }else{
+      Swal.fire({
+        title: 'Reporte de Balance General',
+        text: 'No se encontraron registros',
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+    }
       
     })
 

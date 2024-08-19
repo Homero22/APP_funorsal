@@ -44,10 +44,11 @@ const crearBalanceComprobacion = async (req, res) => {
         });
 
         if (libroDiario.length === 0) {
-            return res.status(404).json({
+            return res.json({
                 status: false,
-                message: "No se encontraron registros en el libro diario"
-            });
+                message: "No se encontraron registros en el libro diario",
+                body: null
+            })
         }
 
        
@@ -399,10 +400,11 @@ const crearBalanceGeneral = async (req, res) => {
         });
 
         if (libroDiario.length === 0) {
-            return res.status(404).json({
+            return res.json({
                 status: false,
-                message: "No se encontraron registros en el libro diario"
-            });
+                message: "No se encontraron registros en el libro diario",
+                body: null
+            })
         }
 
         // let activos = { debe: 0, haber: 0 };
