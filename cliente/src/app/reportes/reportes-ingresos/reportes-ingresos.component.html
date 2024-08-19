@@ -1,4 +1,4 @@
-<div class="containerPrincipal-i">
+<!-- <div class="containerPrincipal-i">
   <div class="opciones">
     <div class="ti">
       <h2>BALANCE DE INGRESOS Y GASTOS</h2>
@@ -15,5 +15,29 @@
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="generarPDF()" [disabled]="!fechaInicio || !fechaFin">Generar Reporte</button>
   </div>
+</div> -->
+
+<div class="izquierda">
+
+  <div class="year-selector">
+    <mat-form-field appearance="outline">
+      <mat-label>Año</mat-label>
+      <mat-select [(value)]="selectedYear">
+        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="month-selector">
+    <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px">
+      <mat-grid-tile *ngFor="let month of months" (click)="selectMonth(month)" [ngClass]="{'selected-month': month === selectedMonth}">
+        <button mat-raised-button>{{ month }}</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
 </div>
+
+
+
 

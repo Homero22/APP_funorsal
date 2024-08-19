@@ -39,3 +39,12 @@ button {
   align-items: center;
   justify-content: center;
 }
+
+.izquierda{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width:15%;
+}
+
+

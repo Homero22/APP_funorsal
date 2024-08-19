@@ -3,7 +3,7 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
 import { PdfService } from 'src/app/core/services/reportes.service';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { VerPdfComponent } from 'src/app/ver-pdf/ver-pdf.component';	
+import { VerPdfComponent } from 'src/app/ver-pdf/ver-pdf.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-reportes-ingresos',
@@ -11,6 +11,13 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./reportes-ingresos.component.css']
 })
 export class ReportesIngresosComponent implements OnInit {
+
+
+  currentYear: number = new Date().getFullYear();
+  years: number[] = [];
+  months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  selectedYear!: number;
+  selectedMonth!: string;
 
   fechaInicio!: Date;
   fechaFin!: Date;
@@ -22,15 +29,29 @@ export class ReportesIngresosComponent implements OnInit {
     private srvReportes: PdfService,
     private dialog: MatDialog,
     private sanitizer: DomSanitizer
-  ) { 
+  ) {
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
     });
   }
 
   ngOnInit() {
-    
+    this.populateYears();
+    this.selectedYear = this.currentYear;
+
   }
+  selectMonth(month: string): void {
+    this.selectedMonth = month;
+    // Aquí puedes manejar la lógica para generar el reporte según el año y mes seleccionados
+  }
+  populateYears(): void {
+    for (let i = this.currentYear; i >= this.currentYear - 10; i--) {
+      this.years.push(i);
+    }
+  }
+
+
+
 
   generarPDF() {
     //valido que las fechas no sean nulas
@@ -50,7 +71,7 @@ export class ReportesIngresosComponent implements OnInit {
         width: '80%',
         data: { pdfSrc }
       });
-      
+
     })
 
   }
