@@ -34,8 +34,13 @@ export class libroDiarioService {
   }
 
   //obtener los libros diarios de un cliente
-  getLibrosDiarios(int_cliente_id: number){
-    return this.http.get<any>(`${this.url}/cliente/${int_cliente_id}`);
+  getLibrosDiarios(int_cliente_id: number,limit: number, offset: number, mes?: number, anio?: number){
+    const params = {
+      limit: limit.toString(),
+      offset: offset.toString(),
+      ...(mes && anio && { mes: mes.toString(), anio: anio.toString() })
+    };
+    return this.http.get<any>(`${this.url}/cliente/${int_cliente_id}`, { params });
   }
 
 
