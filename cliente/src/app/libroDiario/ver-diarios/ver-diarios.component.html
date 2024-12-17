@@ -1,8 +1,25 @@
 <div class="containerPrincipal">
   <div class="container-inicio">
 
+    <div class="filter-container">
+      <mat-form-field>
+        <mat-label>Mes</mat-label>
+        <mat-select [(ngModel)]="mes">
+          <mat-option *ngFor="let m of meses" [value]="m.value">{{ m.viewValue }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <table mat-table [dataSource]="journalEntries" class="mat-elevation-z8 journal-table">
+      <mat-form-field>
+        <mat-label>Año</mat-label>
+        <input matInput [(ngModel)]="anio" type="number" min="2000" max="2100">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="aplicarFiltro()">Aplicar Filtro</button>
+    </div>
+    <mat-paginator [length]="totalEntries" [pageSize]="10" (page)="cambiarPagina($event)">
+    </mat-paginator>
+
+   <table mat-table [dataSource]="journalEntries" class="mat-elevation-z8 journal-table">
 
       <!-- ID Column -->
       <ng-container matColumnDef="int_libro_diario_id">
@@ -37,6 +54,9 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
+
+
+
 
 
   </div>
