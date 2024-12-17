@@ -15,6 +15,7 @@ import { CuentasService } from '../core/services/cuentas.service';
 import { Body } from '../core/models/cliente';
 import { Subject, take, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ClienteService } from '../core/services/cliente.service';
 
 export interface Cuenta {
   int_cuenta_id: number;
@@ -43,7 +44,7 @@ export class PlanCuentasComponent implements AfterViewInit {
 
   cuentasAux: Cuenta[] = [];
 
-  idCliente = 1;
+  idCliente!: number;
   private destroy$ = new Subject<any>();
   @ViewChild('cuentasHijasSection', { static: false })
   cuentasHijasSection!: ElementRef;
@@ -78,11 +79,20 @@ export class PlanCuentasComponent implements AfterViewInit {
     this.openModal('large', 'Agregar Cuenta', 'agregarCuenta');
   }
 
+  informacionQuesera!: any;
   constructor(
     private renderer: Renderer2,
     public dialog: MatDialog,
-    private srvCuentas: CuentasService
+    private srvCuentas: CuentasService,
+    private srvCliente: ClienteService,
   ) {
+
+    this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
+      this.informacionQuesera = cliente;
+      this.idCliente = this.informacionQuesera.int_cliente_id;
+
+    });
+
     this.sort = new MatSort();
 
     this.obtenerCuentasDelCliente();
