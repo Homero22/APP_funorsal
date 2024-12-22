@@ -349,6 +349,8 @@ export const createCuentas = async (int_cliente_id) => {
     let activo =await Cuenta.findOne({where: {str_cuenta_nombre: 'ACTIVO', int_cliente_id: int_cliente_id}});
     let pasivo =await Cuenta.findOne({where: {str_cuenta_nombre: 'PASIVO', int_cliente_id: int_cliente_id}});
     let patrimonio =await  Cuenta.findOne({where: {str_cuenta_nombre: 'PATRIMONIO', int_cliente_id: int_cliente_id}});
+    let ingresos =await Cuenta.findOne({where: {str_cuenta_nombre: 'INGRESOS', int_cliente_id: int_cliente_id}});
+    let gastos =await Cuenta.findOne({where: {str_cuenta_nombre: 'GASTOS', int_cliente_id: int_cliente_id}});
 
     let activoCorriente =await Cuenta.create({
         str_cuenta_nombre: 'ACTIVO CORRIENTE',
@@ -358,13 +360,30 @@ export const createCuentas = async (int_cliente_id) => {
         int_cuenta_padre_id: activo.int_cuenta_id
     });
 
-    let efectivo = await Cuenta.create({
-        str_cuenta_nombre: 'EFECTIVO Y EQUIVALENTES DE EFECTIVO',
+    let disponible = await Cuenta.create({
+        str_cuenta_nombre: 'DISPONIBLE',
         int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Efectivo y Equivalentes de Efectivo',
+        str_cuenta_descripcion: 'Cuentas de Disponible',
         str_cuenta_codigo: '1.1.1',
         int_cuenta_padre_id: activoCorriente.int_cuenta_id
     });
+
+    let exigible = await Cuenta.create({
+        str_cuenta_nombre: 'EXIGIBLE',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Exigible',
+        str_cuenta_codigo: '1.1.2',
+        int_cuenta_padre_id: activoCorriente.int_cuenta_id
+    });
+
+    let realizable = await Cuenta.create({
+        str_cuenta_nombre: 'REALIZABLE',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Realizable',
+        str_cuenta_codigo: '1.1.3',
+        int_cuenta_padre_id: activoCorriente.int_cuenta_id
+    });
+
 
     let activoNoCorriente =await Cuenta.create({
         str_cuenta_nombre: 'ACTIVO NO CORRIENTE',
@@ -374,12 +393,28 @@ export const createCuentas = async (int_cliente_id) => {
         int_cuenta_padre_id: activo.int_cuenta_id
     });
 
-    let propiedadPlantaEquipo =await Cuenta.create({
-        str_cuenta_nombre: 'PROPIEDAD, PLANTA Y EQUIPO',
+    let fijo =await Cuenta.create({
+        str_cuenta_nombre: 'FIJO',
         int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Propiedad, Planta y Equipo',
+        str_cuenta_descripcion: 'Cuentas de Fijo',
         str_cuenta_codigo: '1.2.1',
         int_cuenta_padre_id: activoNoCorriente.int_cuenta_id
+    });
+
+    let otrosActivos =await Cuenta.create({
+        str_cuenta_nombre: 'OTROS ACTIVOS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Otros Activos',
+        str_cuenta_codigo: '1.3',
+        int_cuenta_padre_id: activo.int_cuenta_id
+    });
+
+    let diferido =await Cuenta.create({
+        str_cuenta_nombre: 'DIFERIDO',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Diferido',
+        str_cuenta_codigo: '1.3.1',
+        int_cuenta_padre_id: otrosActivos.int_cuenta_id
     });
 
     let pasivoCorriente =await Cuenta.create({
@@ -404,6 +439,53 @@ export const createCuentas = async (int_cliente_id) => {
         str_cuenta_descripcion: 'Cuentas de Capital',
         str_cuenta_codigo: '3.1',
         int_cuenta_padre_id: patrimonio.int_cuenta_id
+    });
+
+    let ingresosOperacionales =await Cuenta.create({
+        str_cuenta_nombre: 'INGRESOS OPERACIONALES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Ingresos Operacionales',
+        str_cuenta_codigo: '4.1',
+        int_cuenta_padre_id: ingresos.int_cuenta_id
+    });
+
+    let ingresosNoOperacionales =await Cuenta.create({
+        str_cuenta_nombre: 'INGRESOS NO OPERACIONALES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Ingresos No Operacionales',
+        str_cuenta_codigo: '4.2',
+        int_cuenta_padre_id: ingresos.int_cuenta_id
+    });
+
+    let gastosYCostosOperacionales =await Cuenta.create({
+        str_cuenta_nombre: 'GASTOS Y COSTOS OPERACIONALES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Gastos y Costos Operacionales',
+        str_cuenta_codigo: '5.1',
+        int_cuenta_padre_id: gastos.int_cuenta_id
+    });
+    let gastosYCostosDeVenta =await Cuenta.create({
+        str_cuenta_nombre: 'GASTOS Y COSTOS DE VENTA',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Gastos y Costos de Venta',
+        str_cuenta_codigo: '5.1.1',
+        int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
+    });
+
+    let gastosAdministrativos =await Cuenta.create({
+        str_cuenta_nombre: 'GASTOS ADMINISTRATIVOS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Gastos Administrativos',
+        str_cuenta_codigo: '5.1.2',
+        int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
+    });
+
+    let gastosFinancieros =await Cuenta.create({
+        str_cuenta_nombre: 'GASTOS FINANCIEROS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Gastos Financieros',
+        str_cuenta_codigo: '5.1.3',
+        int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
     });
     
 }
