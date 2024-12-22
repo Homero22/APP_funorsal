@@ -9,7 +9,7 @@ import reportesRoutes from './estadosFinancieros/reportes.routes.js';
 const router = Router();
 
 //info
-router.get("/", (req, res) => {
+router.get("/info", (req, res) => {
     res.json({
         message: "Bienvenido a la API de Contabilidad",
         info: {
