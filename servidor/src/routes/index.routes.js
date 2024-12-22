@@ -8,6 +8,18 @@ import reportesRoutes from './estadosFinancieros/reportes.routes.js';
 
 const router = Router();
 
+//info
+router.get("/", (req, res) => {
+    res.json({
+        message: "Bienvenido a la API de Contabilidad",
+        info: {
+            version: "1.0",
+            autor: "Sara",
+            descripcion: "API para el sistema de contabilidad"
+        }
+    });
+});
+
 
 
 router.use("/clientes", clienteRoutes);
