@@ -7,7 +7,7 @@ import { Cuenta } from '../plan-cuentas/plan-cuentas.component';
 import { Subject, takeUntil } from 'rxjs';
 import { libroDiarioService } from '../core/services/libroDiario.service';
 import Swal from 'sweetalert2';
-
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-libroDiario',
@@ -30,7 +30,8 @@ export class LibroDiarioComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private srvCuentas: CuentasService,
     private srvCliente: ClienteService,
-    private srvLibroDiario: libroDiarioService
+    private srvLibroDiario: libroDiarioService,
+    private cdr: ChangeDetectorRef
   ) {
     this.fechaSeleccionada = new Date();
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
@@ -84,12 +85,25 @@ export class LibroDiarioComponent implements OnInit {
   }
 
   updateSums() {
-    this.totalDebit = this.entries.controls.reduce((sum, entry) => sum + Number(entry.get('debit')?.value || 0), 0);
-    this.totalCredit = this.entries.controls.reduce((sum, entry) => sum + Number(entry.get('credit')?.value || 0), 0);
+    this.totalDebit = this.entries.controls.reduce(
+      (sum, entry) => sum + (Number(entry.get('debit')?.value) || 0),
+      0
+    );
+    console.log(this.totalDebit);
+    this.totalCredit = this.entries.controls.reduce(
+      (sum, entry) => sum + (Number(entry.get('credit')?.value) || 0),
+      0
+    );
+    console.log(this.totalCredit);
+      // Redondear a 2 decimales
+  this.totalDebit = Number(this.totalDebit.toFixed(2));
+  this.totalCredit = Number(this.totalCredit.toFixed(2));
+    this.cdr.detectChanges(); // Forzar detección de cambios
   }
 
   get isBalanced(): boolean {
-    return this.totalDebit === this.totalCredit;
+
+    return Number(this.totalDebit) == Number(this.totalCredit);
   }
 
   onSubmit() {
@@ -132,6 +146,12 @@ export class LibroDiarioComponent implements OnInit {
     } else {
       alert('Las sumas de débitos y créditos no coinciden o hay campos inválidos.');
     }
+  }
+  resetForm() {
+    this.journalForm.reset();
+    this.entries.clear();
+    this.addEntry();
+    this.updateSums();
   }
   filterAccounts(index: number) {
     const entry = this.entries.at(index);
