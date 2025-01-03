@@ -1,75 +1,94 @@
-
 <div class="containerPrincipal">
   <div class="container-inicio">
-    <h2>Quesera <strong>{{informacionQuesera.str_cliente_nombre}}</strong></h2>
-      <div class="opciones">
-        <button mat-raised-button color="secundary" (click)="showComponent('VerDiarios')">Registros Libro Diario</button>
-        <button mat-raised-button color="secundary" (click)="showComponent('Nuevo Registro')">Nuevo Registro</button>
-      </div>
+    <h2>Quesera <strong>{{ informacionQuesera?.str_cliente_nombre }}</strong></h2>
+    <div class="opciones">
+      <button mat-raised-button color="secondary" (click)="showComponent('VerDiarios')">Registros Libro Diario</button>
+      <button mat-raised-button color="secondary" (click)="showComponent('Nuevo Registro')">Nuevo Registro</button>
+    </div>
 
-      <div *ngIf="currentComponent==='Nuevo Registro'">
-        <h2>Empresa <strong>{{informacionQuesera.str_cliente_nombre}}</strong></h2>
+    <div *ngIf="currentComponent === 'Nuevo Registro'">
+      <h2>Empresa <strong>{{ informacionQuesera?.str_cliente_nombre }}</strong></h2>
+      <div>
+        <mat-form-field>
+          <mat-label>Fecha del registro</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="fechaSeleccionada" required>
+          <mat-hint>Mes/Día/Año</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
         <div>
-          <mat-form-field>
-            <mat-label>Fecha del registro</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="fechaSeleccionada" >
-            <mat-hint>Mes/Día/Año</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <div>
-            <button type="button" (click)="addEntry()">Agregar Fila</button>
-          </div>
+          <button type="button" (click)="addEntry()">Agregar Fila</button>
         </div>
-        <form [formGroup]="journalForm" (ngSubmit)="onSubmit()">
-          <table>
-            <thead>
-              <tr>
-                <!-- <th>Fecha</th> -->
-                <th>Cuentas</th>
-                <th>Código</th>
-                <th>Débitos</th>
-                <th>Créditos</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody formArrayName="entries">
-              <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
-
-               <td>
-                <input type="text" [formControl]="getAccountControl(i)"
-                [matAutocomplete]="auto" (input)="filterAccounts(i)">
-               </td>
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAccountSelected($event, i)">
-                  <mat-option *ngFor="let option of filteredAccounts[i]" [value]="option.str_cuenta_nombre">
-                    {{ option.str_cuenta_codigo }} - {{ option.str_cuenta_nombre }}
-                  </mat-option>
-                </mat-autocomplete>
-
-                <td><input formControlName="code" type="text" (input)="filterAccounts(i)"></td>
-
-                <td><input formControlName="debit" type="number" (input)="updateSums()" ></td>
-                <td><input formControlName="credit" type="number" (input)="updateSums()"></td>
-                <td>
-                  <button type="button" (click)="removeEntry(i)">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div>
-            <p>Sumas iguales:</p>
-            <p>Débitos: {{ totalDebit | currency }}</p>
-            <p>Créditos: {{ totalCredit | currency}}</p>
-          </div>
-          <div *ngIf="!isBalanced">Las sumas de débitos y créditos no coinciden.</div>
-          <button type="submit" [disabled]="!isBalanced">Guardar</button>
-        </form>
       </div>
+
+      <form [formGroup]="journalForm" (ngSubmit)="onSubmit()">
+        <table>
+          <thead>
+            <tr>
+              <th>Cuentas</th>
+              <th>Código</th>
+              <th>Débitos</th>
+              <th>Créditos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="entries">
+            <tr *ngFor="let entry of entries.controls; let i = index" [formGroupName]="i">
+              <td>
+                <input
+                  type="text"
+                  formControlName="account"
+                  [matAutocomplete]="auto"
+                  (input)="filterAccounts(i)"
+                  required
+                >
+              </td>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAccountSelected($event, i)">
+                <mat-option *ngFor="let option of filteredAccounts[i]" [value]="option.str_cuenta_nombre">
+                  {{ option.str_cuenta_codigo }} - {{ option.str_cuenta_nombre }}
+                </mat-option>
+              </mat-autocomplete>
+              <td>
+                <input formControlName="code" type="text" readonly>
+              </td>
+              <td>
+                <input
+                  formControlName="debit"
+                  type="number"
+                  (input)="updateSums()"
+                  min="0"
+                  required
+                >
+              </td>
+              <td>
+                <input
+                  formControlName="credit"
+                  type="number"
+                  (input)="updateSums()"
+                  min="0"
+                  required
+                >
+              </td>
+              <td>
+                <button type="button" (click)="removeEntry(i)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <p>Débitos: {{ totalDebit | currency }}</p>
+          <p>Créditos: {{ totalCredit | currency }}</p>
+          <p *ngIf="!isBalanced" class="error-text">Las sumas de débitos y créditos no coinciden.</p>
+        </div>
+        <button type="submit" [disabled]="!isBalanced || journalForm.invalid">Guardar</button>
+      </form>
+    </div>
   </div>
 
   <ng-container *ngIf="currentComponent === 'VerDiarios'">
     <app-ver-diarios></app-ver-diarios>
   </ng-container>
 </div>
+
