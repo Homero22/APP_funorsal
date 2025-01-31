@@ -30,12 +30,13 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
 
         const addAccounts = (cuentas) => {
             cuentas.forEach(cuenta => {
+                console.log(cuenta);
                 body.push([
                     { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
                     { text: formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
                     { text: formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.saldo_acreedora.toFixed(2)), style: 'tableData' },
                     { text: formatoNumero(cuenta.saldo_deudora.toFixed(2)), style: 'tableData' },
+                    { text: formatoNumero(cuenta.saldo_acreedora.toFixed(2)), style: 'tableData' },
                     { text: formatoNumero(cuenta.saldo_anterior_debito.toFixed(2)), style: 'tableData' },
                     { text: formatoNumero(cuenta.saldo_anterior_credito.toFixed(2)), style: 'tableData' }
                 ]);
@@ -106,10 +107,12 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
                 bold: true,
                 fillColor: '#eeeeee',
                 margin: [0, 5, 0, 5],
+                alignment: 'center'
             },
             tableData: {
                 fontSize: 10, // Disminuir el tamaño de la letra
                 margin: [0, 5, 0, 5],
+                alignment: 'center'
             },
             categoryTitle: {
                 fontSize: 12, // Tamaño de letra para los títulos de las categorías
