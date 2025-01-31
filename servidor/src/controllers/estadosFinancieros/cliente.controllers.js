@@ -73,6 +73,21 @@ export const crearCliente = async (req, res) => {
             });
         }
 
+        //no repetir usuario
+        const usuario = await Cliente.findOne({
+            where: {
+                str_cliente_usuario: data.str_cliente_usuario,
+            },
+        });
+        if(usuario){
+            return res.json({
+                status:false,
+                message: "El usuario ya esta registrado, por favor elija otro",
+                body: []
+            });
+        }
+
+
        
         
         const cliente = await Cliente.create({

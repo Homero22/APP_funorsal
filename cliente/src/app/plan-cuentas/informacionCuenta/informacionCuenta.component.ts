@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CuentasService } from 'src/app/core/services/cuentas.service';
 import { Cuenta } from '../plan-cuentas.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-informacionCuenta',
@@ -14,14 +16,74 @@ export class InformacionCuentaComponent implements OnInit {
   fechaInicio!: Date;
   fechaFin!: Date;
   private destroy$ = new Subject<any>();
+  mostrarFormulario: boolean = false;
+
+  toggleFormulario() {
+    this.mostrarFormulario = !this.mostrarFormulario;
+  }
 
   data!: any;
   isModalOpen = false;
   selectedMovimiento: any;
 
+  saldoForm: FormGroup = new FormGroup({});
+
   constructor(
     private srvCuentas: CuentasService,
-  ) { }
+    private fb: FormBuilder,
+  ) { 
+    this.saldoForm = this.fb.group({
+        int_cuenta_id: ['', Validators.required],
+        mes: ['', Validators.required],
+        anio: ['', Validators.required],
+        dec_saldo_deudora: ['', Validators.required],
+        dec_saldo_acreedora: ['', Validators.required],
+        dec_saldo_anterior_debito: ['', Validators.required],
+        dec_saldo_anterior_credito: ['', Validators.required]
+      });
+  }
+  agregarSaldo() {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas agregar el saldo mensual?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, agregar',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            this.agregarSaldoMensual();
+        }
+    });
+
+  }
+  resetForm() {
+    this.saldoForm.reset();
+  }
+  agregarSaldoMensual() {
+    if (this.saldoForm.valid) {
+        this.srvCuentas.agregarSaldoMensual(this.saldoForm.value).subscribe({
+          next: response => {
+            if(response.status){
+                Swal.fire('Saldo agregado', 'Se ha agregado el saldo mensual correctamente', 'success');
+                this.obtenerDataCuenta();
+                this.toggleFormulario();
+                this.resetForm();
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                })
+            }
+            
+          },
+          error: error => {
+            console.error('Error al agregar saldo:', error);
+          }
+        });
+      }
+    }
 
   ngOnInit(): void {
     this.srvCuentas.selectCuentaSeleccionada.subscribe((cuenta: Cuenta) => {
@@ -37,6 +99,10 @@ export class InformacionCuentaComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((cuentas: any) => {
         this.data = cuentas;
+        //agrego el id de la cuenta en el formulario
+        this.saldoForm.patchValue({
+          int_cuenta_id: this.infoCuentaSeleccionada.int_cuenta_id
+        });
 
         setTimeout(() => {
           this.isLoading = false;

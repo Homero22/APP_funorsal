@@ -71,6 +71,7 @@ export class LibroDiarioComponent implements OnInit {
       // date: ['', Validators.required],
       code: ['', Validators.required],
       account: ['', Validators.required],
+      id: [0, Validators.required],
       debit: [0, Validators.min(0)],
       credit: [0, Validators.min(0)]
     });
@@ -166,7 +167,8 @@ export class LibroDiarioComponent implements OnInit {
       const entry = this.entries.at(index);
       entry.patchValue({
         code: selectedAccount.str_cuenta_codigo,
-        account: selectedAccount.str_cuenta_nombre
+        account: selectedAccount.str_cuenta_nombre,
+        id: selectedAccount.int_cuenta_id
       });
     }
   }
