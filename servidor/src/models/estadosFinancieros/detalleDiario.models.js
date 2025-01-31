@@ -21,6 +21,9 @@ export const DetalleDiario = sequelize .define('detalle_libro_diario', {
     str_detalle_libro_diario_codigo_cuenta: {
         type: DataTypes.STRING
     },
+    int_cuenta_id: {
+        type: DataTypes.INTEGER
+    },
     str_detalle_libro_diario_tipo: {
         type: DataTypes.STRING
     },

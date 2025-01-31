@@ -5,14 +5,26 @@ import { formatoNumero } from '../utils/formatoNumero.js';
 pdfmake.vfs = pdfFonts.pdfMake.vfs;
 
 async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
+
+    let saldoDebe = 0;
+    let saldoHaber = 0;
+
     const buildTableBody = (infoBalanceComprobacion) => {
         const body = [
-            [{ text: 'Cuenta', style: 'tableHeader' }, { text: 'Debe', style: 'tableHeader' }, { text: 'Haber', style: 'tableHeader' }]
+            [
+                { text: 'Cuenta', style: 'tableHeader' }, 
+                { text: 'Debe', style: 'tableHeader' },
+                { text: 'Haber', style: 'tableHeader' },
+                { text: 'Saldo Actual Debe', style: 'tableHeader' },
+                { text: 'Saldo Actual Haber', style: 'tableHeader' },
+                { text: 'Saldo Auxiliar Debe', style: 'tableHeader' },
+                { text: 'Saldo Auxiliar Haber', style: 'tableHeader' },
+            ]
         ];
 
         const addCategoryTitle = (title) => {
             body.push([
-                { text: title, style: 'categoryTitle', colSpan: 3, alignment: 'left' }, {}, {}
+                { text: title, style: 'categoryTitle', colSpan: 3, alignment: 'left' }, {}, {}, {}, {}, {}, {}
             ]);
         };
 
@@ -21,7 +33,11 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
                 body.push([
                     { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
                     { text: formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' }
+                    { text: formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' },
+                    { text: formatoNumero(cuenta.saldo_acreedora.toFixed(2)), style: 'tableData' },
+                    { text: formatoNumero(cuenta.saldo_deudora.toFixed(2)), style: 'tableData' },
+                    { text: formatoNumero(cuenta.saldo_anterior_debito.toFixed(2)), style: 'tableData' },
+                    { text: formatoNumero(cuenta.saldo_anterior_credito.toFixed(2)), style: 'tableData' }
                 ]);
             });
         };
@@ -44,7 +60,11 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
         body.push([
             { text: 'Total', style: 'totalLabel' },
             { text: formatoNumero(infoBalanceComprobacion.totalDebitos.toFixed(2)), style: 'totalData' },
-            { text: formatoNumero(infoBalanceComprobacion.totalCreditos.toFixed(2)), style: 'totalData' }
+            { text: formatoNumero(infoBalanceComprobacion.totalCreditos.toFixed(2)), style: 'totalData' },
+            { text: '', style: 'totalData' },
+            { text: '', style: 'totalData' },
+            { text: '', style: 'totalData' },
+            { text: '', style: 'totalData' }
         ]);
 
         return body;
@@ -58,7 +78,7 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
             { text: ' ' },  // Espacio en blanco
             {
                 table: {
-                    widths: ['*', 'auto', 'auto'],
+                    widths: ['*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
                     body: buildTableBody(infoBalanceComprobacion)
                 }
             }
@@ -123,6 +143,7 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
         });
     });
 }
+
 
 export default generarPdfBalanceComprobacionBase64;
 

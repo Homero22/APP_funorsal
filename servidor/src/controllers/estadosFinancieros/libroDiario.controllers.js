@@ -16,6 +16,7 @@ const crearDetalleDiario = async (req, res) => {
     const libroDiarioId = await LibroDiario.create({
       dt_libro_diario_fecha: infoLibroDiario.fecha,
       int_cliente_id: infoLibroDiario.idCliente,
+
     });
     //recorre el array de detalles y los inserta en la tabla detalle diario
     /**
@@ -45,6 +46,7 @@ const crearDetalleDiario = async (req, res) => {
         int_libro_diario_id: libroDiarioId.int_libro_diario_id,
         str_detalle_libro_diario_nombre_cuenta: element.account,
         str_detalle_libro_diario_codigo_cuenta: element.code,
+        int_cuenta_id: element.id,
         str_detalle_libro_diario_tipo: tipo,
         dc_detalle_libro_diario_monto: monto,
       });

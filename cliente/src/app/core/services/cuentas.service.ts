@@ -36,6 +36,11 @@ export class CuentasService {
 
   //rutas de la api
   private url = config.URL_API_BASE + 'cuentas';
+  private readonly url_saldo_cuenta = config.URL_API_BASE + 'saldoCuenta';
+
+  agregarSaldoMensual(saldo: any): Observable<any> {
+    return this.http.post(`${this.url_saldo_cuenta}`, saldo);
+  }
 
   setCuentasHijasByPadreId(cuentasHijasByPadreId: Cuenta[]) {
     this.cuentasHijasByPadreId$.next(cuentasHijasByPadreId);

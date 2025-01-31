@@ -147,3 +147,76 @@
   background-color: #0056b3;
 }
 
+/* Estilos para los formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  form label {
+    font-weight: bold;
+  }
+  
+  form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  form button {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  form button:disabled {
+    background: #ccc;
+  }
+
+
+  button {
+    background-color: #007bff; /* Azul */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Azul más oscuro */
+    transform: scale(1.05);
+  }
+  
+  button:active {
+    background-color: #004080; /* Azul aún más oscuro */
+    transform: scale(0.98);
+  }
+  
+  button:disabled {
+    background-color: #ccc; /* Gris */
+    cursor: not-allowed;
+  }
+
+
+  .readonly {
+    background-color: #d3cece;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+  }	
+
+
+

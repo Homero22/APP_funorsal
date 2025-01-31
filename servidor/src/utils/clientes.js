@@ -319,7 +319,7 @@ export const createCuentas = async (int_cliente_id) => {
         },
 
         {
-            str_cuenta_nombre: 'PATRIMONIO',
+            str_cuenta_nombre: 'PATRIMONIO NETO',
             int_cliente_id: int_cliente_id,
             str_cuenta_descripcion: 'Cuentas de Patrimonio',
             str_cuenta_codigo: '3',
@@ -348,7 +348,7 @@ export const createCuentas = async (int_cliente_id) => {
 
     let activo =await Cuenta.findOne({where: {str_cuenta_nombre: 'ACTIVO', int_cliente_id: int_cliente_id}});
     let pasivo =await Cuenta.findOne({where: {str_cuenta_nombre: 'PASIVO', int_cliente_id: int_cliente_id}});
-    let patrimonio =await  Cuenta.findOne({where: {str_cuenta_nombre: 'PATRIMONIO', int_cliente_id: int_cliente_id}});
+    let patrimonio =await  Cuenta.findOne({where: {str_cuenta_nombre: 'PATRIMONIO NETO', int_cliente_id: int_cliente_id}});
     let ingresos =await Cuenta.findOne({where: {str_cuenta_nombre: 'INGRESOS', int_cliente_id: int_cliente_id}});
     let gastos =await Cuenta.findOne({where: {str_cuenta_nombre: 'GASTOS', int_cliente_id: int_cliente_id}});
 
@@ -367,22 +367,66 @@ export const createCuentas = async (int_cliente_id) => {
         str_cuenta_codigo: '1.1.1',
         int_cuenta_padre_id: activoCorriente.int_cuenta_id
     });
-
-    let exigible = await Cuenta.create({
-        str_cuenta_nombre: 'EXIGIBLE',
+    let cooperativaAhorroCredito = await Cuenta.create({
+        str_cuenta_nombre: 'COOPERATIVA DE AHORRO CRÉDITO',
         int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Exigible',
+        str_cuenta_descripcion: 'Cuentas de Cooperativa de Ahorro Crédito',
+        str_cuenta_codigo: '1.1.1.2',
+        int_cuenta_padre_id: disponible.int_cuenta_id
+    });
+    let bancosInstituciones = await Cuenta.create({
+        str_cuenta_nombre: 'BANCOS Y OTRAS INSTITUCIONES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Bancos y Otras Instituciones',
+        str_cuenta_codigo: '1.1.1.3',
+        int_cuenta_padre_id: disponible.int_cuenta_id
+    });
+    let inversionesCooperativas = await Cuenta.create({
+        str_cuenta_nombre: 'INVERSIONES EN COOPERATIVAS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Inversiones en Cooperativas',
+        str_cuenta_codigo: '1.1.1.4',
+        int_cuenta_padre_id: disponible.int_cuenta_id
+    });
+
+    let activos_financieros = await Cuenta.create({
+        str_cuenta_nombre: 'ACTIVOS FINANCIEROS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Activos Financieros',
         str_cuenta_codigo: '1.1.2',
         int_cuenta_padre_id: activoCorriente.int_cuenta_id
     });
-
-    let realizable = await Cuenta.create({
-        str_cuenta_nombre: 'REALIZABLE',
+    let cuentasPorCobrar = await Cuenta.create({
+        str_cuenta_nombre: 'CUENTAS POR COBRAR',
         int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Realizable',
+        str_cuenta_descripcion: 'Cuentas de Cuentas por Cobrar',
+        str_cuenta_codigo: '1.1.2.1',
+        int_cuenta_padre_id: activos_financieros.int_cuenta_id
+    });
+    let anticipoProveedores = await Cuenta.create({
+        str_cuenta_nombre: 'ANTICIPO A PROVEEDORES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Anticipo a Proveedores',
+        str_cuenta_codigo: '1.1.2.5',
+        int_cuenta_padre_id: activos_financieros.int_cuenta_id
+    });
+    let provisionIncobrables = await Cuenta.create({
+        str_cuenta_nombre: 'PROVISIÓN INCOBRABLES DE CUENTAS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Provisión Incobrables de Cuentas',
+        str_cuenta_codigo: '1.1.2.6',
+        int_cuenta_padre_id: activos_financieros.int_cuenta_id
+    });
+
+
+
+    let inventarios = await Cuenta.create({
+        str_cuenta_nombre: 'INVENTARIOS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Inventarios',
         str_cuenta_codigo: '1.1.3',
         int_cuenta_padre_id: activoCorriente.int_cuenta_id
-    });
+        });
 
 
     let activoNoCorriente =await Cuenta.create({
@@ -393,29 +437,36 @@ export const createCuentas = async (int_cliente_id) => {
         int_cuenta_padre_id: activo.int_cuenta_id
     });
 
+    let activoIntangible =await Cuenta.create({
+        str_cuenta_nombre: 'ACTIVO INTANGIBLE',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Activo Intangible',
+        str_cuenta_codigo: '1.2.2',
+        int_cuenta_padre_id: activoNoCorriente.int_cuenta_id
+    });
+    let activoIntangibleGastosDiferidos =await Cuenta.create({
+        str_cuenta_nombre: 'ACTIVO INTANGIBLE-GASTOS DIFERIDOS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Activo Intangible-Gastos Diferidos',
+        str_cuenta_codigo: '1.2.2.1',
+        int_cuenta_padre_id: activoIntangible.int_cuenta_id
+    });
+
     let fijo =await Cuenta.create({
-        str_cuenta_nombre: 'FIJO',
+        str_cuenta_nombre: 'ACTIVOS FIJOS',
         int_cliente_id: int_cliente_id,
         str_cuenta_descripcion: 'Cuentas de Fijo',
         str_cuenta_codigo: '1.2.1',
         int_cuenta_padre_id: activoNoCorriente.int_cuenta_id
     });
-
-    let otrosActivos =await Cuenta.create({
-        str_cuenta_nombre: 'OTROS ACTIVOS',
+    let propiedadPlantaEquipo =await Cuenta.create({
+        str_cuenta_nombre: 'PROPIEDAD,PLANTA Y EQUIPO',
         int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Otros Activos',
-        str_cuenta_codigo: '1.3',
-        int_cuenta_padre_id: activo.int_cuenta_id
+        str_cuenta_descripcion: 'Cuentas de Propiedad, Planta y Equipo',
+        str_cuenta_codigo: '1.2.1.1',
+        int_cuenta_padre_id: fijo.int_cuenta_id
     });
 
-    let diferido =await Cuenta.create({
-        str_cuenta_nombre: 'DIFERIDO',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Diferido',
-        str_cuenta_codigo: '1.3.1',
-        int_cuenta_padre_id: otrosActivos.int_cuenta_id
-    });
 
     let pasivoCorriente =await Cuenta.create({
         str_cuenta_nombre: 'PASIVO CORRIENTE',
@@ -425,12 +476,70 @@ export const createCuentas = async (int_cliente_id) => {
         int_cuenta_padre_id: pasivo.int_cuenta_id
     });
 
+    let cuentasPorPagar =await Cuenta.create({
+        str_cuenta_nombre: 'CUENTAS POR PAGAR',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Cuentas por Pagar',
+        str_cuenta_codigo: '2.1.1',
+        int_cuenta_padre_id: pasivoCorriente.int_cuenta_id
+    });
+    let obligacionesPatronales =await Cuenta.create({
+        str_cuenta_nombre: 'OBLIGACIONES PATRONALES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Obligaciones Patronales',
+        str_cuenta_codigo: '2.1.1.2',
+        int_cuenta_padre_id: cuentasPorPagar.int_cuenta_id
+    });
+    let obligacionesPorPagarSRI =await Cuenta.create({
+        str_cuenta_nombre: 'OBLIGACIONES POR PAGAR SRI',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Obligaciones por Pagar SRI',
+        str_cuenta_codigo: '2.1.1.3 ',
+        int_cuenta_padre_id: cuentasPorPagar.int_cuenta_id
+    });
+    let otrasRetenciones =await Cuenta.create({
+        str_cuenta_nombre: 'OTRAS RETENCIONES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Otras Retenciones',
+        str_cuenta_codigo: '2.1.1.4',
+        int_cuenta_padre_id: cuentasPorPagar.int_cuenta_id
+    });
+    let interesesObligaciones =await Cuenta.create({
+        str_cuenta_nombre: 'INTERESES DE OBLIGACIONES POR',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Intereses de Obligaciones por',
+        str_cuenta_codigo: '2.1.1.7',
+        int_cuenta_padre_id: cuentasPorPagar.int_cuenta_id
+    });
+    let anticipoClientes =await Cuenta.create({
+        str_cuenta_nombre: 'ANTICIPO DE CLIENTES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Anticipo de Clientes',
+        str_cuenta_codigo: '2.1.1.8',
+        int_cuenta_padre_id: cuentasPorPagar.int_cuenta_id
+    });
+
+
     let pasivoNoCorriente =await Cuenta.create({
         str_cuenta_nombre: 'PASIVO NO CORRIENTE',
         int_cliente_id: int_cliente_id,
         str_cuenta_descripcion: 'Cuentas de Pasivo No Corriente',
         str_cuenta_codigo: '2.2',
         int_cuenta_padre_id: pasivo.int_cuenta_id
+    });
+    let obligacionesLargoPlazo =await Cuenta.create({
+        str_cuenta_nombre: 'OBLIGACIONES A LARGO PLAZO',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Obligaciones a Largo Plazo',
+        str_cuenta_codigo: '2.2.1',
+        int_cuenta_padre_id: pasivoNoCorriente.int_cuenta_id
+    });
+    let otrasObligacionesLargoPlazo =await Cuenta.create({
+        str_cuenta_nombre: 'OTRAS OBLIGACIONES A LARGO PLAZO',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Otras Obligaciones a Largo Plazo',
+        str_cuenta_codigo: '2.2.1.2',
+        int_cuenta_padre_id: obligacionesLargoPlazo.int_cuenta_id
     });
 
     let capital =await Cuenta.create({
@@ -439,6 +548,27 @@ export const createCuentas = async (int_cliente_id) => {
         str_cuenta_descripcion: 'Cuentas de Capital',
         str_cuenta_codigo: '3.1',
         int_cuenta_padre_id: patrimonio.int_cuenta_id
+    });
+    let reservas =await Cuenta.create({
+        str_cuenta_nombre: 'RESERVAS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Reservas',
+        str_cuenta_codigo: '3.1.2',
+        int_cuenta_padre_id: capital.int_cuenta_id
+    });
+    let otrasReservasEstatutarias =await Cuenta.create({
+        str_cuenta_nombre: 'OTRAS RESERVAS ESTATUTARIAS',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Otras Reservas Estatutarias',
+        str_cuenta_codigo: '3.1.2.2',
+        int_cuenta_padre_id: reservas.int_cuenta_id
+    });
+    let otrosAportesPatrimoniales =await Cuenta.create({
+        str_cuenta_nombre: 'OTROS APORTES PATRIMONIALES',
+        int_cliente_id: int_cliente_id,
+        str_cuenta_descripcion: 'Cuentas de Otros Aportes Patrimoniales',
+        str_cuenta_codigo: '3.1.3',
+        int_cuenta_padre_id: capital.int_cuenta_id
     });
 
     let ingresosOperacionales =await Cuenta.create({
