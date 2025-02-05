@@ -31,7 +31,8 @@ export const crearCuenta = async (req, res) => {
         //verificar si la cuenta ya existe en la base de datos por codigo
         const cuentaExistente = await Cuenta.findOne({
             where: {
-                str_cuenta_codigo: data.str_cuenta_codigo
+                str_cuenta_codigo: data.str_cuenta_codigo,
+                int_cliente_id: data.int_cliente_id
             }
         });
         if(cuentaExistente){
