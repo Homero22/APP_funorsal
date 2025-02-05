@@ -87,7 +87,7 @@ export class LibroDiarioComponent implements OnInit {
 
   updateSums() {
     this.totalDebit = this.entries.controls.reduce(
-      (sum, entry) => sum + (Number(entry.get('debit')?.value) || 0),
+      (sum, entry) => sum + ( Number(entry.get('debit')?.value) || 0),
       0
     );
     console.log(this.totalDebit);
@@ -97,15 +97,20 @@ export class LibroDiarioComponent implements OnInit {
     );
     console.log(this.totalCredit);
       // Redondear a 2 decimales
-  this.totalDebit = Number(this.totalDebit.toFixed(2));
-  this.totalCredit = Number(this.totalCredit.toFixed(2));
-    this.cdr.detectChanges(); // Forzar detección de cambios
+    this.totalDebit = Number(this.totalDebit.toFixed(2));
+    this.totalCredit = Number(this.totalCredit.toFixed(2));
+    this.isBalanced;
   }
 
   get isBalanced(): boolean {
-
-    return Number(this.totalDebit) == Number(this.totalCredit);
+    return Number(this.totalDebit) === Number(this.totalCredit);
   }
+
+  //funcion para verificar validez del formulario
+    isValid(index: number): boolean {
+        const entry = this.entries.at(index);
+        return entry.valid && (entry.get('debit')?.value || entry.get('credit')?.value);
+    }
 
   onSubmit() {
     if (this.journalForm.valid && this.isBalanced) {
