@@ -11,6 +11,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import Swal from 'sweetalert2';
 import { ClienteService } from 'src/app/core/services/cliente.service';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class AgregarCuentaComponent implements OnInit {
   constructor(
     private srvCuentas: CuentasService,
     private srvCliente: ClienteService,
+     public dialog: MatDialog,
   ) {
     this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
       this.informacionQuesera = cliente;
@@ -69,6 +71,13 @@ export class AgregarCuentaComponent implements OnInit {
   return códigos.includes(codigo) || this.infoCuentaSeleccionada.str_cuenta_codigo === codigo;
   }
 
+  
+  cuentasConPadreIdIngresada(cuenta: Cuenta) {
+    return this.cuentas.filter(
+      (c) => c.int_cuenta_padre_id === cuenta.int_cuenta_id
+    );
+  }
+
 
 
   agregarCuenta() {
@@ -96,6 +105,9 @@ export class AgregarCuentaComponent implements OnInit {
             text: res.message,
           });
           this.srvCuentas.obtenerCuentasDelCliente(this.informacionQuesera.int_cliente_id);
+          //cerrar modal
+            this.dialog.closeAll();
+
         }else{
           Swal.fire({
             icon: 'error',

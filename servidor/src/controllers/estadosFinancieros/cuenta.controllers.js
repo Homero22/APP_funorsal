@@ -28,7 +28,20 @@ export const crearCuenta = async (req, res) => {
     try {
         
         const data = req.body;
-        console.log(data);
+        //verificar si la cuenta ya existe en la base de datos por codigo
+        const cuentaExistente = await Cuenta.findOne({
+            where: {
+                str_cuenta_codigo: data.str_cuenta_codigo
+            }
+        });
+        if(cuentaExistente){
+            return res.json({
+                status: false,
+                message: "Ya existe una cuenta con ese código",
+                body: []
+            });
+        }
+   
         const cuenta = await Cuenta.create(data);
         if(!cuenta){
             return res.json({
