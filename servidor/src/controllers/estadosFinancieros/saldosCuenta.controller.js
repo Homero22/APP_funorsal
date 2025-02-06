@@ -92,6 +92,7 @@ export const editarSaldoMensualCuenta = async (req, res) => {
         });
 
         return res.json({
+            status: true,
             message: 'Saldo mensual de cuenta actualizado exitosamente',
             data: saldoMensualCuenta
         });
@@ -127,7 +128,7 @@ export const obtenerSaldoMensualCuenta = async (req, res) => {
         return res.json({
             status: true,
             message: 'Saldo mensual de cuenta encontrado',
-            data: saldoMensualCuenta
+            body: saldoMensualCuenta
         });
     } catch (error) {
         console.log(error);

@@ -41,6 +41,12 @@ export class CuentasService {
   agregarSaldoMensual(saldo: any): Observable<any> {
     return this.http.post(`${this.url_saldo_cuenta}`, saldo);
   }
+  editarSaldoMensual(int_saldo_mensual_cuenta_id:number,saldo: any): Observable<any> {
+    return this.http.put(`${this.url_saldo_cuenta}/${int_saldo_mensual_cuenta_id}`, saldo);
+  }
+  obtenerSaldoMensual( data: any): Observable<any> {
+    return this.http.get(`${this.url_saldo_cuenta}/${data.int_cuenta_id} / ${data.mes} / ${data.anio}`);
+  }
 
   setCuentasHijasByPadreId(cuentasHijasByPadreId: Cuenta[]) {
     this.cuentasHijasByPadreId$.next(cuentasHijasByPadreId);
