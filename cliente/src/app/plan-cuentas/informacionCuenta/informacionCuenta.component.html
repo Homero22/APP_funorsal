@@ -1,11 +1,22 @@
 <div class="loader-container" *ngIf="isLoading">
   <div class="loader"></div>
 </div>
-<!-- Botón para mostrar u ocultar el formulario -->
-<button (click)="toggleFormulario()" class="">
-    {{ mostrarFormulario ? 'Ocultar Formulario' : 'Agregar Saldo' }}
-</button>
-<div class="container" *ngIf="!isLoading && !mostrarFormulario">
+<div class="botones-info-cuenta">
+
+    <!-- Botón para mostrar u ocultar el formulario -->
+    <button (click)="toggleFormulario()" class="">
+        {{ mostrarFormulario ? 'Ocultar Formulario' : 'Agregar Saldo' }}
+    </button>
+    <!-- Boton para editar un saldo mostrando un formulario -->
+    <button (click)="toggleEditarSaldo()" class="">
+        {{ editarSaldo ? 'Ocultar Formulario' : 'Editar un Saldo' }}
+    </button>
+    <!-- Boton para buscar un saldo -->
+    <button (click)="toggleBuscarSaldo()" class="">
+        {{ buscarSaldof ? 'Ocultar Formulario' : 'Buscar un Saldo' }}
+    </button>
+</div>
+<div class="container" *ngIf="!isLoading && !mostrarFormulario && !editarSaldo && !buscarSaldof">
   <mat-form-field>
     <mat-label>Enter a date range</mat-label>
     <mat-date-range-input [rangePicker]="picker">
@@ -115,5 +126,51 @@
     <input id="saldoAnteriorCredito" type="number" formControlName="dec_saldo_anterior_credito" min="0">
   
     <button type="submit" [disabled]="saldoForm.invalid">Agregar Saldo</button>
+</form>
+
+<!-- Buscar un saldo de cuenta por id cuenta, anio y mes -->
+<form [formGroup]="buscarSaldoForm" (ngSubmit)="buscarSaldo()" *ngIf="buscarSaldof">
+    <label for="cuenta">Cuenta ID:</label>
+    <input id="cuenta" type="number" formControlName="int_cuenta_id" class="readonly" readonly>
+  
+    <label for="mes">Mes:</label>
+    <input id="mes" type="number" formControlName="mes" min="1" max="12">
+  
+    <label for="anio">Año:</label>
+    <input id="anio" type="number" formControlName="anio" min="1900" max="2099">
+  
+    <button type="submit" [disabled]="buscarSaldoForm.invalid">Buscar Saldo</button>
+</form>
+
+
+<!-- Editar un saldo de un mes y año especifico -->
+
+<div *ngIf="editarSaldo">
+  <form [formGroup]="saldoForm" (ngSubmit)="editarSaldoF()">
+    <label for="cuenta">Cuenta ID:</label>
+    <input id="cuenta" type="number" formControlName="int_cuenta_id" class="readonly" readonly>
+  
+    <label for="mes">¿En qué mes está el saldo?:</label>
+    <input id="mes" type="number" formControlName="mes" min="1" max="12">
+  
+    <label for="anio">¿De qué año es el saldo?</label>
+    <input id="anio" type="number" formControlName="anio" min="1900" max="2099">
+  
+    <label for="saldoDeudora">Nuevo Saldo Deudora:</label>
+    <input id="saldoDeudora" type="number" formControlName="dec_saldo_deudora" min="0">
+  
+    <label for="saldoAcreedora">Nuevo Saldo Acreedora:</label>
+    <input id="saldoAcreedora" type="number" formControlName="dec_saldo_acreedora" min="0">
+  
+    <label for="saldoAnteriorDebito"> NUevo Saldo Anterior Débito:</label>
+    <input id="saldoAnteriorDebito" type="number" formControlName="dec_saldo_anterior_debito" min="0">
+  
+    <label for="saldoAnteriorCredito">Nuevo Saldo Anterior Crédito:</label>
+    <input id="saldoAnteriorCredito" type="number" formControlName="dec_saldo_anterior_credito" min="0">
+  
+    <button type="submit" [disabled]="saldoForm.invalid">Editar Saldo del mes y año seleccionado</button>
   </form>
+
+
+</div>
   
