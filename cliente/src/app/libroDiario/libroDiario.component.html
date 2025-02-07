@@ -82,7 +82,7 @@
           <p>Créditos: {{ totalCredit | currency }}</p>
           <p *ngIf="!isBalanced" class="error-text">Las sumas de débitos y créditos no coinciden.</p>
         </div>
-        <button type="submit" [disabled]="!isBalanced || journalForm.invalid">Guardar</button>
+        <button type="submit" [disabled]="!isBalanced">Guardar</button>
       </form>
     </div>
   </div>
