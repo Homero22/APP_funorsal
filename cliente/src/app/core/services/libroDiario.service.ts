@@ -32,6 +32,9 @@ export class libroDiarioService {
   createLibroDiario(libroDiario: any) {
     return this.http.post<LibroDiario>(`${this.url}`, libroDiario);
   }
+  editarLibroDiario(libroDiario: any, id: number) {
+    return this.http.put<LibroDiario>(`${this.url}/${id}`, libroDiario);
+  }
 
   //obtener los libros diarios de un cliente
   getLibrosDiarios(int_cliente_id: number,limit: number, offset: number, mes?: number, anio?: number){

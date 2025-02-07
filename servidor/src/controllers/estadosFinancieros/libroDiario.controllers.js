@@ -18,18 +18,7 @@ const crearDetalleDiario = async (req, res) => {
       int_cliente_id: infoLibroDiario.idCliente,
 
     });
-    //recorre el array de detalles y los inserta en la tabla detalle diario
-    /**
-         * entradas: [
-            { code: '2', account: 'PASIVO', debit: 20, credit: 0 },
-            {
-            code: '1.2',
-            account: 'ACTIVO NO CORRIENTE',
-            debit: 0,
-            credit: 20
-            }
-        ],
-         */
+
     let tipo = "";
     let monto;
 
@@ -126,7 +115,7 @@ const obtenerLibroDiarioByIdCliente = async (req, res) => {
       });
     }
 
-
+    console.log(libroDiario.rows);
 
     return res.json({
       status: true,
@@ -143,7 +132,94 @@ const obtenerLibroDiarioByIdCliente = async (req, res) => {
   }
 };
 
+const editarDetalleDiario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const infoLibroDiario = req.body;
+    console.log(infoLibroDiario);
+    /** lo que llega en infoLibroDiario
+     * {
+  int_libro_diario_id: 5,
+  dt_libro_diario_fecha: '2025-02-07T16:38:58.181Z',
+  int_cliente_id: 1,
+  str_libro_diario_descripcion: null,
+  detalle_libro_diarios: [
+    {
+      int_detalle_libro_diario_id: 9,
+      int_libro_diario_id: 5,
+      str_detalle_libro_diario_nombre_cuenta: 'ACTIVO INTANGIBLE',
+      str_detalle_libro_diario_codigo_cuenta: '1.2.2',
+      int_cuenta_id: 17,
+      str_detalle_libro_diario_tipo: 'DEBE',
+      dc_detalle_libro_diario_monto: 14,
+      dt_fecha_creacion: '2025-02-07T16:40:20.644Z',
+      dt_fecha_actualizacion: '2025-02-07T16:40:20.644Z'
+    },
+    {
+      int_detalle_libro_diario_id: 10,
+      int_libro_diario_id: 5,
+      str_detalle_libro_diario_nombre_cuenta: 'COOPERATIVA DE AHORRO CRÉDITO',
+      str_detalle_libro_diario_codigo_cuenta: '1.1.1.2',
+      int_cuenta_id: 8,
+      str_detalle_libro_diario_tipo: 'HABER',
+      dc_detalle_libro_diario_monto: 14,
+      dt_fecha_creacion: '2025-02-07T16:40:20.645Z',
+      dt_fecha_actualizacion: '2025-02-07T16:40:20.645Z'
+    }
+  ]
+}
+     */
+   // Buscar y actualizar el registro en LibroDiario
+    const libroDiario = await LibroDiario.findByPk(id);
+    if (!libroDiario) {
+      return res.status(404).json({
+        status: false,
+        message: "Libro Diario no encontrado",
+      });
+    }
+
+    await libroDiario.update({
+      dt_libro_diario_fecha: infoLibroDiario.fecha,
+      int_cliente_id: infoLibroDiario.idCliente,
+    });
+
+    // Eliminar detalles anteriores
+    await DetalleDiario.destroy({
+      where: { int_libro_diario_id: id },
+    });
+
+    // Insertar los nuevos detalles
+    let tipo = "";
+    let monto;
+
+    for (const element of infoLibroDiario.detalle_libro_diarios) {
+      await DetalleDiario.create({
+        int_libro_diario_id: infoLibroDiario.int_libro_diario_id,
+        str_detalle_libro_diario_nombre_cuenta: element.str_detalle_libro_diario_nombre_cuenta,
+        str_detalle_libro_diario_codigo_cuenta: element.str_detalle_libro_diario_codigo_cuenta,
+        int_cuenta_id: element.int_cuenta_id,
+        str_detalle_libro_diario_tipo:element.str_detalle_libro_diario_tipo,
+        dc_detalle_libro_diario_monto: element.dc_detalle_libro_diario_monto,
+      });
+    }
+
+    return res.json({
+      status: true,
+      message: "Detalle diario actualizado correctamente",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: true,
+      message: "Error al actualizar el detalle diario",
+      data: {},
+    });
+  }
+};
+
+
 export default {
   crearDetalleDiario,
   obtenerLibroDiarioByIdCliente,
+  editarDetalleDiario
 };

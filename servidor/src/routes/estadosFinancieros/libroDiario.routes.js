@@ -6,6 +6,7 @@ const router = Router();
 
 router.post("/", libroDiarioController.crearDetalleDiario);
 router.get("/cliente/:idCliente",libroDiarioController.obtenerLibroDiarioByIdCliente)
+router.put("/:id", libroDiarioController.editarDetalleDiario);
 
 
 export default router;
