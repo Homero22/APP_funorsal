@@ -38,7 +38,6 @@
             class="mat-elevation-z8 journal-table"
             *ngIf="libroDiarioSeleccionado === null"
         >
-            
             <ng-container matColumnDef="int_libro_diario_id">
                 <th mat-header-cell *matHeaderCellDef>ID</th>
                 <td mat-cell *matCellDef="let element">
@@ -46,22 +45,26 @@
                 </td>
             </ng-container>
 
-         
             <ng-container matColumnDef="dt_libro_diario_fecha">
                 <th mat-header-cell *matHeaderCellDef>Fecha</th>
                 <td mat-cell *matCellDef="let element">
                     {{ element.dt_libro_diario_fecha | date : "shortDate" }}
                 </td>
             </ng-container>
-       
+
             <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
                 <td mat-cell *matCellDef="let element">
-                  <button mat-button color="primary" (click)="toggleEditar(element)">Editar</button>
+                    <button
+                        mat-button
+                        color="primary"
+                        (click)="toggleEditar(element)"
+                    >
+                        Editar
+                    </button>
                 </td>
             </ng-container>
 
-          
             <ng-container matColumnDef="detalle_libro_diarios">
                 <th mat-header-cell *matHeaderCellDef>Detalles</th>
                 <td mat-cell *matCellDef="let element">
@@ -106,42 +109,145 @@
                 </td>
             </ng-container>
 
-
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns">
-            </tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
         <div *ngIf="libroDiarioSeleccionado" class="edit-form">
-            <h3>Editando Libro Diario con ID {{libroDiarioSeleccionado.int_libro_diario_id }} con Fecha {{ libroDiarioSeleccionado.dt_libro_diario_fecha | date : "shortDate" }}</h3>
+            <h3>
+                Editando Libro Diario con ID
+                {{ libroDiarioSeleccionado.int_libro_diario_id }} con Fecha
+                {{
+                    libroDiarioSeleccionado.dt_libro_diario_fecha
+                        | date : "shortDate"
+                }}
+            </h3>
+            <!-- Mostrar el Total DEBE y HABER -->
+            <div class="balance-info">
+                <p>
+                    <strong>Total DEBE:</strong>
+                    {{ totalDebe | number : "1.2-2" }}
+                </p>
+                <p>
+                    <strong>Total HABER:</strong>
+                    {{ totalHaber | number : "1.2-2" }}
+                </p>
+                <p
+                    [ngClass]="{
+                        'balance-ok': totalDebe === totalHaber,
+                        'balance-error': totalDebe !== totalHaber
+                    }"
+                >
+                    <strong>Balance: </strong>
+                    {{
+                        totalDebe === totalHaber
+                            ? "Balanceado ✅"
+                            : "Desbalanceado ❌"
+                    }}
+                </p>
+            </div>
             <table class="details-table">
-                <tr *ngFor="let detalle of libroDiarioSeleccionado.detalle_libro_diarios">
-                    <td><input matInput [(ngModel)]="detalle.str_detalle_libro_diario_nombre_cuenta" readonly="" /></td>
-                    <td><input matInput [(ngModel)]="detalle.str_detalle_libro_diario_codigo_cuenta" readonly="" /></td>
+                <tr
+                    *ngFor="
+                        let detalle of libroDiarioSeleccionado.detalle_libro_diarios
+                    "
+                >
+                    <td>
+                        <textarea
+                            [(ngModel)]="
+                                detalle.str_detalle_libro_diario_nombre_cuenta
+                            "
+                            readonly=""
+                        ></textarea>
+                    </td>
 
-                    <td  class="details-cell">
-                        <div *ngIf="detalle.str_detalle_libro_diario_tipo === 'DEBE'">
-                            <input matInput [(ngModel)]="detalle.dc_detalle_libro_diario_monto" type="number" />
+                    <td>
+                        <textarea
+                            [(ngModel)]="
+                                detalle.str_detalle_libro_diario_codigo_cuenta
+                            "
+                            readonly=""
+                        >
+                        </textarea>
+                    </td>
+
+                    <td class="details-cell">
+                        <div
+                            *ngIf="
+                                detalle.str_detalle_libro_diario_tipo === 'DEBE'
+                            "
+                        >
+                            <input
+                                matInput
+                                [(ngModel)]="
+                                    detalle.dc_detalle_libro_diario_monto
+                                "
+                                (ngModelChange)="calcularTotales()"
+                                type="number"
+                            />
+                        </div>
+                        <!-- No pintar si ya tiene el monto en debe -->
+                        <div
+                            *ngIf="
+                                detalle.str_detalle_libro_diario_tipo !== 'DEBE'
+                            "
+                        >
+                            <input
+                                matInput
+                                [(ngModel)]="detalle.nuevoSaldoDebe"
+                                (ngModelChange)="calcularTotales()"
+                                type="number"
+                                placeholder="Agregar saldo en DEBE"
+                            />
                         </div>
                     </td>
                     <td class="details-cell">
-                        <div *ngIf="detalle.str_detalle_libro_diario_tipo === 'HABER'">
-                            <input matInput [(ngModel)]="detalle.dc_detalle_libro_diario_monto" type="number" />
+                        <div
+                            *ngIf="
+                                detalle.str_detalle_libro_diario_tipo ===
+                                'HABER'
+                            "
+                        >
+                            <input
+                                matInput
+                                [(ngModel)]="
+                                    detalle.dc_detalle_libro_diario_monto
+                                "
+                                (ngModelChange)="calcularTotales()"
+                                type="number"
+                            />
+                        </div>
+                        <div
+                            *ngIf="
+                                detalle.str_detalle_libro_diario_tipo !==
+                                'HABER'
+                            "
+                        >
+                            <input
+                                matInput
+                                [(ngModel)]="detalle.nuevoSaldoHaber"
+                                type="number"
+                                (ngModelChange)="calcularTotales()"
+                                placeholder="Agregar saldo en HABER"
+                            />
                         </div>
                     </td>
                 </tr>
             </table>
-            <button mat-raised-button  color="primary" (click)="guardarEdicion()">Guardar</button>
-            <button mat-raised-button color="secundary"  (click)="cancelarEdicion()">Cancelar</button>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="guardarEdicion()"
+            >
+                Guardar
+            </button>
+            <button
+                mat-raised-button
+                color="secundary"
+                (click)="cancelarEdicion()"
+            >
+                Cancelar
+            </button>
         </div>
-
-
-
-
     </div>
-</div> 
-
-
-
- 
-
+</div>

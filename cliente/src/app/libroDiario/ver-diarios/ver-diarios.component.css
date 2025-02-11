@@ -53,5 +53,20 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+  .balance-info {
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.balance-ok {
+    color: green;
+    font-weight: bold;
+}
+
+.balance-error {
+    color: red;
+    font-weight: bold;
+}
+
+
   
