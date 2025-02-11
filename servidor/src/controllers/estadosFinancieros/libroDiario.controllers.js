@@ -26,19 +26,28 @@ const crearDetalleDiario = async (req, res) => {
       if (element.debit > 0) {
         tipo = "DEBE";
         monto = element.debit;
+        const detalleDiario = await DetalleDiario.create({
+          int_libro_diario_id: libroDiarioId.int_libro_diario_id,
+          str_detalle_libro_diario_nombre_cuenta: element.account,
+          str_detalle_libro_diario_codigo_cuenta: element.code,
+          int_cuenta_id: element.id,
+          str_detalle_libro_diario_tipo: tipo,
+          dc_detalle_libro_diario_monto: monto,
+        });
       }
       if (element.credit > 0) {
         tipo = "HABER";
         monto = element.credit;
+        const detalleDiario = await DetalleDiario.create({
+          int_libro_diario_id: libroDiarioId.int_libro_diario_id,
+          str_detalle_libro_diario_nombre_cuenta: element.account,
+          str_detalle_libro_diario_codigo_cuenta: element.code,
+          int_cuenta_id: element.id,
+          str_detalle_libro_diario_tipo: tipo,
+          dc_detalle_libro_diario_monto: monto,
+        });
       }
-      const detalleDiario = await DetalleDiario.create({
-        int_libro_diario_id: libroDiarioId.int_libro_diario_id,
-        str_detalle_libro_diario_nombre_cuenta: element.account,
-        str_detalle_libro_diario_codigo_cuenta: element.code,
-        int_cuenta_id: element.id,
-        str_detalle_libro_diario_tipo: tipo,
-        dc_detalle_libro_diario_monto: monto,
-      });
+
     });
 
     return res.json({
@@ -136,39 +145,7 @@ const editarDetalleDiario = async (req, res) => {
   try {
     const { id } = req.params;
     const infoLibroDiario = req.body;
-    console.log(infoLibroDiario);
-    /** lo que llega en infoLibroDiario
-     * {
-  int_libro_diario_id: 5,
-  dt_libro_diario_fecha: '2025-02-07T16:38:58.181Z',
-  int_cliente_id: 1,
-  str_libro_diario_descripcion: null,
-  detalle_libro_diarios: [
-    {
-      int_detalle_libro_diario_id: 9,
-      int_libro_diario_id: 5,
-      str_detalle_libro_diario_nombre_cuenta: 'ACTIVO INTANGIBLE',
-      str_detalle_libro_diario_codigo_cuenta: '1.2.2',
-      int_cuenta_id: 17,
-      str_detalle_libro_diario_tipo: 'DEBE',
-      dc_detalle_libro_diario_monto: 14,
-      dt_fecha_creacion: '2025-02-07T16:40:20.644Z',
-      dt_fecha_actualizacion: '2025-02-07T16:40:20.644Z'
-    },
-    {
-      int_detalle_libro_diario_id: 10,
-      int_libro_diario_id: 5,
-      str_detalle_libro_diario_nombre_cuenta: 'COOPERATIVA DE AHORRO CRÉDITO',
-      str_detalle_libro_diario_codigo_cuenta: '1.1.1.2',
-      int_cuenta_id: 8,
-      str_detalle_libro_diario_tipo: 'HABER',
-      dc_detalle_libro_diario_monto: 14,
-      dt_fecha_creacion: '2025-02-07T16:40:20.645Z',
-      dt_fecha_actualizacion: '2025-02-07T16:40:20.645Z'
-    }
-  ]
-}
-     */
+
    // Buscar y actualizar el registro en LibroDiario
     const libroDiario = await LibroDiario.findByPk(id);
     if (!libroDiario) {
@@ -201,6 +178,29 @@ const editarDetalleDiario = async (req, res) => {
         str_detalle_libro_diario_tipo:element.str_detalle_libro_diario_tipo,
         dc_detalle_libro_diario_monto: element.dc_detalle_libro_diario_monto,
       });
+      // Verificar si hay un nuevo saldo en DEBE
+      if (element.nuevoSaldoDebe !== 0) {
+        await DetalleDiario.create({
+          int_libro_diario_id: infoLibroDiario.int_libro_diario_id,
+          str_detalle_libro_diario_nombre_cuenta: element.str_detalle_libro_diario_nombre_cuenta,
+          str_detalle_libro_diario_codigo_cuenta: element.str_detalle_libro_diario_codigo_cuenta,
+          int_cuenta_id: element.int_cuenta_id,
+          str_detalle_libro_diario_tipo: 'DEBE',  // Especificamos que es un "DEBE"
+          dc_detalle_libro_diario_monto: element.nuevoSaldoDebe,
+        });
+      }
+
+      // Verificar si hay un nuevo saldo en HABER
+      if (element.nuevoSaldoHaber !== 0) {
+        await DetalleDiario.create({
+          int_libro_diario_id: infoLibroDiario.int_libro_diario_id,
+          str_detalle_libro_diario_nombre_cuenta: element.str_detalle_libro_diario_nombre_cuenta,
+          str_detalle_libro_diario_codigo_cuenta: element.str_detalle_libro_diario_codigo_cuenta,
+          int_cuenta_id: element.int_cuenta_id,
+          str_detalle_libro_diario_tipo: 'HABER',  // Especificamos que es un "HABER"
+          dc_detalle_libro_diario_monto: element.nuevoSaldoHaber,
+        });
+      }
     }
 
     return res.json({
