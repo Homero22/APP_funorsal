@@ -329,14 +329,14 @@ export const createCuentas = async (int_cliente_id) => {
             str_cuenta_nombre: 'INGRESOS',
             int_cliente_id: int_cliente_id,
             str_cuenta_descripcion: 'Cuentas de Ingresos',
-            str_cuenta_codigo: '4',
+            str_cuenta_codigo: '5',
             int_cuenta_padre_id: null
         },
         {
             str_cuenta_nombre: 'GASTOS',
             int_cliente_id: int_cliente_id,
             str_cuenta_descripcion: 'Cuentas de Egresos',
-            str_cuenta_codigo: '5',
+            str_cuenta_codigo: '4',
             int_cuenta_padre_id: null
         }
 
@@ -571,52 +571,52 @@ export const createCuentas = async (int_cliente_id) => {
         int_cuenta_padre_id: capital.int_cuenta_id
     });
 
-    let ingresosOperacionales =await Cuenta.create({
-        str_cuenta_nombre: 'INGRESOS OPERACIONALES',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Ingresos Operacionales',
-        str_cuenta_codigo: '4.1',
-        int_cuenta_padre_id: ingresos.int_cuenta_id
-    });
+    // let ingresosOperacionales =await Cuenta.create({
+    //     str_cuenta_nombre: 'INGRESOS OPERACIONALES',
+    //     int_cliente_id: int_cliente_id,
+    //     str_cuenta_descripcion: 'Cuentas de Ingresos Operacionales',
+    //     str_cuenta_codigo: '4.1',
+    //     int_cuenta_padre_id: ingresos.int_cuenta_id
+    // });
 
-    let ingresosNoOperacionales =await Cuenta.create({
-        str_cuenta_nombre: 'INGRESOS NO OPERACIONALES',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Ingresos No Operacionales',
-        str_cuenta_codigo: '4.2',
-        int_cuenta_padre_id: ingresos.int_cuenta_id
-    });
+    // let ingresosNoOperacionales =await Cuenta.create({
+    //     str_cuenta_nombre: 'INGRESOS NO OPERACIONALES',
+    //     int_cliente_id: int_cliente_id,
+    //     str_cuenta_descripcion: 'Cuentas de Ingresos No Operacionales',
+    //     str_cuenta_codigo: '4.2',
+    //     int_cuenta_padre_id: ingresos.int_cuenta_id
+    // });
 
-    let gastosYCostosOperacionales =await Cuenta.create({
-        str_cuenta_nombre: 'GASTOS Y COSTOS OPERACIONALES',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Gastos y Costos Operacionales',
-        str_cuenta_codigo: '5.1',
-        int_cuenta_padre_id: gastos.int_cuenta_id
-    });
-    let gastosYCostosDeVenta =await Cuenta.create({
-        str_cuenta_nombre: 'GASTOS Y COSTOS DE VENTA',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Gastos y Costos de Venta',
-        str_cuenta_codigo: '5.1.1',
-        int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
-    });
+    // let gastosYCostosOperacionales =await Cuenta.create({
+    //     str_cuenta_nombre: 'GASTOS Y COSTOS OPERACIONALES',
+    //     int_cliente_id: int_cliente_id,
+    //     str_cuenta_descripcion: 'Cuentas de Gastos y Costos Operacionales',
+    //     str_cuenta_codigo: '5.1',
+    //     int_cuenta_padre_id: gastos.int_cuenta_id
+    // });
+    // let gastosYCostosDeVenta =await Cuenta.create({
+    //     str_cuenta_nombre: 'GASTOS Y COSTOS DE VENTA',
+    //     int_cliente_id: int_cliente_id,
+    //     str_cuenta_descripcion: 'Cuentas de Gastos y Costos de Venta',
+    //     str_cuenta_codigo: '5.1.1',
+    //     int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
+    // });
 
-    let gastosAdministrativos =await Cuenta.create({
-        str_cuenta_nombre: 'GASTOS ADMINISTRATIVOS',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Gastos Administrativos',
-        str_cuenta_codigo: '5.1.2',
-        int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
-    });
+    // let gastosAdministrativos =await Cuenta.create({
+    //     str_cuenta_nombre: 'GASTOS ADMINISTRATIVOS',
+    //     int_cliente_id: int_cliente_id,
+    //     str_cuenta_descripcion: 'Cuentas de Gastos Administrativos',
+    //     str_cuenta_codigo: '5.1.2',
+    //     int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
+    // });
 
-    let gastosFinancieros =await Cuenta.create({
-        str_cuenta_nombre: 'GASTOS FINANCIEROS',
-        int_cliente_id: int_cliente_id,
-        str_cuenta_descripcion: 'Cuentas de Gastos Financieros',
-        str_cuenta_codigo: '5.1.3',
-        int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
-    });
+    // let gastosFinancieros =await Cuenta.create({
+    //     str_cuenta_nombre: 'GASTOS FINANCIEROS',
+    //     int_cliente_id: int_cliente_id,
+    //     str_cuenta_descripcion: 'Cuentas de Gastos Financieros',
+    //     str_cuenta_codigo: '5.1.3',
+    //     int_cuenta_padre_id: gastosYCostosOperacionales.int_cuenta_id
+    // });
     
 }
 

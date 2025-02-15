@@ -20,13 +20,10 @@ const crearBalanceComprobacion = async (req, res) => {
     fechaInicio = new Date(fechaInicio);
     fechaFin = new Date(fechaFin);
 
-
-
     //para crear un reporte de balance de comprobacion se necesita que las fechas sean del mismo mes y año
     if (
       fechaInicio.getMonth() !== fechaFin.getMonth() ||
       fechaInicio.getFullYear() !== fechaFin.getFullYear()
-
     ) {
       return res.status(400).json({
         status: false,
@@ -36,8 +33,6 @@ const crearBalanceComprobacion = async (req, res) => {
 
     const mesInicio = fechaInicio.getMonth() + 1;
     const anioInicio = fechaInicio.getFullYear();
-    console.log("Mes inicio: ", mesInicio);
-    console.log("Año inicio: ", anioInicio);
 
     let mesAnterior = 0;
     let anioAnterior = 0;
@@ -50,8 +45,6 @@ const crearBalanceComprobacion = async (req, res) => {
       anioAnterior = anioInicio;
     }
 
-    
-
     const cliente = await Cliente.findOne({
       where: { int_cliente_id: idCliente },
     });
@@ -63,10 +56,11 @@ const crearBalanceComprobacion = async (req, res) => {
       });
     }
     const fechaInicioLocal = moment.tz(fechaInicio, "America/Bogota").toDate();
-    const fechaFinLocal = moment.tz(fechaFin, "America/Bogota").endOf("day").toDate();
+    const fechaFinLocal = moment
+      .tz(fechaFin, "America/Bogota")
+      .endOf("day")
+      .toDate();
 
-    console.log("Fecha inicio:2222 ", fechaInicio);
-    console.log("Fecha fin:222 ", fechaFin);
     const libroDiario = await LibroDiario.findAll({
       where: {
         int_cliente_id: idCliente,
@@ -87,7 +81,6 @@ const crearBalanceComprobacion = async (req, res) => {
         body: null,
       });
     }
-    console.log("Cantidad: ", libroDiario.length);
 
     let activos = { debe: 0, haber: 0 };
     let pasivos = { debe: 0, haber: 0 };
@@ -108,14 +101,13 @@ const crearBalanceComprobacion = async (req, res) => {
         1: "ACTIVOS",
         2: "PASIVOS",
         3: "PATRIMONIO",
-        4: "INGRESOS",
-        5: "GASTOS",
+        5: "INGRESOS",
+        4: "GASTOS",
       };
       return tipos[codigoCuenta[0]];
     };
 
     //objeto vacio para guardar los saldos anteriores de cada cuenta
-
 
     // for (const element of libroDiario) {
     //   for (const detalle of element.detalle_libro_diarios) {
@@ -141,9 +133,8 @@ const crearBalanceComprobacion = async (req, res) => {
     //         saldo_anterior_credito = saldoAnterior.dec_saldo_anterior_credito;
     //     }
 
-
     //     const tipo = tipoCuenta(detalle.str_detalle_libro_diario_codigo_cuenta);
-        
+
     //     const monto = parseFloat(detalle.dc_detalle_libro_diario_monto);
 
     //     if (detalle.str_detalle_libro_diario_tipo === "DEBE") {
@@ -151,7 +142,7 @@ const crearBalanceComprobacion = async (req, res) => {
     //     } else {
     //       totalCreditos += monto;
     //     }
-    //     //voy calculando el saldo actual de cada cuenta 
+    //     //voy calculando el saldo actual de cada cuenta
 
     //     if (tipo === "ACTIVOS") {
     //       if (detalle.str_detalle_libro_diario_tipo === "DEBE") {
@@ -186,7 +177,6 @@ const crearBalanceComprobacion = async (req, res) => {
     //       cuentasActivos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_deudora = cuentasActivos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_anterior_debito + cuentasActivos[detalle.str_detalle_libro_diario_codigo_cuenta].debe - cuentasActivos[detalle.str_detalle_libro_diario_codigo_cuenta].haber;
 
     //       console.log("Saldo deudora: ", cuentasActivos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_deudora);
-      
 
     //     } else if (tipo === "PASIVOS") {
     //       if (detalle.str_detalle_libro_diario_tipo === "DEBE") {
@@ -217,7 +207,7 @@ const crearBalanceComprobacion = async (req, res) => {
     //           detalle.str_detalle_libro_diario_codigo_cuenta
     //         ].haber += monto;
     //       }
-          
+
     //       cuentasPasivos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_acreedora = cuentasPasivos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_anterior_credito + cuentasPasivos[detalle.str_detalle_libro_diario_codigo_cuenta].haber - cuentasPasivos[detalle.str_detalle_libro_diario_codigo_cuenta].debe;
 
     //     } else if (tipo === "PATRIMONIO") {
@@ -253,7 +243,6 @@ const crearBalanceComprobacion = async (req, res) => {
     //         ].haber += monto;
     //       }
     //       cuentasPatrimonio[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_acreedora = cuentasPatrimonio[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_anterior_credito + cuentasPatrimonio[detalle.str_detalle_libro_diario_codigo_cuenta].haber
-
 
     //     } else if (tipo === "INGRESOS") {
     //       if (detalle.str_detalle_libro_diario_tipo === "DEBE") {
@@ -319,122 +308,124 @@ const crearBalanceComprobacion = async (req, res) => {
     //       }
     //       cuentasGastos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_deudora = cuentasGastos[detalle.str_detalle_libro_diario_codigo_cuenta].saldo_anterior_debito + cuentasGastos[detalle.str_detalle_libro_diario_codigo_cuenta].debe
 
-      
     //     }
     //   }
     // }
 
     // Cargar todos los saldos mensuales en una sola consulta para evitar múltiples queries dentro del bucle
-const saldosAnteriores = await SaldoMensualCuenta.findAll({
-  where: {
-    mes: mesAnterior,
-    anio: anioAnterior
-  }
-});
+    const saldosAnteriores = await SaldoMensualCuenta.findAll({
+      where: {
+        mes: mesAnterior,
+        anio: anioAnterior,
+      },
+    });
 
-// Convertir los resultados en un objeto para acceso rápido
-const saldosMap = {};
-saldosAnteriores.forEach(saldo => {
-  saldosMap[saldo.int_cuenta_id] = saldo;
-});
+    // Convertir los resultados en un objeto para acceso rápido
+    const saldosMap = {};
+    saldosAnteriores.forEach((saldo) => {
+      saldosMap[saldo.int_cuenta_id] = saldo;
+    });
 
+    for (const element of libroDiario) {
+      for (const detalle of element.detalle_libro_diarios) {
+        const cuentaId = detalle.int_cuenta_id;
+        const saldoAnterior = saldosMap[cuentaId] || {
+          dec_saldo_deudora: 0,
+          dec_saldo_acreedora: 0,
+          dec_saldo_anterior_debito: 0,
+          dec_saldo_anterior_credito: 0,
+        };
 
+        // Definir tipo de cuenta
+        const tipo = tipoCuenta(detalle.str_detalle_libro_diario_codigo_cuenta);
+        const monto = parseFloat(detalle.dc_detalle_libro_diario_monto);
+        const esDebe = detalle.str_detalle_libro_diario_tipo === "DEBE";
 
+        // Determinar en qué objeto almacenar la cuenta
+        let cuentasTipo;
+        if (tipo === "ACTIVOS") cuentasTipo = cuentasActivos;
+        else if (tipo === "PASIVOS") cuentasTipo = cuentasPasivos;
+        else if (tipo === "PATRIMONIO") cuentasTipo = cuentasPatrimonio;
+        else if (tipo === "INGRESOS") cuentasTipo = cuentasIngresos;
+        else if (tipo === "GASTOS") cuentasTipo = cuentasGastos;
+        else continue;
 
-for (const element of libroDiario) {
-  for (const detalle of element.detalle_libro_diarios) {
-    const cuentaId = detalle.int_cuenta_id;
-    const saldoAnterior = saldosMap[cuentaId] || {
-      dec_saldo_deudora: 0,
-      dec_saldo_acreedora: 0,
-      dec_saldo_anterior_debito: 0,
-      dec_saldo_anterior_credito: 0
-    };
+        // Si la cuenta aún no existe en el objeto, inicializarla
+        if (!cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta]) {
+          cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta] = {
+            str_detalle_libro_diario_nombre_cuenta:
+              detalle.str_detalle_libro_diario_nombre_cuenta,
+            str_detalle_libro_diario_codigo_cuenta:
+              detalle.str_detalle_libro_diario_codigo_cuenta,
+            debe: 0,
+            haber: 0,
+            saldo_acreedora: saldoAnterior.dec_saldo_acreedora,
+            saldo_deudora: saldoAnterior.dec_saldo_deudora,
+            saldo_anterior_debito: saldoAnterior.dec_saldo_anterior_debito,
+            saldo_anterior_credito: saldoAnterior.dec_saldo_anterior_credito,
+          };
+        }
 
-    // Definir tipo de cuenta
-    const tipo = tipoCuenta(detalle.str_detalle_libro_diario_codigo_cuenta);
-    const monto = parseFloat(detalle.dc_detalle_libro_diario_monto);
-    const esDebe = detalle.str_detalle_libro_diario_tipo === "DEBE";
-
-    // Determinar en qué objeto almacenar la cuenta
-    let cuentasTipo;
-    if (tipo === "ACTIVOS") cuentasTipo = cuentasActivos;
-    else if (tipo === "PASIVOS") cuentasTipo = cuentasPasivos;
-    else if (tipo === "PATRIMONIO") cuentasTipo = cuentasPatrimonio;
-    else if (tipo === "INGRESOS") cuentasTipo = cuentasIngresos;
-    else if (tipo === "GASTOS") cuentasTipo = cuentasGastos;
-    else continue;
-
-    // Si la cuenta aún no existe en el objeto, inicializarla
-    if (!cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta]) {
-      cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta] = {
-        str_detalle_libro_diario_nombre_cuenta: detalle.str_detalle_libro_diario_nombre_cuenta,
-        str_detalle_libro_diario_codigo_cuenta: detalle.str_detalle_libro_diario_codigo_cuenta,
-        debe: 0,
-        haber: 0,
-        saldo_acreedora: saldoAnterior.dec_saldo_acreedora,
-        saldo_deudora: saldoAnterior.dec_saldo_deudora,
-        saldo_anterior_debito: saldoAnterior.dec_saldo_anterior_debito,
-        saldo_anterior_credito: saldoAnterior.dec_saldo_anterior_credito
-      };
+        // Sumar valores de debe y haber
+        if (esDebe) {
+          cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta].debe +=
+            monto;
+        } else {
+          cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta].haber +=
+            monto;
+        }
+      }
     }
 
-    // Sumar valores de debe y haber
-    if (esDebe) {
-      cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta].debe += monto;
-    } else {
-      cuentasTipo[detalle.str_detalle_libro_diario_codigo_cuenta].haber += monto;
-    }
-  }
-}
+    // Ahora calcular los saldos finales después del bucle
+    Object.values(cuentasActivos).forEach((cuenta) => {
+      cuenta.saldo_anterior_debito =
+        parseFloat(cuenta.saldo_anterior_debito) || 0;
+      cuenta.debe = parseFloat(cuenta.debe) || 0;
+      cuenta.haber = parseFloat(cuenta.haber) || 0;
+      cuenta.saldo_deudora =
+        cuenta.saldo_anterior_debito + cuenta.debe - cuenta.haber;
+      cuenta.saldo_acreedora = 0;
+      cuenta.saldo_anterior_credito = 0;
+    });
 
-// Ahora calcular los saldos finales después del bucle
-Object.values(cuentasActivos).forEach(cuenta => {
-  cuenta.saldo_anterior_debito = parseFloat(cuenta.saldo_anterior_debito) || 0;
-  cuenta.debe = parseFloat(cuenta.debe) || 0;
-  cuenta.haber = parseFloat(cuenta.haber) || 0;
-  cuenta.saldo_deudora = cuenta.saldo_anterior_debito + cuenta.debe - cuenta.haber;
-  cuenta.saldo_acreedora = 0;
-  cuenta.saldo_anterior_credito = 0;
-  
-});
+    Object.values(cuentasPasivos).forEach((cuenta) => {
+      cuenta.saldo_anterior_credito =
+        parseFloat(cuenta.saldo_anterior_credito) || 0;
+      cuenta.haber = parseFloat(cuenta.haber) || 0;
+      cuenta.debe = parseFloat(cuenta.debe) || 0;
+      cuenta.saldo_acreedora =
+        cuenta.saldo_anterior_credito + cuenta.haber - cuenta.debe;
+      cuenta.saldo_deudora = 0;
+      cuenta.saldo_anterior_debito = 0;
+    });
 
-Object.values(cuentasPasivos).forEach(cuenta => {
-  cuenta.saldo_anterior_credito = parseFloat(cuenta.saldo_anterior_credito) || 0;
-  cuenta.haber = parseFloat(cuenta.haber) || 0;
-  cuenta.debe = parseFloat(cuenta.debe) || 0;
-  cuenta.saldo_acreedora = cuenta.saldo_anterior_credito + cuenta.haber - cuenta.debe;
-  cuenta.saldo_deudora=0;
-  cuenta.saldo_anterior_debito=0;
- 
-});
+    Object.values(cuentasPatrimonio).forEach((cuenta) => {
+      cuenta.saldo_anterior_credito =
+        parseFloat(cuenta.saldo_anterior_credito) || 0;
+      cuenta.haber = parseFloat(cuenta.haber) || 0;
+      cuenta.saldo_acreedora = cuenta.saldo_anterior_credito + cuenta.haber;
+      cuenta.saldo_deudora = 0;
+      cuenta.saldo_anterior_debito = 0;
+    });
 
-Object.values(cuentasPatrimonio).forEach(cuenta => {
-  cuenta.saldo_anterior_credito = parseFloat(cuenta.saldo_anterior_credito) || 0;
-  cuenta.haber = parseFloat(cuenta.haber) || 0;
-  cuenta.saldo_acreedora = cuenta.saldo_anterior_credito + cuenta.haber;
-  cuenta.saldo_deudora=0;
-  cuenta.saldo_anterior_debito=0;
-});
+    Object.values(cuentasIngresos).forEach((cuenta) => {
+      cuenta.saldo_anterior_credito =
+        parseFloat(cuenta.saldo_anterior_credito) || 0;
+      cuenta.haber = parseFloat(cuenta.haber) || 0;
+      cuenta.saldo_acreedora = cuenta.saldo_anterior_credito + cuenta.haber;
+      cuenta.saldo_deudora = 0;
+      cuenta.saldo_anterior_debito = 0;
+    });
 
-Object.values(cuentasIngresos).forEach(cuenta => {
-  cuenta.saldo_anterior_credito = parseFloat(cuenta.saldo_anterior_credito) || 0;
-  cuenta.haber = parseFloat(cuenta.haber) || 0;
-  cuenta.saldo_acreedora = cuenta.saldo_anterior_credito + cuenta.haber;
-  cuenta.saldo_deudora=0;
-  cuenta.saldo_anterior_debito=0;
-});
-
-Object.values(cuentasGastos).forEach(cuenta => {
-  cuenta.saldo_anterior_debito = parseFloat(cuenta.saldo_anterior_debito) || 0;
-  cuenta.debe = parseFloat(cuenta.debe) || 0;
-  cuenta.saldo_deudora = cuenta.saldo_anterior_debito + cuenta.debe;
-  cuenta.saldo_acreedora=0;
-  cuenta.saldo_anterior_credito=0;
-});
-
-
-
+    Object.values(cuentasGastos).forEach((cuenta) => {
+      cuenta.saldo_anterior_debito =
+        parseFloat(cuenta.saldo_anterior_debito) || 0;
+      cuenta.debe = parseFloat(cuenta.debe) || 0;
+      cuenta.saldo_deudora = cuenta.saldo_anterior_debito + cuenta.debe;
+      cuenta.saldo_acreedora = 0;
+      cuenta.saldo_anterior_credito = 0;
+    });
 
     const infoBalanceComprobacion = {
       activos,
@@ -529,8 +520,8 @@ const crearBalanceIngresosGastosPorIdCliente = async (req, res) => {
         1: "ACTIVOS",
         2: "PASIVOS",
         3: "PATRIMONIO",
-        4: "INGRESOS",
-        5: "GASTOS",
+        5: "INGRESOS",
+        4: "GASTOS",
       };
       return tipos[codigoCuenta[0]];
     };
@@ -673,8 +664,8 @@ const crearBalanceGeneral = async (req, res) => {
         1: "ACTIVOS",
         2: "PASIVOS",
         3: "PATRIMONIO",
-        4: "INGRESOS",
-        5: "GASTOS",
+        5: "INGRESOS",
+        4: "GASTOS",
       };
       return tipos[codigoCuenta[0]];
     };
