@@ -116,11 +116,31 @@ export class PlanCuentasComponent implements AfterViewInit {
     this.srvCuentas.obtenerCuentasDelCliente(this.idCliente);
   }
 
-  ordenarCuentas() {
+  ordenarCuentas1() {
     this.cuentas.sort((a, b) =>
       a.str_cuenta_codigo > b.str_cuenta_codigo ? 1 : -1
     );
   }
+
+  //
+  ordenarCuentas() {
+    console.log('ordenando cuentas')
+    this.cuentas.sort((a, b) => {
+      const aParts = a.str_cuenta_codigo.split('.').map(Number);
+      const bParts = b.str_cuenta_codigo.split('.').map(Number);
+  
+      for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+        const numA = aParts[i] ?? 0;
+        const numB = bParts[i] ?? 0;
+  
+        if (numA !== numB) {
+          return numA - numB;
+        }
+      }
+      return 0;
+    });
+  }
+  
 
   obtenerCuentasHijasByPadreId(padreId: number) {
     this.cuentasHijasByPadreId = [];
