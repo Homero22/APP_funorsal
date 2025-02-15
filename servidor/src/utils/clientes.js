@@ -326,20 +326,20 @@ export const createCuentas = async (int_cliente_id) => {
             int_cuenta_padre_id: null
         },
         {
+            str_cuenta_nombre: 'GASTOS',
+            int_cliente_id: int_cliente_id,
+            str_cuenta_descripcion: 'Cuentas de Egresos',
+            str_cuenta_codigo: '4',
+            int_cuenta_padre_id: null
+        },
+        {
             str_cuenta_nombre: 'INGRESOS',
             int_cliente_id: int_cliente_id,
             str_cuenta_descripcion: 'Cuentas de Ingresos',
             str_cuenta_codigo: '5',
             int_cuenta_padre_id: null
         },
-        {
-            str_cuenta_nombre: 'GASTOS',
-            int_cliente_id: int_cliente_id,
-            str_cuenta_descripcion: 'Cuentas de Egresos',
-            str_cuenta_codigo: '4',
-            int_cuenta_padre_id: null
-        }
-
+  
     ]
  //creamos las cuentas
  const cuentas = await Cuenta.bulkCreate(cuentasGenerales);
