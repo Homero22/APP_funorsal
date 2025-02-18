@@ -10,7 +10,7 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
     const docDefinition = {
         content: [
             { text: infoBalanceIngresosGastos.cliente, style: 'title' },
-            { text: 'BALANCE DE INGRESOS Y GASTOS', style: 'header' },
+            { text: 'BALANCE DE RESULTADOS', style: 'header' },
             { text: `DEL ${new Date(infoBalanceIngresosGastos.fechaInicio).toLocaleDateString()} AL ${new Date(infoBalanceIngresosGastos.fechaFin).toLocaleDateString()}`, style: 'subheader' },
             { text: ' ' },  // Espacio en blanco
             { text: 'INGRESOS', style: 'sectionHeader' },
