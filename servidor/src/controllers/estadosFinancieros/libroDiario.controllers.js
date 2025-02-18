@@ -23,7 +23,7 @@ const crearDetalleDiario = async (req, res) => {
     let monto;
 
     infoLibroDiario.entradas.forEach(async (element) => {
-      if (element.debit > 0) {
+      if (element.debit >= 0) {
         tipo = "DEBE";
         monto = element.debit;
         const detalleDiario = await DetalleDiario.create({
@@ -35,7 +35,7 @@ const crearDetalleDiario = async (req, res) => {
           dc_detalle_libro_diario_monto: monto,
         });
       }
-      if (element.credit > 0) {
+      if (element.credit >= 0) {
         tipo = "HABER";
         monto = element.credit;
         const detalleDiario = await DetalleDiario.create({
