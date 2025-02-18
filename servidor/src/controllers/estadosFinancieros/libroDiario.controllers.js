@@ -12,6 +12,8 @@ const crearDetalleDiario = async (req, res) => {
   try {
     const infoLibroDiario = req.body;
 
+    console.log(infoLibroDiario)
+
     //Primero llena la tabla libro diario (padre)
     const libroDiarioId = await LibroDiario.create({
       dt_libro_diario_fecha: infoLibroDiario.fecha,
@@ -221,5 +223,6 @@ const editarDetalleDiario = async (req, res) => {
 export default {
   crearDetalleDiario,
   obtenerLibroDiarioByIdCliente,
-  editarDetalleDiario
+  editarDetalleDiario,
+
 };
