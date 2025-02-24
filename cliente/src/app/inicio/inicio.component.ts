@@ -1,63 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { multi } from './data';
-import Chart from 'chart.js/auto';
-import { ClienteService } from '../core/services/cliente.service';
+import { Component, OnInit } from "@angular/core";
+import { multi } from "./data";
+import Chart from "chart.js/auto";
+import { ClienteService } from "../core/services/cliente.service";
+import { LoginService } from "../core/services/login.service";
+import { Cliente, ClienteData } from "../core/models/cliente";
+import { MatSelect } from "@angular/material/select";
 
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css']
+    selector: "app-inicio",
+    templateUrl: "./inicio.component.html",
+    styleUrls: ["./inicio.component.css"],
 })
 export class InicioComponent implements OnInit {
+    public chart: any;
+    public chart2: any;
 
-  public chart: any;
-  public chart2: any;
+    informacionQuesera!: any;
+    isSuperAdmin: boolean = false;
+    listadoClientes: ClienteData[] = [];
+    clienteSeleccionado: Cliente | null = null;
+    selectedQuesera!: ClienteData;
+    quesera: string = "";
 
-  informacionQuesera!: any;
+    constructor(
+        private srvCliente: ClienteService,
+        private srvLogin: LoginService
+    ) {}
+    onClienteChange(event: any) {
+        this.quesera = event.value.str_cliente_nombre;
+        this.selectedQuesera = event.value;
+    }
 
-  constructor(
-    private srvCliente: ClienteService
-  ) {
-    this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
-      this.informacionQuesera = cliente;
+    ngOnInit() {
 
-    });
-  }
+        this.isSuperAdmin = this.srvLogin.isSuperAdmin();
+        if (this.isSuperAdmin) {
+            this.datosAdmin();
+        } else {
+            this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
+                this.informacionQuesera = cliente;
+                this.quesera = this.informacionQuesera.str_cliente_nombre;
+                this.selectedQuesera = this.informacionQuesera;
+            });
+        }
+    }
 
-  ngOnInit() {
-    this.createChart();
-  }
-
-
-
-  createChart(){
-
-    this.chart = new Chart("MyChart", {
-      type: 'line', //this denotes tha type of chart
-
-      data: {// values on X-Axis
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13',
-								 '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17', ],
-	       datasets: [
-          {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
-            backgroundColor: 'blue'
-          },
-          {
-            label: "Profit",
-            data: ['542', '542', '536', '327', '17',
-									 '0.00', '538', '541'],
-            backgroundColor: 'limegreen'
-          }
-        ]
-      },
-      options: {
-        aspectRatio:2.5
-      }
-
-    });
-  }
-
+    datosAdmin() {
+        this.srvCliente.obtenerClientes();
+        this.srvCliente.selectAllClientes$.subscribe((clientes: any) => {
+            this.listadoClientes = clientes;
+            this.selectedQuesera = this.listadoClientes[0];
+            if (this.selectedQuesera) {
+                this.quesera = this.selectedQuesera.str_cliente_nombre;
+            }
+          
+        });
+        
+    }
 }

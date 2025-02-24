@@ -1,22 +1,26 @@
-<div class="containerPrincipal">
-  <div class="container-inicio">
-    <!-- <div class="info-user">
-       <div class="info-user-img">
-         <img src="../../assets/canitas.png" alt="quesera" />
-       </div>
-    </div> -->
-    <div>
-      <h1>Bienvenido a <strong>Quesera {{informacionQuesera.str_cliente_nombre}}</strong> </h1>
-      <p>En esta sección podrás ver los ingresos y egresos de tu negocio</p>
+<div class="containerPrincipalInicio">
+    <div class="container-inicio-chart">
+        <div>
+            <h1>
+                Gráficos de Ingresos y Egresos
+            </h1>
+            <!-- <p>En esta sección podrás ver los ingresos y egresos de tu negocio</p> -->
+        </div>
+
+        <!-- Select para elegir cliente -->
+        <div class="" *ngIf="isSuperAdmin">
+            <mat-form-field appearance="outline">
+                <mat-label>Selecciona un Cliente</mat-label>
+                <mat-select [(value)]="selectedQuesera" (selectionChange)="onClienteChange($event)">
+                    <mat-option *ngFor="let cliente of listadoClientes" [value]="cliente">
+                        {{ cliente.str_cliente_nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="quesera" class="chart-container">
+            <app-chart [quesera]="selectedQuesera"></app-chart>
+        </div>
     </div>
-
-   <div class="chart-container">
-    <p>Gráfico de <strong>Ingresos</strong></p>
-     <canvas  id="MyChart" >{{ chart }}</canvas>
-     <hr>
-   </div>
-  </div>
-
 </div>
-
-

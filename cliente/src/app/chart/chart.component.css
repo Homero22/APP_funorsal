@@ -1,0 +1,40 @@
+select {
+    width: 200px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+select:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+option {
+    background: #ffffff;
+    color: #333;
+    padding: 10px;
+}
+
+/* Estilo al pasar el mouse */
+select:hover {
+    background-color: #e9ecef;
+}
+
+/* Estilo cuando está deshabilitado */
+select:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+
+.cc-chart {
+    display: flex;
+    justify-content: end;
+}

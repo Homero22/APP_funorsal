@@ -19,51 +19,35 @@
           class="custom-list-item"
           [class.selected]="currentComponent === 'Inicio'"
           (click)="showComponent('Inicio')"
-          >Inicio</a
-        >
+          >Inicio</a>
         <a
         class="custom-list-item"
         [class.selected]="currentComponent === 'Diario'"
         (click)="showComponent('Diario')"
-        >Libro Diario</a
-        >
-        <!-- <a
-          class="custom-list-item"
-          [class.selected]="currentComponent === 'Ingresos'"
-          (click)="showComponent('Ingresos')"
-          >Ingresos</a
-        > -->
-        <!-- <a
-          class="custom-list-item"
-          [class.selected]="currentComponent === 'Gastos'"
-          (click)="showComponent('Gastos')"
-          >Gastos</a
-        > -->
-        <a
-          class="custom-list-item"
-          [class.selected]="currentComponent === 'Reportes'"
-          (click)="showComponent('Reportes')"
-          >Reportes</a
-        >
-        <a
-          class="custom-list-item"
-
-          [class.selected]="currentComponent === 'Cliente'"
-          (click)="showComponent('Cliente')"
-          >Queseras Comunales</a
-        >
+        >Libro Diario</a>
         <a
         class="custom-list-item"
         [class.selected]="currentComponent === 'Configuración'"
         (click)="showComponent('Configuración')"
-        >Plan de Cuentas</a
-        >
+        >Plan de Cuentas</a>
+        <a
+          class="custom-list-item"
+          [class.selected]="currentComponent === 'Reportes'"
+          (click)="showComponent('Reportes')"
+          >Reportes</a>
+        <a
+          class="custom-list-item"
+            *ngIf="isSuperAdmin"
+          [class.selected]="currentComponent === 'Cliente'"
+          (click)="showComponent('Cliente')"
+          >Queseras Comunales</a>
+
         <a
         class="custom-list-item"
+        *ngIf="!isSuperAdmin"
         [class.selected]="currentComponent === 'Perfil'"
         (click)="showComponent('Perfil')"
-        >Perfil</a
-        >
+        >Perfil</a>
 
       </div>
     </mat-sidenav>

@@ -3,6 +3,7 @@ import { LibroDiario } from "../../models/estadosFinancieros/libroDiario.models.
 import { DetalleDiario } from "../../models/estadosFinancieros/detalleDiario.models.js";
 import { parse } from "dotenv";
 import { Op } from "sequelize";
+import { Cliente } from "../../models/estadosFinancieros/cliente.models.js";
 
 
 
@@ -12,7 +13,8 @@ const crearDetalleDiario = async (req, res) => {
   try {
     const infoLibroDiario = req.body;
 
-    console.log(infoLibroDiario)
+    console.log(infoLibroDiario);
+ 
 
     //Primero llena la tabla libro diario (padre)
     const libroDiarioId = await LibroDiario.create({
@@ -25,7 +27,7 @@ const crearDetalleDiario = async (req, res) => {
     let monto;
 
     infoLibroDiario.entradas.forEach(async (element) => {
-      if (element.debit >= 0) {
+      if (element.debit > 0) {
         tipo = "DEBE";
         monto = element.debit;
         const detalleDiario = await DetalleDiario.create({
@@ -37,7 +39,7 @@ const crearDetalleDiario = async (req, res) => {
           dc_detalle_libro_diario_monto: monto,
         });
       }
-      if (element.credit >= 0) {
+      if (element.credit > 0) {
         tipo = "HABER";
         monto = element.credit;
         const detalleDiario = await DetalleDiario.create({
@@ -126,7 +128,7 @@ const obtenerLibroDiarioByIdCliente = async (req, res) => {
       });
     }
 
-    console.log(libroDiario.rows);
+ 
 
     return res.json({
       status: true,
@@ -219,10 +221,126 @@ const editarDetalleDiario = async (req, res) => {
   }
 };
 
+//funcion para obtener los ingresos y gastos de un cliente en un año
+const obtenerIngresosGastos = async (req, res) => {
+  try {
+    const { idCliente, anio } = req.params;
+
+    const cliente = await Cliente.findOne({
+      where: { int_cliente_id: idCliente },
+    });
+
+    if (!cliente) {
+      return res.status(404).json({
+        status: false,
+        message: "Cliente no encontrado",
+      });
+    }
+
+    const libroDiario = await LibroDiario.findAll({
+      where: {
+        int_cliente_id: idCliente,
+        dt_libro_diario_fecha: {
+          [Op.between]: [`${anio}-01-01`, `${anio}-12-31`],
+        },
+      },
+      include: {
+        model: DetalleDiario,
+        required: true,
+      },
+    });
+
+    if (libroDiario.length === 0) {
+      return res.json({
+        status: false,
+        message: "No se encontraron registros",
+      });
+    }
+
+    let ingresos = 0;
+    let gastos = 0;
+
+    const tipoCuenta = (codigoCuenta) => {
+      const tipos = {
+        1: "ACTIVOS",
+        2: "PASIVOS",
+        3: "PATRIMONIO",
+        5: "INGRESOS",
+        4: "GASTOS",
+      };
+      return tipos[codigoCuenta[0]];
+    };
+
+    let ingresosPorMes = new Array(12).fill(0);
+    let gastosPorMes = new Array(12).fill(0);
+    const cuentasIngresos = {};
+    const cuentasGastos = {};
+    
+
+
+    libroDiario.forEach((element) => {
+      element.detalle_libro_diarios.forEach((detalle) => {
+        const tipo = tipoCuenta(detalle.str_detalle_libro_diario_codigo_cuenta);
+        const monto = parseFloat(detalle.dc_detalle_libro_diario_monto);
+        const mes = new Date(element.dt_libro_diario_fecha).getMonth()
+
+        if (tipo === "INGRESOS") {
+          console.log("Ingreso", detalle.str_detalle_libro_diario_codigo_cuenta,);
+          ingresosPorMes[mes] += monto;
+          ingresos += monto;
+          if (
+            !cuentasIngresos[detalle.str_detalle_libro_diario_codigo_cuenta]
+          ) {
+            cuentasIngresos[detalle.str_detalle_libro_diario_codigo_cuenta] = {
+              str_detalle_libro_diario_nombre_cuenta:
+                detalle.str_detalle_libro_diario_nombre_cuenta,
+              str_detalle_libro_diario_codigo_cuenta:
+                detalle.str_detalle_libro_diario_codigo_cuenta,
+              dc_detalle_libro_diario_monto: 0,
+            };
+          }
+          cuentasIngresos[
+            detalle.str_detalle_libro_diario_codigo_cuenta
+          ].dc_detalle_libro_diario_monto += monto;
+        } else if (tipo === "GASTOS") {
+          gastos += monto;
+          gastosPorMes[mes] += monto;
+          if (!cuentasGastos[detalle.str_detalle_libro_diario_codigo_cuenta]) {
+            cuentasGastos[detalle.str_detalle_libro_diario_codigo_cuenta] = {
+              str_detalle_libro_diario_nombre_cuenta:
+                detalle.str_detalle_libro_diario_nombre_cuenta,
+              str_detalle_libro_diario_codigo_cuenta:
+                detalle.str_detalle_libro_diario_codigo_cuenta,
+              dc_detalle_libro_diario_monto: 0,
+            };
+          }
+          cuentasGastos[
+            detalle.str_detalle_libro_diario_codigo_cuenta
+          ].dc_detalle_libro_diario_monto += monto;
+        }
+      });
+    });
+
+
+    return res.json({
+      status: true,
+      message: "Ingresos y gastos encontrados",
+      ingresos: ingresosPorMes,
+      gastos: gastosPorMes,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Error al obtener los ingresos y gastos",
+      data: {},
+    });
+  }
+};
+
 
 export default {
   crearDetalleDiario,
   obtenerLibroDiarioByIdCliente,
   editarDetalleDiario,
-
+  obtenerIngresosGastos,
 };

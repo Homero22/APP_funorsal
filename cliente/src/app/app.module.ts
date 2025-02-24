@@ -64,11 +64,12 @@ import { InformacionCuentaComponent } from './plan-cuentas/informacionCuenta/inf
 import { EditarPerfilComponent } from './perfil/editar-perfil/editar-perfil.component';
 import { VerClienteComponent } from './cliente/ver-cliente/ver-cliente.component';
 import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.component';
+import { ChartComponent } from './chart/chart.component';
 
 
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     NavegacionComponent,
     DashboardComponent,
@@ -106,6 +107,7 @@ import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.
       VerClienteComponent,
       EditarClienteComponent,
       DashboardComponent,
+      ChartComponent
    ],
   imports: [
     BrowserModule,
@@ -137,7 +139,7 @@ import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.
     MatExpansionModule,
     MatInputModule,
     MatAutocompleteModule,
-
+    MatSelectModule
 
 
 
