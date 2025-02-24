@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
 import { ClienteService } from "src/app/core/services/cliente.service";
 import { CuentasService } from "src/app/core/services/cuentas.service";
 import { libroDiarioService } from "src/app/core/services/libroDiario.service";
 import Swal from "sweetalert2";
 import { MatFormField } from "@angular/material/form-field";
+import { LoginService } from "src/app/core/services/login.service";
+import { Cliente, ClienteData } from "src/app/core/models/cliente";
 interface DetalleLibroDiario {
     int_detalle_libro_diario_id: number;
     int_libro_diario_id: number;
@@ -30,6 +32,10 @@ interface LibroDiario {
     styleUrls: ["./ver-diarios.component.css"],
 })
 export class VerDiariosComponent implements OnInit {
+    @Input() quesera! : ClienteData 
+    isSuperAdmin: boolean = false;
+    listadoClientes: ClienteData[] = [];
+    clienteSeleccionado: Cliente | null = null;
     informacionQuesera!: any;
     journalEntries: LibroDiario[] = [];
     displayedColumns: string[] = [
@@ -61,23 +67,50 @@ export class VerDiariosComponent implements OnInit {
         private srvCliente: ClienteService,
         private srvCuentas: CuentasService,
         private srvLibroDiario: libroDiarioService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private srvLogin: LoginService
     ) {
+
+    }
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['quesera'] && changes['quesera'].currentValue) {
+            this.obtenerLibrosDiarios(10,0,this.quesera.int_cliente_id,this.mes, this.anio)
+        }
+    }
+
+
+    ngOnInit() {
+        this.isSuperAdmin = this.srvLogin.isSuperAdmin();
+  
+        if (this.isSuperAdmin) {
+            console.log("es super admin");
+            this.datosAdmin();
+            
+        } else {
+            console.log("es cliente");
+            this.datosCliente();
+        }
+    }
+    datosAdmin() {
+        this.listadoClientes = this.srvCliente.allClientesService
+        this.quesera = this.listadoClientes[0];
+        this.obtenerLibrosDiarios(10, 0, this.listadoClientes[0].int_cliente_id, this.mes, this.anio);
+    }
+    datosCliente() {
         this.srvCliente.selectClienteLogueado$.subscribe((cliente: any) => {
             this.informacionQuesera = cliente;
+            this.quesera = this.informacionQuesera
             //this.srvCuentas.obtenerCuentasDelCliente(this.informacionQuesera.int_cliente_id);
-            this.obtenerLibrosDiarios(10, 0, this.mes, this.anio);
+            this.obtenerLibrosDiarios(10, 0,this.informacionQuesera.int_cliente_id, this.mes, this.anio);
         });
     }
 
-    ngOnInit() {}
-
     dataLibroDiario: any;
 
-    obtenerLibrosDiarios(limit = 10, offset = 0, mes?: number, anio?: number) {
+    obtenerLibrosDiarios(limit = 10, offset = 0, id: number, mes?: number, anio?: number) {
         this.srvLibroDiario
             .getLibrosDiarios(
-                this.informacionQuesera.int_cliente_id,
+                id,
                 limit,
                 offset,
                 mes,
@@ -90,7 +123,7 @@ export class VerDiariosComponent implements OnInit {
                         icon: "success",
                         text: librosDiarios.message,
                     });
-                    console.log(librosDiarios.body);
+                   
                     this.journalEntries = librosDiarios.body;
                     this.totalEntries = librosDiarios.total;
                 } else {
@@ -105,7 +138,7 @@ export class VerDiariosComponent implements OnInit {
     }
 
     aplicarFiltro() {
-        this.obtenerLibrosDiarios(10, 0, this.mes, this.anio);
+        this.obtenerLibrosDiarios(10, 0, this.quesera.int_cliente_id, this.mes, this.anio);
     }
 
     cambiarPagina(event: PageEvent) {
@@ -132,7 +165,7 @@ export class VerDiariosComponent implements OnInit {
                 })
             ),
         };
-        console.log(this.libroDiarioSeleccionado);
+  
         this.calcularTotales();
     }
     totalDebe: number = 0;
@@ -234,6 +267,10 @@ export class VerDiariosComponent implements OnInit {
                 ),
         };
 
+        //debugger;
+        console.log('Debugger',datosActualizados);
+     
+
         // Enviar datos a la API
         this.srvLibroDiario
             .editarLibroDiario(
@@ -247,7 +284,8 @@ export class VerDiariosComponent implements OnInit {
                         icon: "success",
                         text: data.message,
                     });
-                    this.obtenerLibrosDiarios(10, 0, this.mes, this.anio);
+                    console.log('AL editar ',this.mes, this.anio);
+                    this.obtenerLibrosDiarios(10, 0,this.quesera.int_cliente_id, this.mes, this.anio);
                 } else {
                     Swal.fire({
                         title: "Libro Diario",

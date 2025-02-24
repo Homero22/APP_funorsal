@@ -17,6 +17,13 @@ export interface LibroDiario {
   int_cliente_id: number;
 }
 
+export interface IngresosGastosChart {
+    status: string;
+    message: string;
+    ingresos: number[];
+    gastos: number[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,6 +51,11 @@ export class libroDiarioService {
       ...(mes && anio && { mes: mes.toString(), anio: anio.toString() })
     };
     return this.http.get<any>(`${this.url}/cliente/${int_cliente_id}`, { params });
+  }
+
+  //obtener ingresos y gastos de un cliente
+  getIngresosGastos(int_cliente_id: number, anio: number): Observable<IngresosGastosChart> {
+    return this.http.get<IngresosGastosChart>(`${this.url}/cliente/${int_cliente_id}/anio/${anio}`);
   }
 
 

@@ -1,6 +1,16 @@
 <div class="containerPrincipalReporte">
   <div class="container-inicio">
-    <h2>Quesera <strong>{{informacionQuesera.str_cliente_nombre}}</strong></h2>
+    <h2>Quesera <strong>{{nombre}}</strong></h2>
+    <div class="" *ngIf="isSuperAdmin">
+        <mat-form-field appearance="outline">
+            <mat-label>Selecciona un Cliente</mat-label>
+            <mat-select [(value)]="selectedQuesera" (selectionChange)="onClienteChange($event)">
+                <mat-option *ngFor="let cliente of listadoClientes" [value]="cliente">
+                    {{ cliente.str_cliente_nombre }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
       <div class="opciones">
         <button mat-raised-button color="secundary" (click)="showComponent('IngresosGastos')">Balance de Resultados</button>
         <button mat-raised-button color="secundary" (click)="showComponent('Balance2')">Balance General</button>
@@ -9,15 +19,15 @@
   </div>
 
   <ng-container *ngIf="currentComponent === 'IngresosGastos'">
-    <app-reportes-ingresos></app-reportes-ingresos>
+    <app-reportes-ingresos [quesera]="selectedQuesera"></app-reportes-ingresos>
   </ng-container>
 
   <ng-container *ngIf="currentComponent === 'Balance2'">
-    <app-reportes-general></app-reportes-general>
+    <app-reportes-general [quesera]="selectedQuesera"></app-reportes-general>
   </ng-container>
 
   <ng-container *ngIf="currentComponent === 'Balance3'">
-    <app-reportes-comprobacion></app-reportes-comprobacion>
+    <app-reportes-comprobacion [quesera]="selectedQuesera" ></app-reportes-comprobacion>
   </ng-container>
 
 </div>

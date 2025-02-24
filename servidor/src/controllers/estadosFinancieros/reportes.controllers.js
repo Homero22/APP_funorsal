@@ -499,10 +499,10 @@ const crearBalanceIngresosGastosPorIdCliente = async (req, res) => {
       },
     });
 
-    console.log("Cantidad: ", libroDiario.length);
+   
 
     if (libroDiario.length === 0) {
-      console.log("No se encontraron registros en el libro diario");
+      
       return res.json({
         status: false,
         message: "No se encontraron registros en el libro diario",

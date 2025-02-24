@@ -36,6 +36,8 @@ export const obtenerClientes = async (req, res) => {
     }
 };
 
+
+
 export const obtenerCliente = async (req, res) => {
     try {
         
@@ -212,5 +214,5 @@ export default {
     crearCliente,
     actualizarCliente,
     eliminarCliente,
-    obtenerTodosClientes
+    obtenerTodosClientes,
 };

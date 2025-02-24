@@ -1,5 +1,8 @@
 <div class="containerPrincipal">
     <div class="container-inicio">
+
+        
+        <div>Datos de: {{quesera.str_cliente_nombre}}</div>
         <div class="filter-container">
             <mat-form-field>
                 <mat-label>Mes</mat-label>
@@ -234,20 +237,22 @@
                     </td>
                 </tr>
             </table>
-            <button
-                mat-raised-button
-                color="primary"
-                (click)="guardarEdicion()"
-            >
-                Guardar
-            </button>
-            <button
-                mat-raised-button
-                color="secundary"
-                (click)="cancelarEdicion()"
-            >
-                Cancelar
-            </button>
+            <div class="options">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="guardarEdicion()"
+                >
+                    Guardar
+                </button>
+                <button
+                    mat-raised-button
+                    color="secundary"
+                    (click)="cancelarEdicion()"
+                >
+                    Cancelar
+                </button>
+            </div>
         </div>
     </div>
 </div>

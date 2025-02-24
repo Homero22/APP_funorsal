@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   public contrasena: string = "";
   loginForm: FormGroup;
 
+  usuarioLogueado: any;
+
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +48,7 @@ export class LoginComponent implements OnInit {
         this.loginService.login(this.loginForm.get('usuario')?.value, this.loginForm.get('contrasena')?.value).subscribe(
           (data: any) => {
             if(data.status){
+               
               Swal.close();
               Swal.fire({
                 title: 'Inicio de sesión correcto',
@@ -55,6 +58,8 @@ export class LoginComponent implements OnInit {
                 timer: 1500
               });
               if(data.body.str_usuario_nombre){
+                this.usuarioLogueado = data.body;
+                this.loginService.setUsuario(data.body)
                 //es administrador
                 this.loginService.isAdmin(true);
 
@@ -64,6 +69,8 @@ export class LoginComponent implements OnInit {
 
               //guardar el id del usuario en localStorage
               localStorage.setItem('idUsuario', data.body.int_usuario_id.toString());
+
+              this.srvCliente.obtenerClientes();
 
               }else{
               //guardar el id del usuario

@@ -1,15 +1,24 @@
 <div class="containerPrincipal">
   <div class="container-inicio">
     <div class="info-configuracion">
-      <div class="opciones">
+      <!-- <div class="opciones">
         <button mat-raised-button color="secundary" (click)="showComponent('Plan de Cuentas')">Plan de Cuentas</button>
-
-      </div>
+      </div> -->
+      <div class="" *ngIf="isSuperAdmin">
+        <mat-form-field appearance="outline">
+            <mat-label>Selecciona un Cliente</mat-label>
+            <mat-select [(value)]="selectedQuesera" (selectionChange)="onClienteChange($event)">
+                <mat-option *ngFor="let cliente of listadoClientes" [value]="cliente">
+                    {{ cliente.str_cliente_nombre }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
     </div>
   </div>
 
   <ng-container *ngIf="currentComponent === 'Plan de Cuentas'">
-    <app-plan-cuentas></app-plan-cuentas>
+    <app-plan-cuentas [quesera]="selectedQuesera"  ></app-plan-cuentas>
   </ng-container>
 
 </div>

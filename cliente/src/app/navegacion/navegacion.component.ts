@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { LoginService } from '../core/services/login.service';
   templateUrl: './navegacion.component.html',
   styleUrls: ['./navegacion.component.css']
 })
-export class NavegacionComponent {
+export class NavegacionComponent implements OnInit {
 
   paginaActual: string = 'Inicio';
   isAdmin: boolean = localStorage.getItem('isAdmin') === 'true';
@@ -24,10 +24,15 @@ export class NavegacionComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,private srvLogin: LoginService) {
+
     this.srvLogin.selectClienteLogueado$.subscribe((cliente: any) => {
       this.paginaActual = 'Inicio';
     });
   }
+  isSuperAdmin: boolean = false;    
+    ngOnInit(): void {
+        this.isSuperAdmin = this.srvLogin.isSuperAdmin();
+    }
 
   currentComponent: string = 'Inicio';
 

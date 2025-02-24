@@ -1,0 +1,17 @@
+
+<div class="cc-chart">
+    <select  [(ngModel)]="anioSeleccionado" (change)="actualizarGrafico()">
+        <option *ngFor="let anio of aniosDisponibles" [value]="anio">{{ anio }}</option>
+    </select>
+    <select  [(ngModel)]="tipoGraficoSeleccionado" (change)="actualizarGrafico()">
+        <option *ngFor="let tipo of listaTipoGraficos" [value]="tipo">{{tipo}}</option>
+    </select>
+
+</div>
+<div *ngIf="quesera">
+    <span>Datos de: {{quesera.str_cliente_nombre}}</span>
+</div>
+
+<canvas id="myChart">
+    {{ chart }}
+</canvas>

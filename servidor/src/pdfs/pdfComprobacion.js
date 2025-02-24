@@ -30,7 +30,7 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
 
         const addAccounts = (cuentas) => {
             cuentas.forEach(cuenta => {
-                console.log(cuenta);
+                
                 body.push([
                     { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
                     { text: formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
