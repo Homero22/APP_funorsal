@@ -19,12 +19,12 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
                     widths: ['*', 'auto'],
                     body: [
                         ...infoBalanceIngresosGastos.cuentasIngresos.map(cuenta => [
-                            { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                            { text: formatoNumero(cuenta.dc_detalle_libro_diario_monto.toFixed(2)), style: 'tableData' }
+                            { text: cuenta.str_detalle_libro_diario_nombre_cuenta, },
+                            { text:'$'+ formatoNumero(cuenta.dc_detalle_libro_diario_monto.toFixed(2)), style: 'tableData' }
                         ]),
                         [
                             { text: 'Total Ingresos', style: 'totalLabel' },
-                            { text: formatoNumero(infoBalanceIngresosGastos.ingresos.toFixed(2)), style: 'totalData' }
+                            { text: '$'+ formatoNumero(infoBalanceIngresosGastos.ingresos.toFixed(2)), style: 'totalData' }
                         ]
                     ]
                 }
@@ -36,12 +36,12 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
                     widths: ['*', 'auto'],
                     body: [
                         ...infoBalanceIngresosGastos.cuentasGastos.map(cuenta => [
-                            { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                            { text: formatoNumero(cuenta.dc_detalle_libro_diario_monto.toFixed(2)), style: 'tableData' }
+                            { text: cuenta.str_detalle_libro_diario_nombre_cuenta, },
+                            { text: '$'+ formatoNumero(cuenta.dc_detalle_libro_diario_monto.toFixed(2)), style: 'tableData' }
                         ]),
                         [
                             { text: 'Total Gastos', style: 'totalLabel' },
-                            { text: formatoNumero(infoBalanceIngresosGastos.gastos.toFixed(2)), style: 'totalData' }
+                            { text: '$'+ formatoNumero(infoBalanceIngresosGastos.gastos.toFixed(2)), style: 'totalData' }
                         ]
                     ]
                 }
@@ -53,7 +53,7 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
                     body: [
                         [
                             { text: 'Resultado del Ejercicio', style: 'totalR' },
-                            { text: formatoNumero(infoBalanceIngresosGastos.resultado.toFixed(2)), style: 'totalR' }
+                            { text: '$'+ formatoNumero(infoBalanceIngresosGastos.resultado.toFixed(2)), style: 'totalR' }
                         ]
                     ]
                 }
@@ -88,6 +88,7 @@ async function generarPdfBalanceBase64(infoBalanceIngresosGastos) {
             },
             tableData: {
                 margin: [0, 5, 0, 5],
+                alignment: 'right',
                 // fillColor: '#f0ad4e'  // Color naranja claro para datos de tabla
             },
             totalLabel: {
