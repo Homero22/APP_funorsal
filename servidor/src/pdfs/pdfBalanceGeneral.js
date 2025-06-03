@@ -19,10 +19,10 @@ async function generarPdfBalanceGeneralBase64(infoBalanceGeneral) {
         const addAccounts = (cuentas) => {
             cuentas.forEach(cuenta => {
                 body.push([
-                    { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                    { text: formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.saldo.toFixed(2)), style: 'tableData' }
+                    { text: cuenta.str_detalle_libro_diario_nombre_cuenta, },
+                    { text: '$'+ formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.saldo.toFixed(2)), style: 'tableData' }
                 ]);
             });
         };
@@ -41,7 +41,7 @@ async function generarPdfBalanceGeneralBase64(infoBalanceGeneral) {
             { text: 'Resultado del Ejercicio', style: 'categoryTitle', colSpan: 3, alignment: 'right' },
             {},
             {},
-            { text: formatoNumero(infoBalanceGeneral.resultadoEjercicio.toFixed(2)), style: 'tableData' }
+            { text:'$'+ formatoNumero(infoBalanceGeneral.resultadoEjercicio.toFixed(2)), style: 'tableData' }
         ]);
 
         return body;
@@ -87,6 +87,7 @@ async function generarPdfBalanceGeneralBase64(infoBalanceGeneral) {
             tableData: {
                 fontSize: 10,
                 margin: [0, 5, 0, 5],
+                alignment: 'right'
             },
             categoryTitle: {
                 fontSize: 12,

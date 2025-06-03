@@ -32,13 +32,13 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
             cuentas.forEach(cuenta => {
                 
                 body.push([
-                    { text: cuenta.str_detalle_libro_diario_nombre_cuenta, style: 'tableData' },
-                    { text: formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.saldo_deudora.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.saldo_acreedora.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.saldo_anterior_debito.toFixed(2)), style: 'tableData' },
-                    { text: formatoNumero(cuenta.saldo_anterior_credito.toFixed(2)), style: 'tableData' }
+                    { text: cuenta.str_detalle_libro_diario_nombre_cuenta,},
+                    { text: '$'+ formatoNumero(cuenta.debe.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.haber.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.saldo_deudora.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.saldo_acreedora.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.saldo_anterior_debito.toFixed(2)), style: 'tableData' },
+                    { text: '$'+ formatoNumero(cuenta.saldo_anterior_credito.toFixed(2)), style: 'tableData' }
                 ]);
             });
         };
@@ -60,8 +60,8 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
 
         body.push([
             { text: 'Total', style: 'totalLabel' },
-            { text: formatoNumero(infoBalanceComprobacion.totalDebitos.toFixed(2)), style: 'totalData' },
-            { text: formatoNumero(infoBalanceComprobacion.totalCreditos.toFixed(2)), style: 'totalData' },
+            { text: '$'+ formatoNumero(infoBalanceComprobacion.totalDebitos.toFixed(2)), style: 'totalData' },
+            { text: '$'+ formatoNumero(infoBalanceComprobacion.totalCreditos.toFixed(2)), style: 'totalData' },
             { text: '', style: 'totalData' },
             { text: '', style: 'totalData' },
             { text: '', style: 'totalData' },
@@ -112,7 +112,7 @@ async function generarPdfBalanceComprobacionBase64(infoBalanceComprobacion) {
             tableData: {
                 fontSize: 10, // Disminuir el tamaño de la letra
                 margin: [0, 5, 0, 5],
-                alignment: 'center'
+                alignment: 'right'
             },
             categoryTitle: {
                 fontSize: 12, // Tamaño de letra para los títulos de las categorías
